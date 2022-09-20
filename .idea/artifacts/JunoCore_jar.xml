@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="JunoCore:jar">
+    <output-path>$PROJECT_DIR$/../Juno Server/plugins</output-path>
+    <root id="archive" name="JunoCore.jar">
+      <element id="module-output" name="JunoCore" />
+    </root>
+  </artifact>
+</component>

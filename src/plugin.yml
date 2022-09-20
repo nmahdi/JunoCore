@@ -1,0 +1,11 @@
+name: JunoCore
+author: Mahdi_
+main: com.junocore.JCore
+version: 1.0
+api-version: 1.16
+depend: [HolographicDisplays,NBTAPI]
+commands:
+  jitem:
+    description: Main Item Command.
+  jentity:
+    description: Spawns a Juno Core Entity
