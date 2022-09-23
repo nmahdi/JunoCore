@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="eceeb603-f7bf-4aa8-906e-53c077f94541" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/npc/BlacksmithNPC.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/ActionBar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/JunoCore_jar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/HolographicDisplays.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/item_nbt_api_plugin_2_10_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/spigot.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/worldedit_bukkit_7_2_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JunoCore.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JunoCore.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/JCore.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/JHologramsManager$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/JHologramsManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/entity/EntityStatID.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/entity/JEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/entity/JEntityCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/entity/JEntityManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/entity/SpawnZone.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/events/JEntityDeathEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/events/SkillXPGainEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/gui/JGUI.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/gui/JGUIManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/hunter/HunterListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/hunter/HunterManager$HunterQuestID.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/hunter/HunterManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/hunter/HunterQuest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/JItem.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/JItemCommand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/JItemManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/builder/ItemStackBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/builder/NBTItemStackBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/listeners/EquipmentEquipListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/listeners/HunterPhoneListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/listeners/JItemPickupListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/listeners/LeafBlowerListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/listeners/TreeFellerListener$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/listeners/TreeFellerListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/stats/EquipmentSlotID.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/stats/ItemStatID.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/stats/Rarity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/stats/Stat.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/item/stats/WeaponType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/loot/JLoot.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/loot/JLootTable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/player/JPlayerManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/player/PlayerStatID.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/player/listeners/JEntityListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/player/listeners/PlayerLoginListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/player/listeners/PlayerMenuListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/player/skills/SkillID.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/com/junocore/player/skills/SkillXPGainListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JunoCore/plugin.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/JCore.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/JHologramsManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/entity/EntityStatID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/entity/JEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/entity/JEntityCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/entity/JEntityManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/entity/SpawnZone.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/events/JEntityDeathEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/events/JEquipmentEquipEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/events/SkillXPGainEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/gui/JGUI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/gui/JGUIManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/hunter/HunterListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/hunter/HunterManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/hunter/HunterQuest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/JItem.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/JItemCommand.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/JItemManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/builder/ItemStackBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/builder/NBTItemStackBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/listeners/EquipmentEquipListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/listeners/HunterPhoneListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/listeners/JItemPickupListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/listeners/LeafBlowerListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/listeners/TreeFellerListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/stats/EquipmentSlotID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/stats/ItemStatID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/stats/Rarity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/stats/Stat.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/item/stats/WeaponType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/loot/JLoot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/loot/JLootTable.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/player/JPlayerManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/player/PlayerStatID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/player/listeners/JEntityListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/player/listeners/PlayerLoginListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/player/listeners/PlayerMenuListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/player/skills/SkillID.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/junocore/player/skills/SkillXPGainListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2F8ezNr6keL2ZzIKzLViB1wB7yO" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15357853&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="eceeb603-f7bf-4aa8-906e-53c077f94541" name="Changes" comment="" />
+      <created>1663878399917</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1663878399917</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:org.spigotmc:spigot-api" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
