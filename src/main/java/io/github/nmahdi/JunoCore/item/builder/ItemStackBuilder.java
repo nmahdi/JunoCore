@@ -20,6 +20,9 @@ public class ItemStackBuilder {
     public ItemStackBuilder(ItemStack stack){
         this.itemStack = stack.clone();
         meta = itemStack.getItemMeta();
+        if(meta.hasLore()){
+            lore.addAll(meta.getLore());
+        }
     }
 
     public ItemStackBuilder(Material material) {
@@ -83,17 +86,11 @@ public class ItemStackBuilder {
     public ItemStack build() {
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
         meta.setLore(lore);
         meta.setUnbreakable(true);
-        itemStack.setItemMeta(meta);
-        return itemStack;
-    }
-
-    public ItemStack buildSkull(String name, UUID uuid) {
-        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-        meta.setLore(lore);
         itemStack.setItemMeta(meta);
         return itemStack;
     }

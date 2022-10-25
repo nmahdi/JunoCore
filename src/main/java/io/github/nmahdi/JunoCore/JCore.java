@@ -6,7 +6,9 @@ import io.github.nmahdi.JunoCore.entity.npc.BlacksmithNPC;
 import io.github.nmahdi.JunoCore.hunter.HunterManager;
 import io.github.nmahdi.JunoCore.item.JItemCommand;
 import io.github.nmahdi.JunoCore.item.JItemManager;
-import io.github.nmahdi.JunoCore.item.listeners.EquipmentEquipListener;
+import io.github.nmahdi.JunoCore.item.crafting.CraftingManager;
+import io.github.nmahdi.JunoCore.item.listeners.ConsumableListener;
+import io.github.nmahdi.JunoCore.player.listeners.EquipmentEquipListener;
 import io.github.nmahdi.JunoCore.item.listeners.HunterPhoneListener;
 import io.github.nmahdi.JunoCore.item.listeners.LeafBlowerListener;
 import io.github.nmahdi.JunoCore.item.listeners.TreeFellerListener;
@@ -21,9 +23,7 @@ import java.util.Random;
 
 public class JCore extends JavaPlugin {
 
-    /**
-     * TODO: Fix LeafBlower and TreeFeller
-     */
+    
     private Random random = new Random();
     private JHologramsManager hologramsManager;
     private JItemManager itemManager;
@@ -52,12 +52,13 @@ public class JCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LeafBlowerListener(), this);
         getServer().getPluginManager().registerEvents(new TreeFellerListener(this, itemManager), this);
         getServer().getPluginManager().registerEvents(new PlayerLoginListener(playerManager), this);
-        getServer().getPluginManager().registerEvents(new PlayerMenuListener(playerManager), this);
+        new PlayerMenuListener(this, playerManager);
         getServer().getPluginManager().registerEvents(new JEntityListener(random, playerManager, jEntityManager, hologramsManager, itemManager), this);
         getServer().getPluginManager().registerEvents(new HunterPhoneListener(itemManager, hunterManager), this);
         new SkillXPGainListener(this);
         new EquipmentEquipListener(this, itemManager);
         new BlacksmithNPC(this, itemManager);
+        new ConsumableListener(this);
     }
 
     private void registerCommands(){

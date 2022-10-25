@@ -3,9 +3,11 @@ package io.github.nmahdi.JunoCore;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
+import io.github.nmahdi.JunoCore.player.skills.SkillID;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 
@@ -21,6 +23,17 @@ public class JHologramsManager {
 
     public void createDamageHologram(Location location, int damage){
         Hologram hologram = createHologram(location, "&f" + damage);
+        Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(jcore, new Runnable() {
+            @Override
+            public void run() {
+                hologram.delete();
+            }
+        },60);
+        counter++;
+    }
+
+    public void createXPHologram(Location location, int xp, SkillID skill, Player player){
+        Hologram hologram = createHologram(location, "&f+" + xp + " " + skill.getDisplayName() + " XP", "[" + player.getName() + "]");
         Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(jcore, new Runnable() {
             @Override
             public void run() {

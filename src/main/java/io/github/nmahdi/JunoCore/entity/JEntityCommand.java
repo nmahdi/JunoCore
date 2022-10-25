@@ -1,6 +1,5 @@
 package io.github.nmahdi.JunoCore.entity;
 
-import de.tr7zw.nbtapi.NBTEntity;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

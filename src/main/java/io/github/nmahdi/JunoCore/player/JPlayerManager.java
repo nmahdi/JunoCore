@@ -63,32 +63,39 @@ public class JPlayerManager {
             }
         }
         //Stats
-        stats.setInteger(PlayerStatID.Health.getId(), 100);
-        stats.setInteger(PlayerStatID.MaxHealth.getId(), 100);
-        stats.setInteger(PlayerStatID.Mana.getId(), 100);
-        stats.setInteger(PlayerStatID.MaxMana.getId(), 100);
-        stats.setInteger(PlayerStatID.Defense.getId(), 0);
-        stats.setInteger(PlayerStatID.FireDefense.getId(), 0);
-        stats.setInteger(PlayerStatID.WaterDefense.getId(), 0);
-        stats.setInteger(PlayerStatID.LightningDefense.getId(), 0);
-        stats.setInteger(PlayerStatID.IceDefense.getId(), 0);
-        stats.setInteger(PlayerStatID.Speed.getId(), 100);
-        stats.setInteger(PlayerStatID.Damage.getId(), 1);
-        stats.setInteger(PlayerStatID.Strength.getId(), 0);
-        stats.setInteger(PlayerStatID.CritChance.getId(), 10);
-        stats.setInteger(PlayerStatID.CritDamage.getId(), 20);
-        juno.setObject("action_bar", new ActionBar(player));
-        actionBars.put(player, Bukkit.getScheduler().scheduleAsyncRepeatingTask(main, new Runnable() {
+        stats.setInteger(PlayerStatID.Health.getId(), (int)PlayerStatID.Health.getBaseValue());
+        stats.setInteger(PlayerStatID.MaxHealth.getId(), (int)PlayerStatID.MaxHealth.getBaseValue());
+        stats.setInteger(PlayerStatID.Mana.getId(), (int)PlayerStatID.Mana.getBaseValue());
+        stats.setInteger(PlayerStatID.MaxMana.getId(), (int)PlayerStatID.MaxMana.getBaseValue());
+        stats.setInteger(PlayerStatID.Defense.getId(), (int)PlayerStatID.Defense.getBaseValue());
+        stats.setInteger(PlayerStatID.FireDefense.getId(), (int)PlayerStatID.FireDefense.getBaseValue());
+        stats.setInteger(PlayerStatID.WaterDefense.getId(), (int)PlayerStatID.WaterDefense.getBaseValue());
+        stats.setInteger(PlayerStatID.LightningDefense.getId(), (int)PlayerStatID.LightningDefense.getBaseValue());
+        stats.setInteger(PlayerStatID.IceDefense.getId(), (int)PlayerStatID.IceDefense.getBaseValue());
+        stats.setInteger(PlayerStatID.Speed.getId(), (int)PlayerStatID.Speed.getBaseValue());
+        stats.setInteger(PlayerStatID.Damage.getId(), (int)PlayerStatID.Damage.getBaseValue());
+        stats.setInteger(PlayerStatID.Strength.getId(), (int)PlayerStatID.Strength.getBaseValue());
+        stats.setInteger(PlayerStatID.CritChance.getId(), (int)PlayerStatID.CritChance.getBaseValue());
+        stats.setInteger(PlayerStatID.CritDamage.getId(), (int)PlayerStatID.CritDamage.getBaseValue());
+        stats.setInteger(PlayerStatID.Luck.getId(), (int)PlayerStatID.Luck.getBaseValue());
+        stats.setInteger(PlayerStatID.Fortune.getId(), (int)PlayerStatID.Fortune.getBaseValue());
+
+        actionBars.put(player, Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(main, new Runnable() {
+            ActionBar bar = new ActionBar(player);
             @Override
             public void run() {
-                juno.getObject("action_bar", ActionBar.class).send();
+                bar.send();
             }
-        },20, 20));
+        }, 20, 20));
     }
 
     public void logout(Player player){
         if(userFolder.length() < 0){
             System.out.println("NO USERS REGISTERED!");
+        }
+        if(!actionBars.isEmpty()) {
+            Bukkit.getServer().getScheduler().cancelTask(actionBars.get(player));
+            actionBars.remove(player);
         }
         for(File f : userFolder.listFiles()){
             if(f.getName().replace(".yml", "").equalsIgnoreCase(player.getUniqueId().toString())) {

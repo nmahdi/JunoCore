@@ -49,10 +49,7 @@ public class JItemManager {
 
     public boolean isJunoItem(ItemStack item){
         NBTItem nItem = new NBTItem(item);
-        if(nItem.hasCustomNbtData() && nItem.hasKey("juno")){
-            return true;
-        }
-        return false;
+        return nItem.hasCustomNbtData() && nItem.hasKey("juno");
     }
 
     public String getItemID(ItemStack item){

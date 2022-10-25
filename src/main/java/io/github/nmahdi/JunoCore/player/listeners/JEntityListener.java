@@ -12,10 +12,11 @@ import io.github.nmahdi.JunoCore.item.JItemManager;
 import io.github.nmahdi.JunoCore.item.builder.NBTItemStackBuilder;
 import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
 import io.github.nmahdi.JunoCore.item.stats.WeaponType;
-import io.github.nmahdi.JunoCore.loot.JLoot;
-import io.github.nmahdi.JunoCore.loot.JLootTable;
+import io.github.nmahdi.JunoCore.loot.Loot;
+import io.github.nmahdi.JunoCore.loot.LootTable;
 import io.github.nmahdi.JunoCore.player.JPlayerManager;
 import io.github.nmahdi.JunoCore.player.PlayerStatID;
+import io.github.nmahdi.JunoCore.player.skills.SkillID;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Damageable;
@@ -119,6 +120,7 @@ public class JEntityListener implements Listener {
         entityManager.setName(entity);
         hologramsManager.createDamageHologram(e.getEntity().getLocation(), (int)totalDamage);
         if(dying){
+            hologramsManager.createXPHologram(e.getEntity().getLocation(), entity.getPersistentDataContainer().getCompound("juno").getInteger(EntityStatID.XP.getId()), SkillID.Combat, (Player)e.getDamager());
             Bukkit.getServer().getPluginManager().callEvent(new JEntityDeathEvent(e.getEntity().getWorld(), e.getEntity().getLocation(), (Player)e.getDamager(), entityManager.getEntityByID(eJuno.getString(EntityStatID.ID.getId()))));
             for(SpawnZone zone : entityManager.getSpawnZones()){
                 zone.despawn(entityManager, e.getEntity().getUniqueId().toString());
@@ -133,8 +135,8 @@ public class JEntityListener implements Listener {
 
     @EventHandler
     public void onJEntityDeath(JEntityDeathEvent e){
-        JLootTable lootTable = e.getJEntity().getLootTable();
-        for(JLoot loot : lootTable.getJLoot()){
+        LootTable lootTable = e.getJEntity().getLootTable();
+        for(Loot loot : lootTable.getJLoot()){
             int chance = random.nextInt(100);
             if(chance <= loot.getChance()){
                 int amount = random.nextInt(loot.getMaxAmount()-loot.getMinAmount()+1)+loot.getMinAmount();

@@ -4,12 +4,10 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTEntity;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class ActionBar {
-
 
     private Player player;
     private NBTCompound stats;
@@ -19,13 +17,13 @@ public class ActionBar {
     public ActionBar(Player player){
         this.player = player;
         this.stats = new NBTEntity(player).getPersistentDataContainer().getCompound("juno").getCompound("stats");
-        this.defaultMessage = "&c%health%/%max_health%         &b%mana%/%max_mana%";
+        this.defaultMessage = "&c&l%health%/%max_health%          &b&l%mana%/%max_mana%";
     }
 
     public void send(){
         String temp = defaultMessage;
         for(PlayerStatID id : PlayerStatID.values()){
-            temp = temp.replaceAll(id.getActionBarID(), String.valueOf(stats.getInteger(id.getId())));
+            temp = temp.replaceAll(id.getPlaceHolder(), String.valueOf(stats.getInteger(id.getId())));
         }
         currentMessage = temp;
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.translateAlternateColorCodes('&', currentMessage)));

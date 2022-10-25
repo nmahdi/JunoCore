@@ -2,14 +2,14 @@ package io.github.nmahdi.JunoCore.loot;
 
 import io.github.nmahdi.JunoCore.item.JItem;
 
-public class JLoot{
+public class Loot {
 
     private JItem item;
     private int minAmount;
     private int maxAmount;
     private float chance;
 
-    JLoot(JItem item, int minAmount, int maxAmount, float chance){
+    Loot(JItem item, int minAmount, int maxAmount, float chance){
         this.item = item;
         this.minAmount = minAmount;
         this.maxAmount = maxAmount;

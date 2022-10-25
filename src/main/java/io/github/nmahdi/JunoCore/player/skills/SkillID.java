@@ -1,6 +1,7 @@
 package io.github.nmahdi.JunoCore.player.skills;
 
 public enum SkillID {
+    Combat("combat", "Combat", 100),
     Mining("mining", "Mining", 40),
     Foraging("foraging", "Foraging", 40),
     Fishing("fishing", "Fishing", 40),

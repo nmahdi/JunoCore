@@ -1,9 +1,10 @@
 package io.github.nmahdi.JunoCore.item;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.item.builder.NBTItemStackBuilder;
+import io.github.nmahdi.JunoCore.item.builder.NBTSkullBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,18 +33,23 @@ public class JItemCommand implements CommandExecutor {
             }
 
             if(args.length == 1){
-                if(itemManager.getItemByID(args[0]) == null){
-                    sender.sendMessage(ChatColor.RED + "Invalid arguments!");
+                if(itemManager.getItemByID(args[0]) != null){
+                    if(itemManager.getItemByID(args[0]).getMaterialType().equals(Material.PLAYER_HEAD)){
+                        JItem item = itemManager.getItemByID(args[0]);
+                        ((Player)sender).getInventory().addItem(new NBTSkullBuilder(item).build());
+                        return true;
+                    }
+                    ((Player)sender).getInventory().addItem(new NBTItemStackBuilder(itemManager.getItemByID(args[0])).getStack());
                     return true;
                 }
-                ((Player)sender).getInventory().addItem(new NBTItemStackBuilder(itemManager.getItemByID(args[0])).getStack());
+                sender.sendMessage(ChatColor.RED + "Invalid arguments!");
                 return true;
             }
 
             Player player = (Player) sender;
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
+            NBTJItem item = new NBTJItem(player.getInventory().getItemInMainHand());
 
-            if(!item.hasCustomNbtData() && !item.hasKey("juno")){
+            if(!item.hasCustomNbtData() && !item.hasJuno()){
                 sender.sendMessage(ChatColor.RED + "This isn't a valid item!");
                 return true;
             }

@@ -1,7 +1,7 @@
 package io.github.nmahdi.JunoCore.item.builder;
 
-import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.item.JItem;
+import io.github.nmahdi.JunoCore.item.NBTJItem;
 import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
 import io.github.nmahdi.JunoCore.item.stats.Stat;
 import org.bukkit.ChatColor;
@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 public class NBTItemStackBuilder {
 
     private ItemStack itemStack;
-    private NBTItem nbtItem;
+    private NBTJItem nbtItem;
     private JItem jItem;
 
     /**
@@ -19,7 +19,7 @@ public class NBTItemStackBuilder {
      * @param item
      */
 
-    public NBTItemStackBuilder(NBTItem item, JItem jItem){
+    public NBTItemStackBuilder(NBTJItem item, JItem jItem){
         this.nbtItem = item;
         this.itemStack = item.getItem();
         this.jItem = jItem;
@@ -42,13 +42,13 @@ public class NBTItemStackBuilder {
         builder.clearLore();
         //Loops through all stats and checks if the item has an NBT value matching it, if there is one it adds it to the lore
         for(ItemStatID stat : ItemStatID.values()){
-            if(nbtItem.getCompound("juno").getCompound("stats").hasKey(stat.getID()))
-                builder.addLore(ChatColor.translateAlternateColorCodes('&', getStatLore(stat.getDisplayName(), nbtItem.getCompound("juno").getCompound("stats").getString(stat.getID()))));
+            if(nbtItem.getStats().hasKey(stat.getID()))
+                builder.addLore(ChatColor.translateAlternateColorCodes('&', getStatLore(stat.getDisplayName(), nbtItem.getStat(stat.getID()))));
         }
         //Adds the JItem template lore
         addLore(builder);
-        NBTItem temp = new NBTItem(builder.build());
-        temp.getOrCreateCompound("juno").mergeCompound(nbtItem.getCompound("juno"));
+        NBTJItem temp = new NBTJItem(builder.build());
+        temp.getJuno().mergeCompound(nbtItem.getJuno());
         return temp.getItem();
     }
 
@@ -89,16 +89,12 @@ public class NBTItemStackBuilder {
         //Adds the JItem template lore
         addLore(builder);
         this.itemStack = builder.build();
-        this.nbtItem = new NBTItem(itemStack);
-        this.nbtItem.addCompound("juno").setString("id", item.getId());
+        this.nbtItem = new NBTJItem(itemStack);
+        this.nbtItem.getJuno().setString("id", item.getId());
         //Adds the stats to the Juno~Stats NBT Tag
         if(!item.getStats().isEmpty()) {
             for (Stat stat : item.getStats()) {
-                if (stat.getID().isHidden()) {
-                    this.nbtItem.getCompound("juno").addCompound("hidden-stats").setString(stat.getID().getID(), stat.getValue());
-                } else {
-                    this.nbtItem.getCompound("juno").addCompound("stats").setString(stat.getID().getID(), stat.getValue());
-                }
+                this.nbtItem.setStat(stat.getID(), stat.getValue());
             }
         }
     }

@@ -3,8 +3,10 @@ package io.github.nmahdi.JunoCore.item.stats;
 import io.github.nmahdi.JunoCore.player.PlayerStatID;
 
 public enum ItemStatID {
-    Health(PlayerStatID.MaxHealth),
-    Mana(PlayerStatID.MaxMana),
+    MaxHealth(PlayerStatID.MaxHealth),
+    Health(PlayerStatID.Health),
+    MaxMana(PlayerStatID.MaxMana),
+    Mana(PlayerStatID.Mana),
     Defense(PlayerStatID.Defense),
     FireDefense(PlayerStatID.FireDefense),
     WaterDefense(PlayerStatID.WaterDefense),
@@ -21,8 +23,8 @@ public enum ItemStatID {
     WeaponType("weapon_type", true),
     Durability("durability", true),
     MaxDurability("max_durability", true),
-    EquipmentSlot("armor_slot", true);
-
+    EquipmentSlot("armor_slot", true),
+    Consumable("consumable", true)
     ;
 
     private String id;

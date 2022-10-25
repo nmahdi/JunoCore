@@ -1,11 +1,11 @@
 package io.github.nmahdi.JunoCore.entity;
 
-import io.github.nmahdi.JunoCore.loot.JLootTable;
+import io.github.nmahdi.JunoCore.loot.LootTable;
 import org.bukkit.entity.EntityType;
 
 public enum JEntity{
-    Zombie(EntityType.ZOMBIE, "Zombie", "basic_zombie", 10, 100, 1, 10, JLootTable.Zombie),
-    Zealot(EntityType.ENDERMAN, "Zealot", "zealot", 50, 1000, 10, 20, JLootTable.Zealot),
+    Zombie(EntityType.ZOMBIE, "Zombie", "basic_zombie", 10, 100, 1, 10, LootTable.Zombie),
+    Zealot(EntityType.ENDERMAN, "Zealot", "zealot", 50, 1000, 10, 20, LootTable.Zealot),
 
     ;
 
@@ -18,10 +18,10 @@ public enum JEntity{
     private int minLevel;
     private int maxLevel;
 
-    private JLootTable lootTable;
+    private LootTable lootTable;
 
 
-    JEntity(EntityType entityType, String displayName, String id, int xp, int baseHealth, int minLevel, int maxLevel, JLootTable lootTable){
+    JEntity(EntityType entityType, String displayName, String id, int xp, int baseHealth, int minLevel, int maxLevel, LootTable lootTable){
         this.entityType = entityType;
         this.displayName = displayName;
         this.id = id;
@@ -60,7 +60,7 @@ public enum JEntity{
         return maxLevel;
     }
 
-    public JLootTable getLootTable() {
+    public LootTable getLootTable() {
         return lootTable;
     }
 }
