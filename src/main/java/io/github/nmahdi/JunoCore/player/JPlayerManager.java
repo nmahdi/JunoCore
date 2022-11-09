@@ -48,38 +48,22 @@ public class JPlayerManager {
     }
 
     private void load(Player player, FileConfiguration c, boolean newPlayer){
-        NBTEntity nPlayer = new NBTEntity(player);
-        NBTCompound juno = nPlayer.getPersistentDataContainer().getOrCreateCompound("juno");
-        NBTCompound skills = juno.getOrCreateCompound("skills");
-        NBTCompound stats = juno.getOrCreateCompound("stats");
+        NBTPlayer nPlayer = new NBTPlayer(player, true);
         //Juno MISC
         for (SkillID skill : SkillID.values()) {
             if (!newPlayer) {
-                skills.getOrCreateCompound(skill.getId()).setInteger("level", c.getInt("skills."+ skill.getId() + ".level"));
-                skills.getOrCreateCompound(skill.getId()).setLong("xp", c.getLong("skills." + skill.getId() + ".xp"));
+                nPlayer.getSkills().getOrCreateCompound(skill.getId()).setInteger("level", c.getInt("skills."+ skill.getId() + ".level"));
+                nPlayer.getSkills().getOrCreateCompound(skill.getId()).setLong("xp", c.getLong("skills." + skill.getId() + ".xp"));
             }else{
-                skills.getOrCreateCompound(skill.getId()).setInteger("level", 1);
-                skills.getOrCreateCompound(skill.getId()).setLong("xp", 0L);
+                nPlayer.getSkills().getOrCreateCompound(skill.getId()).setInteger("level", 1);
+                nPlayer.getSkills().getOrCreateCompound(skill.getId()).setLong("xp", 0L);
             }
         }
-        //Stats
-        stats.setInteger(PlayerStatID.Health.getId(), (int)PlayerStatID.Health.getBaseValue());
-        stats.setInteger(PlayerStatID.MaxHealth.getId(), (int)PlayerStatID.MaxHealth.getBaseValue());
-        stats.setInteger(PlayerStatID.Mana.getId(), (int)PlayerStatID.Mana.getBaseValue());
-        stats.setInteger(PlayerStatID.MaxMana.getId(), (int)PlayerStatID.MaxMana.getBaseValue());
-        stats.setInteger(PlayerStatID.Defense.getId(), (int)PlayerStatID.Defense.getBaseValue());
-        stats.setInteger(PlayerStatID.FireDefense.getId(), (int)PlayerStatID.FireDefense.getBaseValue());
-        stats.setInteger(PlayerStatID.WaterDefense.getId(), (int)PlayerStatID.WaterDefense.getBaseValue());
-        stats.setInteger(PlayerStatID.LightningDefense.getId(), (int)PlayerStatID.LightningDefense.getBaseValue());
-        stats.setInteger(PlayerStatID.IceDefense.getId(), (int)PlayerStatID.IceDefense.getBaseValue());
-        stats.setInteger(PlayerStatID.Speed.getId(), (int)PlayerStatID.Speed.getBaseValue());
-        stats.setInteger(PlayerStatID.Damage.getId(), (int)PlayerStatID.Damage.getBaseValue());
-        stats.setInteger(PlayerStatID.Strength.getId(), (int)PlayerStatID.Strength.getBaseValue());
-        stats.setInteger(PlayerStatID.CritChance.getId(), (int)PlayerStatID.CritChance.getBaseValue());
-        stats.setInteger(PlayerStatID.CritDamage.getId(), (int)PlayerStatID.CritDamage.getBaseValue());
-        stats.setInteger(PlayerStatID.Luck.getId(), (int)PlayerStatID.Luck.getBaseValue());
-        stats.setInteger(PlayerStatID.Fortune.getId(), (int)PlayerStatID.Fortune.getBaseValue());
-
+        for(PlayerStatID stat : PlayerStatID.values()){
+            nPlayer.getStats().setInteger(stat.getId(), (int)stat.getBaseValue());
+        }
+        player.setHealth(20);
+        player.setFoodLevel(20);
         actionBars.put(player, Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(main, new Runnable() {
             ActionBar bar = new ActionBar(player);
             @Override
@@ -106,14 +90,11 @@ public class JPlayerManager {
     }
 
     private void save(Player player, FileConfiguration c, File f){
-        NBTEntity nPlayer = new NBTEntity(player);
-        NBTCompound juno = nPlayer.getPersistentDataContainer().getOrCreateCompound("juno");
-        NBTCompound skills = juno.getOrCreateCompound("skills");
-        NBTCompound stats = juno.getOrCreateCompound("stats");
-        c.set("coins", juno.getInteger("coins"));
+        NBTPlayer nPlayer = new NBTPlayer(player);
+        c.set("coins", nPlayer.getJuno().getInteger("coins"));
         for(SkillID skill : SkillID.values()){
-            c.set("skills."+skill.getId()+".level", skills.getCompound(skill.getId()).getInteger("level"));
-            c.set("skills."+skill.getId()+".xp", skills.getCompound(skill.getId()).getLong("xp"));
+            c.set("skills."+skill.getId()+".level", nPlayer.getSkills().getCompound(skill.getId()).getInteger("level"));
+            c.set("skills."+skill.getId()+".xp", nPlayer.getSkills().getCompound(skill.getId()).getLong("xp"));
         }
         try {
             c.save(f);

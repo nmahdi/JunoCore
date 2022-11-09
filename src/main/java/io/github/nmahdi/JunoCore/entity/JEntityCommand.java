@@ -1,5 +1,7 @@
 package io.github.nmahdi.JunoCore.entity;
 
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,6 +37,12 @@ public class JEntityCommand implements CommandExecutor {
             if(args[0].equalsIgnoreCase("create")){
                 //jentity create ID EntityID SpawnNumber SpawnDelay
                 entityManager.createNewSpawnZone((Player)sender, ((Player) sender).getWorld(), args[1], JEntity.valueOf(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+                return true;
+            }
+            if(entityManager.getEntityByID(args[0]) != null){
+                JEntity e = entityManager.getEntityByID(args[0]);
+                entityManager.spawnEntity(e, ((Player) sender).getLocation());
+                return true;
             }
         }
         return false;

@@ -4,7 +4,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.events.SkillXPGainEvent;
 import io.github.nmahdi.JunoCore.item.JItem;
-import io.github.nmahdi.JunoCore.item.JItemManager;
+import io.github.nmahdi.JunoCore.item.NBTJItem;
 import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
 import io.github.nmahdi.JunoCore.player.skills.SkillID;
 import org.bukkit.Bukkit;
@@ -22,11 +22,10 @@ import java.util.*;
 public class TreeFellerListener implements Listener {
 
     private final JCore main;
-    private final JItemManager itemManager;
 
-    public TreeFellerListener(JCore main, JItemManager itemManager){
+    public TreeFellerListener(JCore main){
         this.main = main;
-        this.itemManager = itemManager;
+        main.getServer().getPluginManager().registerEvents(this, main);
     }
 
     /**
@@ -93,12 +92,12 @@ public class TreeFellerListener implements Listener {
 
         ItemStack itemStack = e.getPlayer().getInventory().getItemInMainHand();
         if(itemStack.getType() == Material.AIR) return;
-        NBTItem item = new NBTItem(e.getPlayer().getInventory().getItemInMainHand());
-        if(!itemManager.isJunoItem(e.getPlayer().getInventory().getItemInMainHand())) return;
-        if(!itemManager.getItemID(e.getPlayer().getInventory().getItemInMainHand()).equalsIgnoreCase(JItem.TreeFeller.getId())) return;
+        NBTJItem item = new NBTJItem(e.getPlayer().getInventory().getItemInMainHand());
+        if(!item.hasJuno()) return;
+        if(!item.getID().equalsIgnoreCase(JItem.TreeFeller.getId())) return;
 
         List<Block> total = sortMap(calcBlocks(e.getPlayer().getWorld(), e.getBlock()));
-        int bc = Integer.parseInt(item.getCompound("juno").getCompound("stats").getString(ItemStatID.Power.getID()));
+        int bc = Integer.parseInt(item.getStat(ItemStatID.BreakingPower));
         if(total.size() < bc) bc = total.size();
         for(int i = 0; i < bc; i++){
             if(i-1 >= 0){

@@ -43,7 +43,7 @@ public class SpawnZone {
     public void spawn(JEntityManager entityManager){
         for(Map.Entry<Location, ArrayList<String>> map : spawnedEntities.entrySet()){
             if(map.getValue().size() < maxSpawns){
-                map.getValue().add(entityManager.spawnEntity(entity, random.nextInt(entity.getMaxLevel()-entity.getMinLevel()+1)+entity.getMinLevel(), map.getKey()));
+                map.getValue().add(entityManager.spawnEntity(entity, map.getKey()));
             }
         }
     }

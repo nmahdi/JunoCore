@@ -1,17 +1,14 @@
 package io.github.nmahdi.JunoCore.item.builder;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
-public class ItemStackBuilder {
+public class ItemStackBuilder implements IItemBuilder {
 
     private ItemStack itemStack;
     private ItemMeta meta;
@@ -19,53 +16,42 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder(ItemStack stack){
         this.itemStack = stack.clone();
-        meta = itemStack.getItemMeta();
-        if(meta.hasLore()){
-            lore.addAll(meta.getLore());
-        }
+        this.meta = itemStack.getItemMeta();
+        if(meta.hasLore()) lore.addAll(meta.getLore());
     }
 
-    public ItemStackBuilder(Material material) {
-        itemStack = new ItemStack(material);
-        meta = itemStack.getItemMeta();
-    }
-    public ItemStackBuilder(Material material, int amount) {
-        itemStack = new ItemStack(material, amount);
-        meta = itemStack.getItemMeta();
+    public ItemStackBuilder(Material material){
+        this.itemStack = new ItemStack(material);
+        this.meta = itemStack.getItemMeta();
     }
 
+    @Override
     public ItemStackBuilder setAmount(int amount) {
         itemStack.setAmount(amount);
         return this;
     }
 
+    @Override
     public ItemStackBuilder setName(String name) {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         return this;
     }
 
-    public ItemStackBuilder addLore(String... strings){
-        for (String  s : strings) {
+    @Override
+    public ItemStackBuilder addLore(String... lore) {
+        for (String  s : lore) {
             this.lore.add(ChatColor.translateAlternateColorCodes('&', s));
         }
         return this;
     }
 
+    @Override
     public ItemStackBuilder addLore(String s) {
         lore.add(ChatColor.translateAlternateColorCodes('&', s));
         return this;
     }
 
-    public ItemStackBuilder skipLore(){
-        lore.add("");
-        return this;
-    }
-
-    public ItemStackBuilder clearLore(){
-        lore.clear();
-        return this;
-    }
-
+    @Override
     public ItemStackBuilder addLore(ArrayList<String> lore) {
         for (String s : lore) {
             this.lore.add(ChatColor.translateAlternateColorCodes('&', s));
@@ -73,16 +59,31 @@ public class ItemStackBuilder {
         return this;
     }
 
+    @Override
+    public ItemStackBuilder skipLore() {
+        lore.add("");
+        return this;
+    }
+
+    @Override
+    public ItemStackBuilder clearLore() {
+        lore.clear();
+        return this;
+    }
+
+    @Override
     public ItemStackBuilder spaceLore() {
         lore.add(" ");
         return this;
     }
 
+    @Override
     public ItemStackBuilder addFlag(ItemFlag itemFlag) {
         meta.addItemFlags(itemFlag);
         return this;
     }
 
+    @Override
     public ItemStack build() {
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
@@ -94,5 +95,4 @@ public class ItemStackBuilder {
         itemStack.setItemMeta(meta);
         return itemStack;
     }
-
 }

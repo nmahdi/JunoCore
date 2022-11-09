@@ -13,4 +13,13 @@ public enum WeaponType {
     public String getId() {
         return id;
     }
+
+    public static WeaponType getWeaponType(String id){
+        for(WeaponType type : WeaponType.values()){
+            if(type.getId().equalsIgnoreCase(id)){
+                return type;
+            }
+        }
+        return null;
+    }
 }

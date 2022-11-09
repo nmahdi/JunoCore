@@ -7,13 +7,11 @@ public class Loot {
     private JItem item;
     private int minAmount;
     private int maxAmount;
-    private float chance;
 
-    Loot(JItem item, int minAmount, int maxAmount, float chance){
+    Loot(JItem item, int minAmount, int maxAmount){
         this.item = item;
         this.minAmount = minAmount;
         this.maxAmount = maxAmount;
-        this.chance = chance;
     }
 
     public JItem getItem() {
@@ -26,10 +24,6 @@ public class Loot {
 
     public int getMaxAmount() {
         return maxAmount;
-    }
-
-    public float getChance() {
-        return chance;
     }
 
 }

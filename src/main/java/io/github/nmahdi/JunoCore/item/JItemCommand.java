@@ -1,8 +1,8 @@
 package io.github.nmahdi.JunoCore.item;
 
 import de.tr7zw.nbtapi.NBTCompound;
-import io.github.nmahdi.JunoCore.item.builder.NBTItemStackBuilder;
-import io.github.nmahdi.JunoCore.item.builder.NBTSkullBuilder;
+import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
+import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -12,10 +12,7 @@ import org.bukkit.entity.Player;
 
 public class JItemCommand implements CommandExecutor {
 
-    private JItemManager itemManager;
-
-    public JItemCommand(JItemManager itemManager){
-        this.itemManager = itemManager;
+    public JItemCommand(){
     }
 
     @Override
@@ -33,13 +30,8 @@ public class JItemCommand implements CommandExecutor {
             }
 
             if(args.length == 1){
-                if(itemManager.getItemByID(args[0]) != null){
-                    if(itemManager.getItemByID(args[0]).getMaterialType().equals(Material.PLAYER_HEAD)){
-                        JItem item = itemManager.getItemByID(args[0]);
-                        ((Player)sender).getInventory().addItem(new NBTSkullBuilder(item).build());
-                        return true;
-                    }
-                    ((Player)sender).getInventory().addItem(new NBTItemStackBuilder(itemManager.getItemByID(args[0])).getStack());
+                if(JItem.getItemByID(args[0]) != null){
+                    ((Player)sender).getInventory().addItem(ItemBuilder.buildItem(JItem.getItemByID(args[0])));
                     return true;
                 }
                 sender.sendMessage(ChatColor.RED + "Invalid arguments!");
@@ -60,14 +52,13 @@ public class JItemCommand implements CommandExecutor {
                     return true;
                 }
 
-                NBTCompound juno = item.getCompound("juno");
-                if(!(juno.getCompound("stats").hasKey(args[1])) && itemManager.getIdByName(args[1]) == null){
+
+                if(!(item.getStats().hasKey(args[1])) || ItemStatID.getID(args[1]) == null){
                     sender.sendMessage(ChatColor.RED + "Invalid arguments!");
                     return true;
                 }
 
-                player.getInventory().setItemInMainHand(
-                        new NBTItemStackBuilder(item, itemManager.getItemByID(juno.getString("id"))).setStat(itemManager.getIdByName(args[1]), args[2]).buildStack());
+                player.getInventory().setItemInMainHand(ItemBuilder.editItem(item.getItem(), ItemStatID.getID(args[1]), args[2]));
                 player.sendMessage(ChatColor.GREEN + "Item's " + args[1] + " has been set to " + args[2]);
                 return true;
             }

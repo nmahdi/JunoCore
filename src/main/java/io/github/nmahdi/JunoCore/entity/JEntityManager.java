@@ -7,26 +7,23 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.util.formatting.text.TextComponent;
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTEntity;
 import io.github.nmahdi.JunoCore.JCore;
+import io.github.nmahdi.JunoCore.entity.traits.JunoTrait;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.npc.MemoryNPCDataStore;
+import net.citizensnpcs.api.npc.NPC;
+import net.citizensnpcs.api.npc.NPCRegistry;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class JEntityManager {
@@ -39,6 +36,7 @@ public class JEntityManager {
     private Random random;
     private File spawnZoneFolder;
     private ArrayList<SpawnZone> spawnZones = new ArrayList<>();
+    private final NPCRegistry registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
 
     public JEntityManager(JCore main, Random random){
         this.random = random;
@@ -119,44 +117,12 @@ public class JEntityManager {
      * @param level Level
      * @param location Location in the world
      */
-    public String spawnEntity(JEntity entity, int level, Location location){
-        Entity ent = location.getWorld().spawnEntity(location, entity.getEntityType());
-        if(entity.getEntityType() == EntityType.ZOMBIE){
-            ((Zombie)ent).getEquipment().setHelmet(new ItemStack(Material.LEATHER_HELMET));
-        }
-        ent.setCustomNameVisible(true);
-        NBTEntity nbtE = new NBTEntity(ent);
-        NBTCompound juno = nbtE.getPersistentDataContainer().addCompound("juno");
-        double health = entity.getBaseHealth()+((0.1*(level-1))*entity.getBaseHealth());
-        juno.setString(EntityStatID.ID.getId(), entity.getId());
-        juno.setString(EntityStatID.Name.getId(), entity.getDisplayName());
-        juno.setInteger(EntityStatID.Level.getId(), level);
-        juno.setInteger(EntityStatID.XP.getId(), entity.getXP());
-        juno.setInteger(EntityStatID.MaxHealth.getId(), (int)health);
-        juno.setInteger(EntityStatID.Health.getId(), (int)health);
-        setName(nbtE);
-        return ent.getUniqueId().toString();
-    }
-
-    public void setName(NBTEntity entity){
-        entity.setString("CustomName", getName(entity));
-    }
-
-    public String getName(NBTEntity nbtEntity){
-        NBTCompound juno = nbtEntity.getPersistentDataContainer().getCompound("juno");
-        int health = juno.getInteger(EntityStatID.Health.getId());
-        int maxHealth = juno.getInteger(EntityStatID.MaxHealth.getId());
-        return "\"" + ChatColor.translateAlternateColorCodes('&',
-                "&7[Lvl." + juno.getInteger(EntityStatID.Level.getId()) + "] &c" + juno.getString(EntityStatID.Name.getId()) + " &" +
-                        getHealthColor(health, maxHealth) + health + "&7/&a" + maxHealth
-                ) + "\"";
-    }
-
-    private char getHealthColor(double health, double maxHealth){
-        double percentage = (health/maxHealth)*100;
-        if(percentage >= 70) return 'a';
-        if(percentage >= 20) return 'e';
-        return '4';
+    public String spawnEntity(JEntity entity, Location location){
+        NPC npc = registry.createNPC(entity.getEntityType(), entity.getDisplayName());
+        npc.addTrait(new JunoTrait(entity));
+        npc.setProtected(false);
+        npc.spawn(location);
+        return npc.getUniqueId().toString();
     }
 
     public JEntity getEntityByID(String id){

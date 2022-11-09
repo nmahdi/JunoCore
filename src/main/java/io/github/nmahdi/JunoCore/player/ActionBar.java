@@ -9,28 +9,22 @@ import org.bukkit.entity.Player;
 
 public class ActionBar {
 
-    private Player player;
-    private NBTCompound stats;
+    private NBTPlayer player;
     private String defaultMessage;
     private String currentMessage;
 
     public ActionBar(Player player){
-        this.player = player;
-        this.stats = new NBTEntity(player).getPersistentDataContainer().getCompound("juno").getCompound("stats");
-        this.defaultMessage = "&c&l%health%/%max_health%          &b&l%mana%/%max_mana%";
+        this.player = new NBTPlayer(player);
+        this.defaultMessage = "&c&l%health_icon%%health%/%max_health%          &b&l%mana_icon%%mana%/%max_mana%";
     }
 
     public void send(){
         String temp = defaultMessage;
         for(PlayerStatID id : PlayerStatID.values()){
-            temp = temp.replaceAll(id.getPlaceHolder(), String.valueOf(stats.getInteger(id.getId())));
+            temp = temp.replaceAll(id.getPlaceHolder(), String.valueOf(player.getStat(id)));
         }
-        currentMessage = temp;
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.translateAlternateColorCodes('&', currentMessage)));
-    }
-
-    public Player getPlayer() {
-        return player;
+        currentMessage = temp.replaceAll("%health_icon%", PlayerStatID.Health.getSymbol()).replaceAll("%mana_icon%", PlayerStatID.Mana.getSymbol());
+        player.getPlayer().spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.translateAlternateColorCodes('&', currentMessage)));
     }
 
     public String getDefaultMessage() {

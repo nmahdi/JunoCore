@@ -5,67 +5,101 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eceeb603-f7bf-4aa8-906e-53c077f94541" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/NBTJItem.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/CraftingItemBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/NBTSkullBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/SkullItemBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/crafting/CraftingManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/crafting/Recipe.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/ConsumableID.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/NBTPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/traits/JunoTrait.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/GUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/PlayerMenuGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/blacksmith/BlacksmithGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/blacksmith/DismantleGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/blacksmith/UpgradeGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/IItemBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/ItemBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/StatContainer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/PlayerCombatListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/world/PlayerWorld.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/world/WorldManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/JCore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/JCore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/JHologramsManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/JHologramsManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/JEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/JEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/EntityStatID.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/JEntityCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/JEntityCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/events/JEquipmentEquipEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/events/JEquipmentEquipEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/JGUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/JGUIManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/GUIManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/JEntityManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/JEntityManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/SpawnZone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/SpawnZone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/entity/npc/BlacksmithNPC.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/events/JEntityDeathEvent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/gui/GUIManager.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/JItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/JItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/JItemCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/JItemCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/JItemManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/JItemManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/JItemManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/NBTJItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/NBTJItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/CraftingItemBuilder.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/ItemStackBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/ItemStackBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/NBTItemStackBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/NBTItemStackBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/EquipmentEquipListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/EquipmentEquipListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/NBTItemStackBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/NBTSkullBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/SkullItemBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/builder/SkullItemBuilder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/crafting/CraftingManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/crafting/CraftingManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/HunterPhoneListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/JItemPickupListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/JItemPickupListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/LeafBlowerListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/TreeFellerListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/listeners/TreeFellerListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/EquipmentSlotID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/EquipmentSlotID.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/ItemStatID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/ItemStatID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/JLoot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/Loot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/JLootTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/LootTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/Stat.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/WeaponType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/item/stats/WeaponType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/Loot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/Loot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/LootTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/loot/LootTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/ActionBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/ActionBar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/JPlayerManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/JPlayerManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/NBTPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/NBTPlayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/PlayerStatID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/PlayerStatID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/JEntityListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/JEntityListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/PlayerMenuListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/PlayerMenuListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/skills/SkillID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/skills/SkillID.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/EquipmentEquipListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/EquipmentEquipListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/JEntityListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/PlayerLoginListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/PlayerLoginListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/io/github/nmahdi/JunoCore/player/listeners/PlayerMenuListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/JCore.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/JCore.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/JHologramsManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/JHologramsManager$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/JHologramsManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/JHologramsManager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/JEntity.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/JEntity.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/EntityStatID.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/JEntityCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/JEntityCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/events/JEquipmentEquipEvent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/events/JEquipmentEquipEvent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/gui/JGUI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/gui/JGUIManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/JEntityManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/JEntityManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/SpawnZone.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/SpawnZone.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/entity/npc/BlacksmithNPC.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/events/JEntityDeathEvent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/gui/GUIManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItem$SkullURL.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItem$SkullURL.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItem.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItemCommand.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItemCommand.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItemManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItemManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/JItemManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/NBTJItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/NBTJItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/CraftingItemBuilder.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/ItemStackBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/ItemStackBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/NBTItemStackBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/NBTItemStackBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/EquipmentEquipListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/NBTItemStackBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/NBTSkullBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/SkullItemBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/builder/SkullItemBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/crafting/CraftingManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/crafting/CraftingManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/ConsumableListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/HunterPhoneListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/JItemPickupListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/JItemPickupListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/LeafBlowerListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/TreeFellerListener$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/TreeFellerListener$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/TreeFellerListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/listeners/TreeFellerListener.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/stats/EquipmentSlotID.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/stats/EquipmentSlotID.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/stats/ItemStatID.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/stats/ItemStatID.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/loot/JLoot.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/loot/JLootTable.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/stats/Stat.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/stats/WeaponType.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/item/stats/WeaponType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/loot/Loot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/loot/Loot.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/loot/LootTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/loot/LootTable.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/ActionBar.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/ActionBar.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/JPlayerManager$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/JPlayerManager$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/JPlayerManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/JPlayerManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/NBTPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/NBTPlayer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/PlayerStatID.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/PlayerStatID.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/JEntityListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/JEntityListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/PlayerMenuListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/PlayerMenuListener.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/skills/SkillID.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/skills/SkillID.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/EquipmentEquipListener$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/EquipmentEquipListener$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/EquipmentEquipListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/EquipmentEquipListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/JEntityListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/PlayerLoginListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/PlayerLoginListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/io/github/nmahdi/JunoCore/player/listeners/PlayerMenuListener.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/plugin.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
@@ -78,6 +112,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Record" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>

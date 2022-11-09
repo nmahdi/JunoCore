@@ -2,31 +2,27 @@ package io.github.nmahdi.JunoCore;
 
 import io.github.nmahdi.JunoCore.entity.JEntityCommand;
 import io.github.nmahdi.JunoCore.entity.JEntityManager;
-import io.github.nmahdi.JunoCore.entity.npc.BlacksmithNPC;
+import io.github.nmahdi.JunoCore.gui.PlayerMenuGUI;
+import io.github.nmahdi.JunoCore.gui.blacksmith.BlacksmithGUI;
 import io.github.nmahdi.JunoCore.hunter.HunterManager;
 import io.github.nmahdi.JunoCore.item.JItemCommand;
-import io.github.nmahdi.JunoCore.item.JItemManager;
-import io.github.nmahdi.JunoCore.item.crafting.CraftingManager;
 import io.github.nmahdi.JunoCore.item.listeners.ConsumableListener;
 import io.github.nmahdi.JunoCore.player.listeners.EquipmentEquipListener;
-import io.github.nmahdi.JunoCore.item.listeners.HunterPhoneListener;
-import io.github.nmahdi.JunoCore.item.listeners.LeafBlowerListener;
 import io.github.nmahdi.JunoCore.item.listeners.TreeFellerListener;
 import io.github.nmahdi.JunoCore.player.JPlayerManager;
-import io.github.nmahdi.JunoCore.player.listeners.JEntityListener;
+import io.github.nmahdi.JunoCore.player.listeners.PlayerCombatListener;
 import io.github.nmahdi.JunoCore.player.listeners.PlayerLoginListener;
-import io.github.nmahdi.JunoCore.player.listeners.PlayerMenuListener;
 import io.github.nmahdi.JunoCore.player.skills.SkillXPGainListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
+import java.util.logging.Level;
 
-public class JCore extends JavaPlugin {
+public class JCore extends JavaPlugin{
 
     
     private Random random = new Random();
     private JHologramsManager hologramsManager;
-    private JItemManager itemManager;
     private JPlayerManager playerManager;
     private HunterManager hunterManager;
     private JEntityManager jEntityManager;
@@ -34,13 +30,18 @@ public class JCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if(getServer().getPluginManager().getPlugin("Citizens") == null || !getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
+            getLogger().log(Level.SEVERE, "Citizens 2.0 not found or not enabled");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         hologramsManager = new JHologramsManager(this);
-        itemManager = new JItemManager();
         playerManager = new JPlayerManager(this);
         hunterManager = new HunterManager();
         jEntityManager = new JEntityManager(this, random);
         registerListeners();
         registerCommands();
+        //CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(JunoTrait.class));
     }
 
     @Override
@@ -49,21 +50,40 @@ public class JCore extends JavaPlugin {
     }
 
     private void registerListeners(){
-        getServer().getPluginManager().registerEvents(new LeafBlowerListener(), this);
-        getServer().getPluginManager().registerEvents(new TreeFellerListener(this, itemManager), this);
-        getServer().getPluginManager().registerEvents(new PlayerLoginListener(playerManager), this);
-        new PlayerMenuListener(this, playerManager);
-        getServer().getPluginManager().registerEvents(new JEntityListener(random, playerManager, jEntityManager, hologramsManager, itemManager), this);
-        getServer().getPluginManager().registerEvents(new HunterPhoneListener(itemManager, hunterManager), this);
+        new TreeFellerListener(this);
+        new PlayerLoginListener(this);
+        new PlayerMenuGUI(this);
+        new PlayerCombatListener(this);
         new SkillXPGainListener(this);
-        new EquipmentEquipListener(this, itemManager);
-        new BlacksmithNPC(this, itemManager);
+        new EquipmentEquipListener(this);
         new ConsumableListener(this);
+        new BlacksmithGUI(this);
     }
 
     private void registerCommands(){
-        getCommand("jitem").setExecutor(new JItemCommand(itemManager));
+        getCommand("jitem").setExecutor(new JItemCommand());
         getCommand("jentity").setExecutor(new JEntityCommand(jEntityManager));
     }
+
+    public Random getRandom() {
+        return random;
+    }
+
+    public JEntityManager getEntityManager(){
+        return jEntityManager;
+    }
+
+    public JPlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public HunterManager getHunterManager() {
+        return hunterManager;
+    }
+
+    public JHologramsManager getHologramsManager() {
+        return hologramsManager;
+    }
+
 
 }

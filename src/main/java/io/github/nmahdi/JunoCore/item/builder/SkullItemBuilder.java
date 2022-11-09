@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class SkullItemBuilder {
+public class SkullItemBuilder implements IItemBuilder {
 
     private ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);;
     private SkullMeta meta;
@@ -21,7 +21,7 @@ public class SkullItemBuilder {
 
     public SkullItemBuilder(String texture){
         meta = (SkullMeta) itemStack.getItemMeta();
-        meta.setPlayerProfile(Bukkit.createProfile(UUID.randomUUID(), null));
+        meta.setPlayerProfile(Bukkit.createProfile(UUID.fromString("d7befc97-75f6-45cc-b327-f781a207f641"), "Ramiris"));
         PlayerProfile profile = meta.getPlayerProfile();
         profile.getProperties().add(new ProfileProperty("textures", texture));
         meta.setPlayerProfile(profile);
@@ -32,16 +32,19 @@ public class SkullItemBuilder {
         meta.setOwningPlayer(owner);
     }
 
+    @Override
     public SkullItemBuilder setAmount(int amount) {
         itemStack.setAmount(amount);
         return this;
     }
 
+    @Override
     public SkullItemBuilder setName(String name) {
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         return this;
     }
 
+    @Override
     public SkullItemBuilder addLore(String... strings){
         for (String  s : strings) {
             this.lore.add(ChatColor.translateAlternateColorCodes('&', s));
@@ -49,21 +52,25 @@ public class SkullItemBuilder {
         return this;
     }
 
+    @Override
     public SkullItemBuilder addLore(String s) {
         lore.add(ChatColor.translateAlternateColorCodes('&', s));
         return this;
     }
 
+    @Override
     public SkullItemBuilder skipLore(){
         lore.add("");
         return this;
     }
 
+    @Override
     public SkullItemBuilder clearLore(){
         lore.clear();
         return this;
     }
 
+    @Override
     public SkullItemBuilder addLore(ArrayList<String> lore) {
         for (String s : lore) {
             this.lore.add(ChatColor.translateAlternateColorCodes('&', s));
@@ -71,16 +78,19 @@ public class SkullItemBuilder {
         return this;
     }
 
+    @Override
     public SkullItemBuilder spaceLore() {
         lore.add(" ");
         return this;
     }
 
+    @Override
     public SkullItemBuilder addFlag(ItemFlag itemFlag) {
         meta.addItemFlags(itemFlag);
         return this;
     }
 
+    @Override
     public ItemStack build() {
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);

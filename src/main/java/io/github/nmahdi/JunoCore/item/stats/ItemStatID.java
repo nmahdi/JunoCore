@@ -17,14 +17,15 @@ public enum ItemStatID {
     Strength(PlayerStatID.Strength),
     CritChance(PlayerStatID.CritChance),
     CritDamage(PlayerStatID.CritDamage),
-    Power("power", "Power", "&6\u2726"),
+    BreakingPower("breaking_power", "Breaking Power", "&6\u2726"),
 
     //Hidden
     WeaponType("weapon_type", true),
     Durability("durability", true),
     MaxDurability("max_durability", true),
     EquipmentSlot("armor_slot", true),
-    Consumable("consumable", true)
+    Consumable("consumable", true),
+    Dismantlable ("dismantlable ", true)
     ;
 
     private String id;
@@ -67,6 +68,22 @@ public enum ItemStatID {
 
     public boolean isHidden() {
         return hidden;
+    }
+
+    public static ItemStatID getID(String id){
+        for(int i = 0; i < ItemStatID.values().length; i++){
+            if(ItemStatID.values()[i].getID().equalsIgnoreCase(id)){
+                return ItemStatID.values()[i];
+            }
+        }
+        return null;
+    }
+
+    public static boolean isPlayerStat(ItemStatID stat){
+        for(PlayerStatID id : PlayerStatID.values()){
+            if(id.getId().equals(stat.getID())) return true;
+        }
+        return false;
     }
 
 }

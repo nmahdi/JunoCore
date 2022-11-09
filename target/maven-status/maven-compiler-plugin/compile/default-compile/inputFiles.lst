@@ -1,6 +1,7 @@
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\listeners\HunterPhoneListener.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\entity\JEntityManager.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\events\JEntityDeathEvent.java
+F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\gui\PlayerMenuGUI.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\hunter\HunterManager.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\hunter\HunterListener.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\JItemManager.java
@@ -12,6 +13,7 @@ F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\listeners\
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\stats\WeaponType.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\player\skills\SkillXPGainListener.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\loot\Loot.java
+F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\gui\GUI.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\crafting\CraftingManager.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\player\skills\SkillID.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\listeners\ConsumableListener.java
@@ -45,5 +47,8 @@ F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\builder\NB
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\entity\JEntity.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\entity\npc\BlacksmithNPC.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\item\stats\EquipmentSlotID.java
+F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\entity\JEntityTrait.java
+F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\world\PlayerWorld.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\JCore.java
 F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\player\JPlayerManager.java
+F:\Juno Project\JunoCore\src\main\java\io\github\nmahdi\JunoCore\world\WorldManager.java

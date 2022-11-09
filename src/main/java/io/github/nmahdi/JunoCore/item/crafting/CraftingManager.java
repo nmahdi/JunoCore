@@ -2,12 +2,9 @@ package io.github.nmahdi.JunoCore.item.crafting;
 
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.JCore;
-import io.github.nmahdi.JunoCore.gui.GUIManager;
+import io.github.nmahdi.JunoCore.gui.PlayerMenuGUI;
 import io.github.nmahdi.JunoCore.item.JItem;
-import io.github.nmahdi.JunoCore.item.builder.CraftingItemBuilder;
-import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
-import io.github.nmahdi.JunoCore.item.builder.NBTItemStackBuilder;
-import io.github.nmahdi.JunoCore.player.listeners.PlayerMenuListener;
+import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,19 +14,17 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 public class CraftingManager implements Listener {
 
     private final String MENU_NAME = ChatColor.translateAlternateColorCodes('&', "&bCrafting");
 
-    private PlayerMenuListener menuListener;
+    private PlayerMenuGUI playerGUI;
 
-    public CraftingManager(JCore main, PlayerMenuListener menuListener){
+    public CraftingManager(JCore main, PlayerMenuGUI playerGUI){
         main.getServer().getPluginManager().registerEvents(this, main);
-        this.menuListener = menuListener;
+        this.playerGUI = playerGUI;
     }
 
     @EventHandler
@@ -45,7 +40,7 @@ public class CraftingManager implements Listener {
             if(recipe == null) return;
             if(hasItems((Player)e.getWhoClicked(), recipe)){
                 removeItems((Player)e.getWhoClicked(), recipe);
-                e.getWhoClicked().getInventory().addItem(new NBTItemStackBuilder(recipe.getResult()).getStack());
+                e.getWhoClicked().getInventory().addItem(ItemBuilder.buildItem(recipe.getResult()));
                 e.getWhoClicked().sendMessage(ChatColor.GREEN + "Successfully crafted " + recipe.getResult().getDisplayName() + ".");
                 return;
             }
@@ -57,11 +52,11 @@ public class CraftingManager implements Listener {
         Inventory inv = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', MENU_NAME));
 
         for (int i = 0; i < inv.getSize(); i++) {
-            inv.setItem(i, GUIManager.EMPTY);
+            inv.setItem(i, playerGUI.EMPTY);
         }
         int index = 10;
         for(Recipe recipe : Recipe.values()){
-            inv.setItem(index, new CraftingItemBuilder(recipe).getStack());
+            inv.setItem(index, ItemBuilder.buildCraftingMenuItem(recipe));
             index++;
         }
         player.openInventory(inv);

@@ -29,27 +29,24 @@ public class ConsumableListener implements Listener {
         NBTJItem item = new NBTJItem(e.getItem());
         NBTPlayer player = new NBTPlayer(e.getPlayer());
         if(!item.hasJuno()) return;
-        if(!item.hasHiddenStats()) return;
-        if(!item.getHiddenStats().hasKey(ItemStatID.Consumable.getID())) return;
+        if(!item.isConsumable()) return;
         for(ConsumableID id : ConsumableID.values()){
             if(item.getStats().hasKey(id.getPlayerID().getId())){
                 switch(id){
                     case Mana:
                         if(player.getStat(id.getPlayerID())+Integer.parseInt(item.getStat(id.getPlayerID().getId())) > player.getStat(PlayerStatID.MaxMana)){
-                            player.setStat(id.getPlayerID().getId(), player.getStat(PlayerStatID.MaxMana));
+                            player.setMana(player.getMaxMana());
                         }else{
-                            player.plusStat(id.getPlayerID(), Integer.parseInt(item.getStat(id.getPlayerID().getId())));
+                            player.plusMana(Integer.parseInt(item.getStat(id.getPlayerID().getId())));
                         }
                         break;
                     case Health:
                         if(player.getStat(id.getPlayerID())+Integer.parseInt(item.getStat(id.getPlayerID().getId())) > player.getStat(PlayerStatID.MaxHealth)){
-                            player.setStat(id.getPlayerID().getId(), player.getStat(PlayerStatID.MaxHealth));
+                            player.setHealth(player.getMaxHealth());
                         }else{
-                            player.plusStat(id.getPlayerID(), Integer.parseInt(item.getStat(id.getPlayerID().getId())));
+                            player.plusHealth(Integer.parseInt(item.getStat(id.getPlayerID().getId())));
                         }
                         break;
-                    default:
-                        player.plusStat(id.getPlayerID(), Integer.parseInt(item.getStat(id.getPlayerID().getId())));
                 }
             }
         }

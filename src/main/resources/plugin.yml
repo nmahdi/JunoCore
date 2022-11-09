@@ -3,7 +3,7 @@ author: Mahdi_
 main: io.github.nmahdi.JunoCore.JCore
 version: 1.0
 api-version: 1.19
-depend: [Citizens,NBTAPI]
+depend: [Citizens,NBTAPI,DecentHolograms]
 commands:
   jitem:
     description: Main Item Command.

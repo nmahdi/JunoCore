@@ -7,12 +7,23 @@ import org.bukkit.entity.Player;
 
 public class NBTPlayer extends NBTEntity {
 
+    private Player player;
     private NBTCompound juno;
     private NBTCompound stats;
     private NBTCompound skills;
 
     public NBTPlayer(Player player) {
         super(player);
+        this.player = player;
+        juno = getPersistentDataContainer().getOrCreateCompound("juno");
+        stats = juno.getOrCreateCompound("stats");
+        skills = juno.getOrCreateCompound("skills");
+    }
+
+    public NBTPlayer(Player player, boolean join){
+        super(player);
+        if(hasKey("juno") && join) removeKey("juno");
+        this.player = player;
         juno = getPersistentDataContainer().getOrCreateCompound("juno");
         stats = juno.getOrCreateCompound("stats");
         skills = juno.getOrCreateCompound("skills");
@@ -36,66 +47,111 @@ public class NBTPlayer extends NBTEntity {
 
     /**
      *
+     * @param id
+     * @return Total stat value for the specified stat (Base & Equipment)
+     */
+    public int getStat(PlayerStatID id){
+        return getStats().getInteger(id.getId());
+    }
+
+    public int getHealth(){
+        return getStat(PlayerStatID.Health);
+    }
+
+    public void setHealth(int health){
+        getStats().setInteger(PlayerStatID.Health.getId(), health);
+    }
+
+    public void plusHealth(int amount){
+        setHealth(getHealth()+amount);
+    }
+
+    public void minusHealth(int amount){
+        setHealth(getHealth()-amount);
+    }
+
+    public int getMaxHealth(){
+        return getStat(PlayerStatID.MaxHealth);
+    }
+
+    public int getMana(){
+        return getStat(PlayerStatID.Mana);
+    }
+
+    public void setMana(int mana){
+        getStats().setInteger(PlayerStatID.Mana.getId(), mana);
+    }
+
+    public void plusMana(int amount){
+        setMana(getMana()+amount);
+    }
+
+    public void minusMana(int amount){
+        setMana(getMana()-amount);
+    }
+
+    public int getMaxMana(){
+        return getStat(PlayerStatID.MaxMana);
+    }
+
+    public int getDefense(){
+        return getStat(PlayerStatID.Defense);
+    }
+
+    public int getFireDefense(){
+        return getStat(PlayerStatID.FireDefense);
+    }
+
+    public int getWaterDefense(){
+        return getStat(PlayerStatID.WaterDefense);
+    }
+
+    public int getLightningDefense(){
+        return getStat(PlayerStatID.LightningDefense);
+    }
+
+    public int getIceDefense(){
+        return getStat(PlayerStatID.IceDefense);
+    }
+
+    public int getSpeed(){
+        return getStat(PlayerStatID.Speed);
+    }
+
+    public int getDamage(){
+        return getStat(PlayerStatID.Damage);
+    }
+
+    public int getStrength(){
+        return getStat(PlayerStatID.Strength);
+    }
+
+    public int getCritDamage(){
+        return getStat(PlayerStatID.CritDamage);
+    }
+
+    public int getCritChance(){
+        return getStat(PlayerStatID.CritChance);
+    }
+
+    public int getLuck(){
+        return getStat(PlayerStatID.Luck);
+    }
+
+    public int getFortune(){
+        return getStat(PlayerStatID.Fortune);
+    }
+
+
+    /**
+     *
      * @return Juno -> Skills NBT Compound
      */
     public NBTCompound getSkills(){
         return skills;
     }
 
-    /**
-     *
-     * @param id
-     * @return Specific stat based on the ID provided
-     */
-    public int getStat(PlayerStatID id){
-        return getStat(id.getId());
+    public Player getPlayer() {
+        return player;
     }
-
-    /**
-     *
-     * @param id
-     * @return Specific stat based on the ID provided
-     */
-    public int getStat(String id){
-        return getStats().getInteger(id);
-    }
-
-
-    /**
-     * Sets a player's stat based on the PlayerStatID provided
-     *
-     * @param id
-     * @param stat
-     */
-    public void setStat(PlayerStatID id, int stat){
-        setStat(id.getId(), stat);
-    }
-
-    /**
-     * Sets a player's stat based on the String provided
-     *
-     * @param id
-     * @param stat
-     */
-    public void setStat(String id, int stat){
-        getStats().setInteger(id, stat);
-    }
-
-    public void plusStat(PlayerStatID id, int amount){
-        plusStat(id.getId(), amount);
-    }
-
-    public void plusStat(String id, int amount){
-        setStat(id, getStat(id)+amount);
-    }
-
-    public void minusStat(PlayerStatID id, int amount){
-        minusStat(id.getId(), amount);
-    }
-
-    public void minusStat(String id, int amount){
-        setStat(id, getStat(id)-amount);
-    }
-
-
 }

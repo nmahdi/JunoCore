@@ -5,15 +5,11 @@ import de.tr7zw.nbtapi.NBTEntity;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.events.JEquipmentEquipEvent;
-import io.github.nmahdi.JunoCore.item.JItemManager;
+import io.github.nmahdi.JunoCore.item.NBTJItem;
 import io.github.nmahdi.JunoCore.item.stats.EquipmentSlotID;
 import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
-import io.github.nmahdi.JunoCore.player.PlayerStatID;
-import net.citizensnpcs.api.trait.trait.Equipment;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -29,12 +25,10 @@ import org.bukkit.inventory.ItemStack;
 public class EquipmentEquipListener implements Listener {
 
     private JCore main;
-    private JItemManager itemManager;
 
-    public EquipmentEquipListener(JCore main, JItemManager itemManager){
+    public EquipmentEquipListener(JCore main){
         this.main = main;
         main.getServer().getPluginManager().registerEvents(this, main);
-        this.itemManager = itemManager;
     }
 
     @EventHandler
@@ -44,7 +38,7 @@ public class EquipmentEquipListener implements Listener {
             NBTCompound stats = e.getOldItem().getCompound("juno").getCompound("stats");
             for(ItemStatID id : ItemStatID.values()){
                 if(stats.hasKey(id.getID())){
-                    if(itemManager.isPlayerStat(id)) {
+                    if(ItemStatID.isPlayerStat(id)) {
                         playerStats.setInteger(id.getID(), playerStats.getInteger(id.getID())-Integer.parseInt(stats.getString(id.getID())));
                     }
                 }
@@ -55,7 +49,7 @@ public class EquipmentEquipListener implements Listener {
             NBTCompound stats = e.getNewItem().getCompound("juno").getCompound("stats");
             for(ItemStatID id : ItemStatID.values()){
                 if(stats.hasKey(id.getID())){
-                    if(itemManager.isPlayerStat(id)) {
+                    if(ItemStatID.isPlayerStat(id)) {
                         playerStats.setInteger(id.getID(), playerStats.getInteger(id.getID())+Integer.parseInt(stats.getString(id.getID())));
                     }
                 }
@@ -180,10 +174,10 @@ public class EquipmentEquipListener implements Listener {
 
     @EventHandler
     public void onHelmetPlace(BlockPlaceEvent e){
+        if(e.getItemInHand().getType().isAir()) return;
         if(!e.getItemInHand().hasItemMeta()) return;
-        NBTItem item = new NBTItem(e.getItemInHand());
-        if(!item.hasKey("juno") && item.getCompound("juno").hasKey("hidden-stats")) return;
-        if(item.getCompound("juno").getCompound("hidden-stats").hasKey(ItemStatID.EquipmentSlot.getID())) e.setCancelled(true);
+        NBTJItem item = new NBTJItem(e.getItemInHand());
+        if(item.hasJuno() && item.isEquipment()) e.setCancelled(true);
     }
 
     @EventHandler

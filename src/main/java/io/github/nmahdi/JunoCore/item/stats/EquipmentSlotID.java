@@ -49,4 +49,12 @@ public enum EquipmentSlotID {
     public int getSlot() {
         return slot;
     }
+
+    public static EquipmentSlotID getSlot(String id) {
+        for (EquipmentSlotID slot : EquipmentSlotID.values()) {
+            if (slot.getId().equals(id)) return slot;
+        }
+        return null;
+    }
+
 }

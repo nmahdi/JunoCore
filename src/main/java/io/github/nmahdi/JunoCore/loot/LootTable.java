@@ -7,12 +7,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public enum LootTable {
-    Zombie(new Loot(JItem.RottenFlesh, 2, 5, 100f), new Loot(JItem.CompactedRottenFlesh, 1, 1, 50f)),
-    Zealot(new Loot(JItem.EnderPearl, 1, 4, 100f));
+    Zombie(new Loot(JItem.RottenFlesh, 2, 5), new Loot(JItem.CompactedRottenFlesh, 1, 1)),
+    Zealot(new Loot(JItem.EnderPearl, 1, 4)),
+    Geode(true, new Loot(JItem.GoldBar, 1, 1))
 
+    ;
+
+    private boolean weighted;
     private ArrayList<Loot> jLoot = new ArrayList<>();
 
     LootTable(Loot... jLoot){
+        this.weighted = false;
+        this.jLoot.addAll(Arrays.asList(jLoot));
+    }
+
+    LootTable(boolean weighted, Loot... jLoot){
+        this.weighted = weighted;
         this.jLoot.addAll(Arrays.asList(jLoot));
     }
 
