@@ -22,7 +22,7 @@ public class SkillXPGainListener implements Listener {
     public void onXPGain(SkillXPGainEvent e){
         NBTCompound skills = e.getJuno().getCompound("skills");
         skills.getCompound(e.getSkill().getId()).setInteger("xp", skills.getCompound(e.getSkill().getId()).getInteger("xp")+e.getAmount());
-        e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
+        //e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 1f);
     }
 
     @EventHandler

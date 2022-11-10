@@ -1,9 +1,9 @@
-package io.github.nmahdi.JunoCore.gui;
+package io.github.nmahdi.JunoCore.gui.player;
 
 import io.github.nmahdi.JunoCore.JCore;
+import io.github.nmahdi.JunoCore.gui.GUI;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.item.builder.SkullItemBuilder;
-import io.github.nmahdi.JunoCore.item.crafting.CraftingManager;
 import io.github.nmahdi.JunoCore.player.JPlayerManager;
 import io.github.nmahdi.JunoCore.player.NBTPlayer;
 import io.github.nmahdi.JunoCore.player.PlayerStatID;
@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class PlayerMenuGUI extends GUI{
+public class PlayerMenuGUI extends GUI {
 
     public final ItemStack CRAFTING_MENU = new ItemStackBuilder(Material.CRAFTING_TABLE).setName("&b&lCrafting Menu").addLore(
             "&7Click here to access the crafting menu!").build();
@@ -32,13 +32,12 @@ public class PlayerMenuGUI extends GUI{
     public final ItemStack menuItem = new ItemStackBuilder(Material.NETHER_STAR).setName("&e&lPlayer Menu").addLore("", "&7Click to open your player menu!").build();
 
     private JPlayerManager playerManager;
-    private CraftingManager craftingManager;
+    private CraftingGUI craftingGUI;
 
     public PlayerMenuGUI(JCore main) {
         super(main,"&fPlayer Menu", 54, null);
         this.playerManager = main.getPlayerManager();
-        this.craftingManager = new CraftingManager(main, this);
-        main.getServer().getPluginManager().registerEvents(this, main);
+        this.craftingGUI = new CraftingGUI(main, this);
     }
 
     @EventHandler
@@ -59,7 +58,7 @@ public class PlayerMenuGUI extends GUI{
         if(e.getCurrentItem().isSimilar(menuItem)) e.setCancelled(true);
         if(e.getView().getTitle().equals(getName())){
             e.setCancelled(true);
-            if(e.getCurrentItem().isSimilar(CRAFTING_MENU)) craftingManager.openCraftingMenu((Player)e.getWhoClicked());
+            if(e.getCurrentItem().isSimilar(CRAFTING_MENU)) craftingGUI.openInventory((Player)e.getWhoClicked());
         }
     }
 

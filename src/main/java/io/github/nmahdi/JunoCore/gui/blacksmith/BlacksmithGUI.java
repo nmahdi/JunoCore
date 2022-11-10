@@ -2,7 +2,10 @@ package io.github.nmahdi.JunoCore.gui.blacksmith;
 
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.GUI;
+import io.github.nmahdi.JunoCore.gui.NPCGUI;
+import io.github.nmahdi.JunoCore.item.JItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
+import io.github.nmahdi.JunoCore.item.builder.SkullItemBuilder;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,9 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class BlacksmithGUI extends GUI {
-
-    private String NPCName = ChatColor.translateAlternateColorCodes('&', "&7Blacksmith");
+public class BlacksmithGUI extends NPCGUI {
 
     ItemStack dismantle = new ItemStackBuilder(Material.BLAZE_POWDER).setName("&cDismantle").skipLore().addLore("&7Dismantle old equipment", "&7break open geodes.").build();
     ItemStack upgrade = new ItemStackBuilder(Material.ANVIL).setName("&aUpgrade").skipLore().addLore("&7Upgrade equipment and weapons!").build();
@@ -25,14 +26,14 @@ public class BlacksmithGUI extends GUI {
     UpgradeGUI upgradeGUI;
 
     public BlacksmithGUI(JCore main) {
-        super(main, "&7Blacksmith", 54, null);
+        super(main, "&7Blacksmith", 54, null, "&7Blacksmith", "&7Dismantle and upgrade items at the blacksmith!");
         dismantleGUI = new DismantleGUI(main, this);
         upgradeGUI = new UpgradeGUI(main, this);
     }
 
     @EventHandler
     public void onNPCClick(NPCRightClickEvent e){
-        if(e.getNPC().getName().equalsIgnoreCase(NPCName)) openInventory(e.getClicker());
+        if(e.getNPC().getName().equalsIgnoreCase(npcName)) openInventory(e.getClicker());
     }
 
     @EventHandler
@@ -52,6 +53,7 @@ public class BlacksmithGUI extends GUI {
         inventory.setItem(20, dismantle);
         inventory.setItem(21, upgrade);
 
+        addNpcSkull(inventory);
         insertFiller(inventory);
 
         player.openInventory(inventory);

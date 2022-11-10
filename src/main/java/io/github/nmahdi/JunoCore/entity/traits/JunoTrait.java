@@ -1,15 +1,13 @@
 package io.github.nmahdi.JunoCore.entity.traits;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.JHologramsManager;
 import io.github.nmahdi.JunoCore.entity.JEntity;
 import io.github.nmahdi.JunoCore.item.NBTJItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
-import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
-import io.github.nmahdi.JunoCore.item.stats.WeaponType;
 import io.github.nmahdi.JunoCore.loot.Loot;
+import io.github.nmahdi.JunoCore.loot.LootContainer;
+import io.github.nmahdi.JunoCore.loot.WeightedLootContainer;
 import io.github.nmahdi.JunoCore.loot.LootTable;
 import io.github.nmahdi.JunoCore.player.NBTPlayer;
 import io.github.nmahdi.JunoCore.player.PlayerStatID;
@@ -22,12 +20,12 @@ import net.citizensnpcs.api.trait.TraitName;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Map;
 import java.util.Random;
 
 @TraitName("juno")
@@ -115,13 +113,16 @@ public class JunoTrait extends Trait {
     @EventHandler
     public void onDeath(NPCDeathEvent e){
         if(e.getNPC() != this.getNPC())return;
-        for(Loot loot : lootTable.getJLoot()){
-            float chance = random.nextFloat(100);
-            //if(chance <= loot.getChance()){
-                int amount = random.nextInt(loot.getMaxAmount()-loot.getMinAmount()+1)+loot.getMinAmount();
-                if(loot.getMinAmount() == loot.getMaxAmount()) amount = loot.getMinAmount();
-                getNPC().getEntity().getWorld().dropItemNaturally(getNPC().getStoredLocation(), ItemBuilder.buildItem(loot.getItem(), amount));
-            //}
+        if(!lootTable.isWeighted()){
+            LootContainer container = (LootContainer) lootTable.getLootContainer();
+            for(Map.Entry<Loot, Float> map : container.getLoot().entrySet()){
+                float chance = random.nextFloat(100);
+                if(chance <= map.getValue()){
+                    int amount = random.nextInt(map.getKey().getMinAmount(), map.getKey().getMaxAmount()+1);
+                    if(map.getKey().getMinAmount() == map.getKey().getMaxAmount()) amount = map.getKey().getMaxAmount();
+                    getNPC().getEntity().getWorld().dropItemNaturally(getNPC().getStoredLocation(), ItemBuilder.buildItem(map.getKey().getItem(), amount));
+                }
+            }
         }
     }
 
@@ -157,7 +158,7 @@ public class JunoTrait extends Trait {
     private void updateName(){
         getNPC().setName(ChatColor.translateAlternateColorCodes('&',
                 "&7[" + level + "] &c" + name + " &" +
-                        getHealthColor(health, maxHealth) + health + "&7/&a" + maxHealth));
+                        getHealthColor(health, maxHealth) + health + "&7/&a" + maxHealth + "&c" + PlayerStatID.Health.getSymbol()));
     }
 
     private char getHealthColor(double health, double maxHealth){

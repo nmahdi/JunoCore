@@ -1,42 +1,40 @@
-package io.github.nmahdi.JunoCore.item.crafting;
+package io.github.nmahdi.JunoCore.gui.player;
 
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.JCore;
-import io.github.nmahdi.JunoCore.gui.PlayerMenuGUI;
+import io.github.nmahdi.JunoCore.gui.GUI;
 import io.github.nmahdi.JunoCore.item.JItem;
+import io.github.nmahdi.JunoCore.item.NBTJItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
+import io.github.nmahdi.JunoCore.item.crafting.Recipe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-public class CraftingManager implements Listener {
+public class CraftingGUI extends GUI {
 
-    private final String MENU_NAME = ChatColor.translateAlternateColorCodes('&', "&bCrafting");
-
-    private PlayerMenuGUI playerGUI;
-
-    public CraftingManager(JCore main, PlayerMenuGUI playerGUI){
-        main.getServer().getPluginManager().registerEvents(this, main);
-        this.playerGUI = playerGUI;
+    public CraftingGUI(JCore main, PlayerMenuGUI playerMenuGUI) {
+        super(main, "&7Crafting", 54, playerMenuGUI);
     }
 
+
+    //Needs fixing
     @EventHandler
-    public void onInvClick(InventoryClickEvent e){
-        if(e.getCurrentItem() == null || e.getCurrentItem().getType().isAir()) return;
-        if(e.getClickedInventory() == null) return;
-        if(e.getView().getTitle().equals(MENU_NAME)){
+    public void onInvClick(InventoryClickEvent e) {
+        if(e.getCurrentItem() == null) return;
+        if(e.getView().getTitle().equals(getName())){
             e.setCancelled(true);
+            if(openPrevious(e.getWhoClicked(), e.getCurrentItem())) return;
             if(!e.getCurrentItem().hasItemMeta()) return;
-            NBTItem item = new NBTItem(e.getCurrentItem());
-            if(!item.hasKey("juno") && !item.getCompound("juno").hasKey("recipe")) return;
-            Recipe recipe = getRecipe(item.getCompound("juno").getString("recipe"));
+            NBTJItem item = new NBTJItem(e.getCurrentItem());
+            if(!item.hasJuno() && !item.isRecipeItem()) return;
+            Recipe recipe = Recipe.getRecipe(item.getRecipe());
             if(recipe == null) return;
             if(hasItems((Player)e.getWhoClicked(), recipe)){
                 removeItems((Player)e.getWhoClicked(), recipe);
@@ -48,18 +46,20 @@ public class CraftingManager implements Listener {
         }
     }
 
-    public void openCraftingMenu(Player player){
-        Inventory inv = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes('&', MENU_NAME));
+    @Override
+    public void openInventory(Player player) {
+        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
 
-        for (int i = 0; i < inv.getSize(); i++) {
-            inv.setItem(i, playerGUI.EMPTY);
-        }
         int index = 10;
         for(Recipe recipe : Recipe.values()){
-            inv.setItem(index, ItemBuilder.buildCraftingMenuItem(recipe));
+            inventory.setItem(index, ItemBuilder.buildCraftingMenuItem(recipe));
             index++;
         }
-        player.openInventory(inv);
+
+        insertBack(inventory);
+        insertFiller(inventory);
+
+        player.openInventory(inventory);
     }
 
     private boolean hasItems(Player player, Recipe recipe){
@@ -109,11 +109,5 @@ public class CraftingManager implements Listener {
         }
     }
 
-    private Recipe getRecipe(String id){
-        for(Recipe recipe : Recipe.values()){
-            if(recipe.getId().equals(id)) return recipe;
-        }
-        return null;
-    }
 
 }

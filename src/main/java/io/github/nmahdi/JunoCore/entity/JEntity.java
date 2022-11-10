@@ -4,9 +4,9 @@ import io.github.nmahdi.JunoCore.loot.LootTable;
 import org.bukkit.entity.EntityType;
 
 public enum JEntity{
-    Zombie(EntityType.ZOMBIE, "Zombie", "basic_zombie", 10, 100, 1, 10, LootTable.Zombie),
+    Zombie(EntityType.ZOMBIE, "Zombie", "zombie", 10, 100, 1, 10, LootTable.Zombie),
     Zealot(EntityType.ENDERMAN, "Zealot", "zealot", 50, 1000, 10, 20, LootTable.Zealot),
-
+    Spider(EntityType.SPIDER, "Spider", "spider", 20, 200, 5, 15, LootTable.Zombie)
     ;
 
     private EntityType entityType;

@@ -38,4 +38,11 @@ public enum Recipe {
         return result;
     }
 
+    public static Recipe getRecipe(String id){
+        for(Recipe recipe : Recipe.values()){
+            if(recipe.getId().equals(id)) return recipe;
+        }
+        return null;
+    }
+
 }

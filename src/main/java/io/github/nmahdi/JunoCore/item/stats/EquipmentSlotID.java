@@ -1,7 +1,6 @@
 package io.github.nmahdi.JunoCore.item.stats;
 
-import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.inventory.EquipmentSlot;
+import io.github.nmahdi.JunoCore.item.NBTJItem;
 import org.bukkit.inventory.ItemStack;
 
 public enum EquipmentSlotID {
@@ -32,12 +31,11 @@ public enum EquipmentSlotID {
     public static EquipmentSlotID matchType(final ItemStack itemStack){
         if(itemStack == null && itemStack.getType().isAir()) return null;
         if(!itemStack.hasItemMeta()) return null;
-        NBTItem item = new NBTItem(itemStack);
-        if(!item.hasKey("juno")) return null;
-        if(!item.getCompound("juno").hasKey("hidden-stats")) return null;
-        if(!item.getCompound("juno").getCompound("hidden-stats").hasKey(ItemStatID.EquipmentSlot.getID())) return null;
+        NBTJItem item = new NBTJItem(itemStack);
+        if(!item.hasJuno()) return null;
+        if(!item.isEquipment()) return null;
         for(EquipmentSlotID slot : EquipmentSlotID.values()){
-            if(slot.getId().equals(item.getCompound("juno").getCompound("hidden-stats").getString(ItemStatID.EquipmentSlot.getID()))) return slot;
+            if(slot.getId().equals(item.getEquipmentSlot().getId())) return slot;
         }
         return null;
     }

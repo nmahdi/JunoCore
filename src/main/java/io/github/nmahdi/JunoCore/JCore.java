@@ -1,8 +1,9 @@
 package io.github.nmahdi.JunoCore;
 
+import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
 import io.github.nmahdi.JunoCore.entity.JEntityCommand;
 import io.github.nmahdi.JunoCore.entity.JEntityManager;
-import io.github.nmahdi.JunoCore.gui.PlayerMenuGUI;
+import io.github.nmahdi.JunoCore.gui.player.PlayerMenuGUI;
 import io.github.nmahdi.JunoCore.gui.blacksmith.BlacksmithGUI;
 import io.github.nmahdi.JunoCore.hunter.HunterManager;
 import io.github.nmahdi.JunoCore.item.JItemCommand;
@@ -13,12 +14,15 @@ import io.github.nmahdi.JunoCore.player.JPlayerManager;
 import io.github.nmahdi.JunoCore.player.listeners.PlayerCombatListener;
 import io.github.nmahdi.JunoCore.player.listeners.PlayerLoginListener;
 import io.github.nmahdi.JunoCore.player.skills.SkillXPGainListener;
+import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
 import java.util.logging.Level;
 
-public class JCore extends JavaPlugin{
+public class JCore extends JavaPlugin implements Listener {
 
     
     private Random random = new Random();
@@ -46,10 +50,19 @@ public class JCore extends JavaPlugin{
 
     @Override
     public void onDisable() {
+        hologramsManager.clearHolograms();
+    }
 
+    @EventHandler
+    public void serverPing(PaperServerListPingEvent e){
+        e.setNumPlayers(5);
+        e.setHidePlayers(true);
+        e.setMotd(ChatColor.translateAlternateColorCodes('&',
+                "&6&l--------------[&c&lJunoMMO&6&l]--------------\n          &e&lUnder Heavy Development."));
     }
 
     private void registerListeners(){
+        getServer().getPluginManager().registerEvents(this, this);
         new TreeFellerListener(this);
         new PlayerLoginListener(this);
         new PlayerMenuGUI(this);

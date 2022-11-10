@@ -75,6 +75,18 @@ public class NBTJItem extends NBTItem {
         getJuno().setBoolean(ItemStatID.Dismantlable.getID(), true);
     }
 
+    public boolean hasUUID(){
+        return getJuno().hasKey(ItemStatID.UUID.getID());
+    }
+
+    public String getUUID(){
+        return getJuno().getString("uuid");
+    }
+
+    public void setUUID(String uuid){
+        getJuno().setString("uuid", uuid);
+    }
+
     //Consumables
     public void setConsumableStat(ConsumableID id, int value){
         getConsumableStats().setInteger(id.getPlayerID().getId(), value);
@@ -82,6 +94,15 @@ public class NBTJItem extends NBTItem {
 
     public int getConsumableStat(ConsumableID id){
         return getConsumableStats().getInteger(id.getPlayerID().getId());
+    }
+
+    //Crafting
+    public boolean isRecipeItem(){
+        return getJuno().hasKey("recipe");
+    }
+
+    public String getRecipe(){
+        return getJuno().getString("recipe");
     }
 
     //Helper

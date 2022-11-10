@@ -1,3 +1,4 @@
+io\github\nmahdi\JunoCore\loot\LootContainer.class
 io\github\nmahdi\JunoCore\item\stats\WeaponType.class
 io\github\nmahdi\JunoCore\item\stats\StatContainer.class
 io\github\nmahdi\JunoCore\player\listeners\EquipmentEquipListener.class
@@ -8,6 +9,8 @@ io\github\nmahdi\JunoCore\item\listeners\TreeFellerListener.class
 io\github\nmahdi\JunoCore\JHologramsManager$1.class
 io\github\nmahdi\JunoCore\loot\LootTable.class
 io\github\nmahdi\JunoCore\entity\JEntity.class
+io\github\nmahdi\JunoCore\gui\player\CraftingGUI.class
+io\github\nmahdi\JunoCore\loot\WeightedLootContainer.class
 io\github\nmahdi\JunoCore\item\NBTJItem.class
 io\github\nmahdi\JunoCore\loot\Loot.class
 io\github\nmahdi\JunoCore\player\skills\SkillID.class
@@ -19,10 +22,11 @@ io\github\nmahdi\JunoCore\events\SkillXPGainEvent.class
 io\github\nmahdi\JunoCore\item\listeners\ConsumableListener.class
 io\github\nmahdi\JunoCore\item\listeners\ConsumableListener$2.class
 io\github\nmahdi\JunoCore\player\skills\SkillXPGainListener$BlockXPAmount.class
-io\github\nmahdi\JunoCore\gui\PlayerMenuGUI.class
+io\github\nmahdi\JunoCore\loot\ILootContainer.class
 io\github\nmahdi\JunoCore\gui\blacksmith\BlacksmithGUI.class
 io\github\nmahdi\JunoCore\entity\traits\JunoTrait.class
 io\github\nmahdi\JunoCore\item\builder\ItemStackBuilder.class
+io\github\nmahdi\JunoCore\gui\NPCGUI.class
 io\github\nmahdi\JunoCore\hunter\HunterListener.class
 io\github\nmahdi\JunoCore\hunter\HunterManager.class
 io\github\nmahdi\JunoCore\item\crafting\Recipe.class
@@ -38,6 +42,7 @@ io\github\nmahdi\JunoCore\player\listeners\PlayerLoginListener.class
 io\github\nmahdi\JunoCore\item\listeners\JItemPickupListener.class
 io\github\nmahdi\JunoCore\JHologramsManager.class
 io\github\nmahdi\JunoCore\gui\GUI.class
+io\github\nmahdi\JunoCore\gui\player\PlayerMenuGUI.class
 io\github\nmahdi\JunoCore\world\WorldManager.class
 io\github\nmahdi\JunoCore\player\listeners\EquipmentEquipListener$1.class
 io\github\nmahdi\JunoCore\item\JItem$SkullURL.class
@@ -46,6 +51,7 @@ io\github\nmahdi\JunoCore\world\PlayerWorld.class
 io\github\nmahdi\JunoCore\hunter\HunterQuest.class
 io\github\nmahdi\JunoCore\item\listeners\TreeFellerListener$1.class
 io\github\nmahdi\JunoCore\entity\SpawnZone.class
+io\github\nmahdi\JunoCore\loot\WeightedLoot.class
 io\github\nmahdi\JunoCore\player\ActionBar.class
 io\github\nmahdi\JunoCore\JHologramsManager$2.class
 io\github\nmahdi\JunoCore\item\builder\IItemBuilder.class
@@ -55,5 +61,4 @@ io\github\nmahdi\JunoCore\gui\blacksmith\UpgradeGUI.class
 io\github\nmahdi\JunoCore\gui\blacksmith\DismantleGUI.class
 io\github\nmahdi\JunoCore\item\builder\SkullItemBuilder.class
 io\github\nmahdi\JunoCore\JCore.class
-io\github\nmahdi\JunoCore\item\crafting\CraftingManager.class
 io\github\nmahdi\JunoCore\item\JItemCommand.class

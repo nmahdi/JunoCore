@@ -13,9 +13,12 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import scala.Int;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class GUI implements Listener {
 
@@ -38,19 +41,25 @@ public abstract class GUI implements Listener {
 
     public abstract void openInventory(Player player);
 
-    public void openPrevious(HumanEntity player, ItemStack currentItem){
+    public boolean openPrevious(HumanEntity player, ItemStack currentItem){
         if(currentItem.isSimilar(BACK)){
             previousMenu.openInventory((Player)player);
+            return true;
         }
+        return false;
     }
 
     protected void insertBack(Inventory inventory){
         inventory.setItem(45, BACK);
     }
 
-    protected void insertFiller(Inventory inventory, int skippedSlot){
+    protected void insertFiller(Inventory inventory, int... skippedSlots){
+        ArrayList<Integer> skipped = new ArrayList<>();
+        for(int s : skippedSlots){
+            skipped.add(s);
+        }
         for (int i = 0; i < getSize(); i++) {
-            if(i != skippedSlot) {
+            if(!skipped.contains(i)) {
                 if (inventory.getItem(i) == null) inventory.setItem(i, EMPTY);
             }
         }

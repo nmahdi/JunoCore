@@ -1,6 +1,7 @@
 package io.github.nmahdi.JunoCore.item;
 
 import io.github.nmahdi.JunoCore.item.stats.*;
+import io.github.nmahdi.JunoCore.loot.LootTable;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -53,8 +54,12 @@ public enum JItem {
     CompactedEmerald("compacted_emerald", Rarity.Uncommon,"Compacted Emerald", Material.EMERALD),
     CompactedRottenFlesh("compacted_rotten_flesh", Rarity.Uncommon,"Compacted Rotten Flesh", Material.ROTTEN_FLESH),
 
+    //Custom Items
+    MagicStone("magic_stone", Rarity.Rare, "Magic Stone", Material.AMETHYST_SHARD,
+            "&7Used to upgrade equipment!"),
+
     //Mining
-    Geode("basic_geode", Rarity.Common , "Basic Geode", SkullURL.GEODE, new StatContainer().setDismantlable()
+    Geode("basic_geode", Rarity.Common , "Basic Geode", SkullURL.GEODE, new StatContainer().setLootTable(LootTable.Geode)
             ,"&8The most common type of geode.\nBring this to a blacksmith to break open\nfor a chance to drop quality loot."),
 
     //Food
@@ -67,7 +72,7 @@ public enum JItem {
 
     //Weapons
     RookieSword("rookie_sword", Rarity.Rare, "Rookie Sword", Material.IRON_SWORD,
-            new StatContainer().setWeaponType(WeaponType.Sword).setDamage(30).setStrength(10).setCritChance(10).setCritDamage(100)
+            new StatContainer().setWeaponType(WeaponType.Sword).setDamage(30).setStrength(10).setCritChance(10).setCritDamage(100).setLootTable(LootTable.RareEquipment)
             ,"&7A sword that the Ultimate Rookie God wielded!"),
 
     SlashScythe("slash_scythe", Rarity.Mythic, "Slash's Scythe", Material.NETHERITE_HOE,
@@ -77,26 +82,26 @@ public enum JItem {
     //Armor
     RookieHelmet("rookie_helmet", Rarity.Rare, "Rookie Helmet", Material.IRON_BLOCK,
             new StatContainer().setEquipmentSlot(EquipmentSlotID.Helmet).setHealth(10).setDefense(20)
-                    .setFireDefense(20).setWaterDefense(20).setLightningDefense(20).setIceDefense(20)
+                    .setFireDefense(20).setWaterDefense(20).setLightningDefense(20).setIceDefense(20).setLootTable(LootTable.RareEquipment)
             ,"&7A helmet that the Ultimate Rookie God wore!"),
 
     RookieChestplate("rookie_chestplate", Rarity.Rare, "Rookie Chestplate", Material.IRON_CHESTPLATE,
             new StatContainer().setEquipmentSlot(EquipmentSlotID.Chestplate).setHealth(20).setDefense(30)
-                    .setFireDefense(30).setWaterDefense(30).setLightningDefense(30).setIceDefense(30)
+                    .setFireDefense(30).setWaterDefense(30).setLightningDefense(30).setIceDefense(30).setLootTable(LootTable.RareEquipment)
             ,"&7A chestplate that the Ultimate Rookie God wore!"),
 
     RookieLeggings("rookie_leggings", Rarity.Rare, "Rookie Leggings", Material.IRON_LEGGINGS,
             new StatContainer().setEquipmentSlot(EquipmentSlotID.Leggings).setHealth(15).setDefense(25)
-                    .setFireDefense(25).setWaterDefense(25).setLightningDefense(25).setIceDefense(25)
+                    .setFireDefense(25).setWaterDefense(25).setLightningDefense(25).setIceDefense(25).setLootTable(LootTable.RareEquipment)
             ,"&7Leggings that the Ultimate Rookie God wore!"),
 
     RookieBoots("rookie_boots", Rarity.Rare, "Rookie Boots", Material.IRON_BOOTS,
             new StatContainer().setEquipmentSlot(EquipmentSlotID.Boots).setHealth(5).setDefense(15)
-                    .setFireDefense(15).setWaterDefense(15).setLightningDefense(15).setIceDefense(15)
+                    .setFireDefense(15).setWaterDefense(15).setLightningDefense(15).setIceDefense(15).setLootTable(LootTable.RareEquipment)
             ,"&7Boots that the Ultimate Rookie God wore!"),
 
     HelmetTester("test_helmet", Rarity.Mythic, "Helmet Tester", Material.IRON_HELMET,
-            new StatContainer().setEquipmentSlot(EquipmentSlotID.Helmet).setHealth(1000).setDefense(1000)
+            new StatContainer().setEquipmentSlot(EquipmentSlotID.Helmet).setHealth(1000).setDefense(1000).setLootTable(LootTable.RareEquipment)
             ,"&7AAAAAAAAAAAAAAAAAA"),
 
     //Tools
@@ -139,6 +144,15 @@ public enum JItem {
         this.rarity = rarity;
         this.displayName = ChatColor.translateAlternateColorCodes('&', "&" + rarity.getColor() + displayName);
         this.materialType = materialType;
+    }
+
+    //For items with lore & no stats
+    JItem(String id, Rarity rarity, String displayName, Material materialType, String lore){
+        this.id = id;
+        this.rarity = rarity;
+        this.displayName = ChatColor.translateAlternateColorCodes('&', "&" + rarity.getColor() + displayName);
+        this.materialType = materialType;
+        if(lore != null && !lore.isEmpty()) this.lore.add(ChatColor.translateAlternateColorCodes('&', lore));
     }
 
     //For items with lore & stats

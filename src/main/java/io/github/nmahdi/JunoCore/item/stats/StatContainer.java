@@ -1,5 +1,7 @@
 package io.github.nmahdi.JunoCore.item.stats;
 
+import io.github.nmahdi.JunoCore.loot.LootTable;
+
 import java.util.HashMap;
 
 public class StatContainer {
@@ -18,7 +20,9 @@ public class StatContainer {
 
      */
 
+    private boolean hasUUID = false;
     private boolean dismantlable = false;
+    private LootTable lootTable;
     private WeaponType weapon;
     private EquipmentSlotID equipmentSlot;
 
@@ -131,6 +135,16 @@ public class StatContainer {
         return getInt(ItemStatID.BreakingPower);
     }
 
+    //UUID
+
+    public boolean hasUUID(){
+        return hasUUID;
+    }
+
+    public void setHasUUID(){
+        hasUUID = true;
+    }
+
     //Equipment
 
     public boolean isEquipment(){
@@ -138,6 +152,7 @@ public class StatContainer {
     }
 
     public StatContainer setEquipmentSlot(EquipmentSlotID equipmentSlot){
+        setHasUUID();
         this.equipmentSlot = equipmentSlot;
         return this;
     }
@@ -153,6 +168,7 @@ public class StatContainer {
     }
 
     public StatContainer setWeaponType(WeaponType weaponType){
+        setHasUUID();
         this.weapon = weaponType;
         return this;
     }
@@ -170,6 +186,21 @@ public class StatContainer {
     public StatContainer setDismantlable(){
         dismantlable = true;
         return this;
+    }
+
+    //LootTable
+    public boolean hasLootTable(){
+        return lootTable != null;
+    }
+
+    public StatContainer setLootTable(LootTable lootTable){
+        setDismantlable();
+        this.lootTable = lootTable;
+        return this;
+    }
+
+    public LootTable getLootTable(){
+        return lootTable;
     }
 
     //Consumable

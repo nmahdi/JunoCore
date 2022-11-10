@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import scala.collection.immutable.Stream;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class ItemBuilder{
 
@@ -42,9 +43,12 @@ public class ItemBuilder{
         nbtItem.addCompound("juno").setString("id", item.getId());
         if(item.hasStats()) {
             StatContainer container = item.getStatContainer();
+
             if(container.isDismantlable()) nbtItem.setDismantlable();
             if(container.isWeapon()) nbtItem.setWeaponType(container.getWeaponType());
             if(container.isEquipment()) nbtItem.setEquipmentSlot(container.getEquipmentSlot());
+            if(container.hasUUID()) nbtItem.setUUID(UUID.randomUUID().toString());
+
             //Adds the stats to the Juno~Stats NBT Tag
             if (!container.getStats().isEmpty()) {
                 for (Map.Entry<ItemStatID, String> stats : container.getStats().entrySet()) {

@@ -20,12 +20,13 @@ public enum ItemStatID {
     BreakingPower("breaking_power", "Breaking Power", "&6\u2726"),
 
     //Hidden
-    WeaponType("weapon_type", true),
-    Durability("durability", true),
-    MaxDurability("max_durability", true),
-    EquipmentSlot("armor_slot", true),
-    Consumable("consumable", true),
-    Dismantlable ("dismantlable ", true)
+    WeaponType("weapon_type"),
+    Durability("durability"),
+    MaxDurability("max_durability"),
+    EquipmentSlot("armor_slot"),
+    Consumable("consumable"),
+    Dismantlable ("dismantlable"),
+    UUID("uuid"),
     ;
 
     private String id;
@@ -33,25 +34,21 @@ public enum ItemStatID {
 
     private String symbol;
 
-    private boolean hidden;
 
     ItemStatID(PlayerStatID playerID){
         this.id = playerID.getId();
         this.displayName = playerID.getDisplayName();
         this.symbol = playerID.getSymbol();
-        this.hidden = false;
     }
 
     ItemStatID(String id, String displayName, String symbol){
         this.id = id;
         this.displayName = displayName;
         this.symbol = symbol;
-        this.hidden = false;
     }
 
-    ItemStatID(String id, boolean hidden){
+    ItemStatID(String id){
         this.id = id;
-        this.hidden = hidden;
     }
 
     public String getID(){
@@ -64,10 +61,6 @@ public enum ItemStatID {
 
     public String getSymbol() {
         return symbol;
-    }
-
-    public boolean isHidden() {
-        return hidden;
     }
 
     public static ItemStatID getID(String id){
