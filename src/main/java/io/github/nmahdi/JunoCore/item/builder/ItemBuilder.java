@@ -1,155 +1,124 @@
 package io.github.nmahdi.JunoCore.item.builder;
 
-import de.tr7zw.nbtapi.NBTItem;
-import io.github.nmahdi.JunoCore.item.JItem;
-import io.github.nmahdi.JunoCore.item.NBTJItem;
-import io.github.nmahdi.JunoCore.item.crafting.Recipe;
-import io.github.nmahdi.JunoCore.item.stats.ConsumableID;
-import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
-import io.github.nmahdi.JunoCore.item.stats.StatContainer;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.player.display.ComponentBuilder;
+import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
+import io.github.nmahdi.JunoCore.item.stats.ItemType;
+import io.github.nmahdi.JunoCore.item.stats.Rune;
+import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
+import io.github.nmahdi.JunoCore.player.display.TextColors;
+import net.kyori.adventure.text.Component;
 import org.bukkit.inventory.ItemStack;
-import scala.collection.immutable.Stream;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class ItemBuilder{
 
-    public static ItemStack buildItem(JItem item){
-        return buildItem(item, 1);
+    public static ItemStack buildGameItem(GameItem item){
+        return buildGameItem(item, 1);
     }
 
-    public static ItemStack buildItem(JItem item, int amount){
-        IItemBuilder builder;
-        if(item.isSkull()){
-            builder = new SkullItemBuilder(item.getTexture());
-        }else {
-            builder = new ItemStackBuilder(item.getMaterialType());
+    public static ItemStack buildGameItem(GameItem item, int amount){
+        ItemStack stack = new ItemStackBuilder(item.getMaterial())
+                .setAmount(amount).build();
+
+        NBTGameItem gameItem = new NBTGameItem(stack);
+
+        gameItem.init(item.getId());
+
+        ItemStack finalItem = gameItem.getItem().clone();
+        finalItem.setItemMeta(updateMeta(item, gameItem));
+        return finalItem;
+    }
+
+
+    public static ItemMeta updateMeta(GameItem item, NBTGameItem gameItem){
+
+        if(item.hasUUID() && !gameItem.hasUUID()) gameItem.setUUID(UUID.randomUUID().toString());
+        if(item.canApplyRunes() && !gameItem.hasRunes()) gameItem.createRunes();
+
+        ItemMeta meta = gameItem.getItem().getItemMeta();
+
+        if(item.hasCustomModelData()) meta.setCustomModelData(item.getCusomModelData());
+        meta.displayName(new ComponentBuilder().append(item.getDisplayName(), item.getRarity().getColor()).build());
+
+        ArrayList<Component> description = new ArrayList<>();
+
+        if(item.isRune()){
+            //DO RUNE THINGS
         }
 
-        builder.setName(getItemDisplayName(item));
-        builder.setAmount(amount);
-        if(item.hasStats()) {
-            setLore(builder, item.getStatContainer());
-        }
+        if(!item.getStats().isEmpty()) {
 
-        //Adds the JItem template lore
-        addItemLore(builder, item);
+            HashMap<PlayerStat, String> stats = item.getStats();
+            for (PlayerStat stat : PlayerStat.values()) {
+                int value = 0;
 
-        //Adds NBT tags based on the item template
-        NBTJItem nbtItem = new NBTJItem(builder.build());
-        nbtItem.addCompound("juno").setString("id", item.getId());
-        if(item.hasStats()) {
-            StatContainer container = item.getStatContainer();
+                Rune rune = Rune.getRune(stat);
+                if (rune != null) {
+                    if (gameItem.hasRunes() && gameItem.getRunes().containsKey(rune)) {
+                        value += rune.getAmount() * gameItem.getRunes().get(rune);
+                    }
+                }
 
-            if(container.isDismantlable()) nbtItem.setDismantlable();
-            if(container.isWeapon()) nbtItem.setWeaponType(container.getWeaponType());
-            if(container.isEquipment()) nbtItem.setEquipmentSlot(container.getEquipmentSlot());
-            if(container.hasUUID()) nbtItem.setUUID(UUID.randomUUID().toString());
+                if (item.hasStat(stat)) {
+                    value+= Integer.parseInt(stats.get(stat));
+                }
+                if(value != 0) {
+                    ComponentBuilder builder = new ComponentBuilder();
+                    builder.append("<", TextColors.GRAY);
+                    builder.append(stat.getSymbol(), stat.getColor());
+                    builder.append("> " + stat.getDisplayName() + ": ", TextColors.GRAY);
+                    builder.append((value > 0 ? "+" : "") + value, value > 0 ? TextColors.POSITIVE : TextColors.NEGATIVE);
 
-            //Adds the stats to the Juno~Stats NBT Tag
-            if (!container.getStats().isEmpty()) {
-                for (Map.Entry<ItemStatID, String> stats : container.getStats().entrySet()) {
-                    nbtItem.setStat(stats.getKey(), String.valueOf(stats.getValue()));
+                    description.add(builder.build());
                 }
             }
-            //Adds the consumable stats to the Juno~Consumable NBT Tag
-            if (container.isConsumable()) {
-                for (Map.Entry<ConsumableID, Integer> con : container.getConsumableStats().entrySet()) {
-                    nbtItem.setConsumableStat(con.getKey(), con.getValue());
+
+            description.add(Component.empty());
+        }
+        if(item.canApplyRunes()){
+
+            int index = description.size();
+            int amount = 0;
+
+            if(gameItem.hasRunes()){
+                amount = gameItem.getRunesUsed();
+
+                for(Map.Entry<Rune, Integer> runes : gameItem.getRunes().entrySet()) {
+                    String value = "";
+                    if(runes.getValue() > 1) value = " x" + runes.getValue();
+                    description.add(new ComponentBuilder().append("- " + runes.getKey().toString() + " Rune" + value, TextColors.WHITE).build());
                 }
+
+                description.add(Component.empty());
             }
+
+            description.add(index, new ComponentBuilder().append("Runes: (" + amount + "/" + item.getRuneSlots() + ")", TextColors.LIGHT_GRAY).build());
+
         }
-        return nbtItem.getItem();
+        if(item.hasDescription()){
+            description.addAll(item.getDescription());
+            description.add(Component.empty());
+        }
+        description.add(buildRarity(item));
+        meta.lore(description);
+        return meta;
     }
 
-    public static ItemStack editItem(ItemStack stack, ItemStatID id, String value){
-        NBTJItem nbtItem = new NBTJItem(stack);
-        nbtItem.setStat(id, value);
-        JItem template = JItem.getItemByID(nbtItem.getID());
-        if(template == null) return new ItemStack(Material.AIR);
-        IItemBuilder builder;
-        if(stack.getType() == Material.PLAYER_HEAD){
-            builder = new SkullItemBuilder(template.getTexture());
-        }else{
-            builder = new ItemStackBuilder(stack).clearLore();
+    private static Component buildRarity(GameItem item){
+        ComponentBuilder builder = new ComponentBuilder();
+        builder.append(item.getRarity().toString(), item.getRarity().getColor(), true);
+        if(item.getItemType() != ItemType.Misc){
+            builder.append(" " + item.getItemType().toString(), item.getRarity().getColor(), true);
         }
-        //Loops through all stats and checks if the item has an NBT value matching it, if there is one it adds it to the lore
-        for(ItemStatID stat : ItemStatID.values()){
-            if(nbtItem.getStats().hasKey(stat.getID()))
-                builder.addLore(ChatColor.translateAlternateColorCodes('&', getStatLore(stat.getDisplayName(), nbtItem.getStat(stat.getID()))));
-        }
-        //Adds the JItem template lore
-        addItemLore(builder, template);
-        NBTJItem temp = new NBTJItem(builder.build());
-        temp.getJuno().mergeCompound(nbtItem.getJuno());
-        return temp.getItem();
+        return builder.build();
     }
-
-    public static ItemStack buildCraftingMenuItem(Recipe recipe){
-        IItemBuilder builder;
-        if(recipe.getResult().getMaterialType() == Material.PLAYER_HEAD){
-            builder = new SkullItemBuilder(recipe.getResult().getTexture());
-        }else {
-            builder = new ItemStackBuilder(recipe.getResult().getMaterialType());
-        }
-        builder.setName(getItemDisplayName(recipe.getResult()));
-
-        if(recipe.getResult().hasStats()) {
-            setLore(builder, recipe.getResult().getStatContainer());
-        }
-        //Adds the JItem template lore
-        addItemLore(builder, recipe.getResult());
-        builder.skipLore();
-        for(Map.Entry<JItem, Integer> map : recipe.getItems().entrySet()){
-            builder.addLore("&f- " + map.getValue() + " " + map.getKey().getDisplayName());
-        }
-        NBTItem nbtItem = new NBTItem(builder.build());
-        nbtItem.addCompound("juno").setString("recipe", recipe.getId());
-        return nbtItem.getItem();
-    }
-
-    private static String getItemDisplayName(JItem item){
-        return "&" + item.getRarity().getColor() + "&l" + item.getDisplayName();
-    }
-
-    private static String getStatLore(String displayName, String value){
-        String color = "a+";
-        if(Integer.parseInt(value) < 0) color = "c";
-        return "&7" + displayName + "&f: &" + color + value;
-    }
-
-    private static String getRarityLore(JItem item){
-        return "&" + item.getRarity().getColor() + "&l" + item.getRarity();
-    }
-
-    private static void addItemLore(IItemBuilder builder, JItem item){
-        if(item.hasStats()) builder.skipLore();
-        builder.addLore(item.getLore());
-        if(!item.getLore().isEmpty()) builder.skipLore();
-        builder.addLore(getRarityLore(item));
-    }
-
-    private static void setLore(IItemBuilder builder, StatContainer container){
-        //Loops through the stats of the JItem, and updates the lore according to the template
-        if (!container.getStats().isEmpty()) {
-            for(ItemStatID id : ItemStatID.values()){
-                if(container.hasStat(id))
-                    builder.addLore(ChatColor.translateAlternateColorCodes('&', getStatLore(id.getDisplayName(), container.getStat(id))));
-            }
-        }
-
-        //Loops through the consumable stats of the JIte, and updates the lore according to the template
-        if (container.isConsumable()) {
-            for (ConsumableID id : ConsumableID.values()) {
-                if(container.hasConsumableStat(id))
-                    builder.addLore(ChatColor.translateAlternateColorCodes('&', getStatLore(id.getPlayerID().getDisplayName(), String.valueOf(container.getConsumableStat(id)))));
-            }
-        }
-    }
-
 
 
 }

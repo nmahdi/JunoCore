@@ -1,56 +1,94 @@
 package io.github.nmahdi.JunoCore;
 
 import com.destroystokyo.paper.event.server.PaperServerListPingEvent;
-import io.github.nmahdi.JunoCore.entity.JEntityCommand;
-import io.github.nmahdi.JunoCore.entity.JEntityManager;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import io.github.nmahdi.JunoCore.dependencies.HologramManager;
+import io.github.nmahdi.JunoCore.dependencies.SQLManager;
+import io.github.nmahdi.JunoCore.effects.PacketManager;
+import io.github.nmahdi.JunoCore.entity.GameEntityCommand;
+import io.github.nmahdi.JunoCore.entity.GameEntityManager;
+import io.github.nmahdi.JunoCore.generation.GeneratorCommand;
+import io.github.nmahdi.JunoCore.generation.ResourceManager;
 import io.github.nmahdi.JunoCore.gui.player.PlayerMenuGUI;
 import io.github.nmahdi.JunoCore.gui.blacksmith.BlacksmithGUI;
-import io.github.nmahdi.JunoCore.hunter.HunterManager;
-import io.github.nmahdi.JunoCore.item.JItemCommand;
+import io.github.nmahdi.JunoCore.gui.runetable.RuneTableGUI;
+import io.github.nmahdi.JunoCore.item.GameItemCommand;
+import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.listeners.ConsumableListener;
-import io.github.nmahdi.JunoCore.player.listeners.EquipmentEquipListener;
-import io.github.nmahdi.JunoCore.item.listeners.TreeFellerListener;
-import io.github.nmahdi.JunoCore.player.JPlayerManager;
-import io.github.nmahdi.JunoCore.player.listeners.PlayerCombatListener;
-import io.github.nmahdi.JunoCore.player.listeners.PlayerLoginListener;
-import io.github.nmahdi.JunoCore.player.skills.SkillXPGainListener;
+import io.github.nmahdi.JunoCore.item.listeners.GameItemPickupListener;
+import io.github.nmahdi.JunoCore.player.stats.CoinCommand;
+import io.github.nmahdi.JunoCore.player.combat.EquipmentListener;
+import io.github.nmahdi.JunoCore.player.PlayerManager;
+import io.github.nmahdi.JunoCore.player.combat.HealCommand;
+import io.github.nmahdi.JunoCore.player.combat.PlayerCombatListener;
+import io.github.nmahdi.JunoCore.player.resource.PlayerResourceListener;
+import io.github.nmahdi.JunoCore.utils.JLogger;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
-import java.util.logging.Level;
 
 public class JCore extends JavaPlugin implements Listener {
 
-    
+    private World primaryWorld;
+    private RegionContainer regionContainer;
+    private RegionManager regionManager;
+
     private Random random = new Random();
-    private JHologramsManager hologramsManager;
-    private JPlayerManager playerManager;
-    private HunterManager hunterManager;
-    private JEntityManager jEntityManager;
+
+    private SQLManager sqlManager;
+    private PacketManager packetManager;
+    private HologramManager hologramsManager;
+    private ItemManager itemManager;
+    private PlayerManager playerManager;
+    private GameEntityManager entityManager;
+    private ResourceManager resourceManager;
 
 
     @Override
     public void onEnable() {
         if(getServer().getPluginManager().getPlugin("Citizens") == null || !getServer().getPluginManager().getPlugin("Citizens").isEnabled()) {
-            getLogger().log(Level.SEVERE, "Citizens 2.0 not found or not enabled");
+            JLogger.error("Citizens 2.0 not found or not enabled");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        hologramsManager = new JHologramsManager(this);
-        playerManager = new JPlayerManager(this);
-        hunterManager = new HunterManager();
-        jEntityManager = new JEntityManager(this, random);
+        primaryWorld = Bukkit.getWorld("world");
+        JLogger.log("World '" + primaryWorld.getName() + "' has been set as the primary world.");
+
+        regionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        regionManager = regionContainer.get(BukkitAdapter.adapt(primaryWorld));
+
+        sqlManager = new SQLManager();
+        packetManager = new PacketManager(this);
+        hologramsManager = new HologramManager(this);
+        playerManager = new PlayerManager(this);
+        entityManager = new GameEntityManager(this);
+        resourceManager = new ResourceManager(this);
+        itemManager = new ItemManager(this);
+
+
+        getServer().clearRecipes();
+
+
         registerListeners();
         registerCommands();
-        //CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(JunoTrait.class));
     }
 
     @Override
     public void onDisable() {
-        hologramsManager.clearHolograms();
+        sqlManager.onDisable();
+        packetManager.onDisable();
+        hologramsManager.onDisable();
+        playerManager.onDisable();
+        entityManager.onDisable();
+        resourceManager.onDisable();
     }
 
     @EventHandler
@@ -63,40 +101,73 @@ public class JCore extends JavaPlugin implements Listener {
 
     private void registerListeners(){
         getServer().getPluginManager().registerEvents(this, this);
-        new TreeFellerListener(this);
-        new PlayerLoginListener(this);
-        new PlayerMenuGUI(this);
+        //Player
         new PlayerCombatListener(this);
-        new SkillXPGainListener(this);
-        new EquipmentEquipListener(this);
-        new ConsumableListener(this);
+        new PlayerResourceListener(this);
+
+        //GUI
+        new PlayerMenuGUI(this);
         new BlacksmithGUI(this);
+        new RuneTableGUI(this);
+
+        //Items
+        new EquipmentListener(this);
+        new ConsumableListener(this);
+        new GameItemPickupListener(this);
     }
 
     private void registerCommands(){
-        getCommand("jitem").setExecutor(new JItemCommand());
-        getCommand("jentity").setExecutor(new JEntityCommand(jEntityManager));
+        new GameItemCommand(this);
+        new GameEntityCommand(this);
+        new CustomSkullCommand(this);
+        new GeneratorCommand(this);
+        new CoinCommand(this);
+        new HealCommand(this);
+        new ColorTesterCommand(this);
+    }
+
+    public World getPrimaryWorld() {
+        return primaryWorld;
+    }
+
+    public RegionContainer getRegionContainer() {
+        return regionContainer;
+    }
+
+    public RegionManager getRegionManager() {
+        return regionManager;
     }
 
     public Random getRandom() {
         return random;
     }
 
-    public JEntityManager getEntityManager(){
-        return jEntityManager;
+    public SQLManager getSQLManager() {
+        return sqlManager;
     }
 
-    public JPlayerManager getPlayerManager() {
+    public PacketManager getPacketManager() {
+        return packetManager;
+    }
+
+    public PlayerManager getPlayerManager() {
         return playerManager;
     }
 
-    public HunterManager getHunterManager() {
-        return hunterManager;
+    public ItemManager getItemManager() {
+        return itemManager;
     }
 
-    public JHologramsManager getHologramsManager() {
+    public GameEntityManager getEntityManager(){
+        return entityManager;
+    }
+
+    public HologramManager getHologramsManager() {
         return hologramsManager;
     }
 
+    public ResourceManager getResourceManager() {
+        return resourceManager;
+    }
 
 }

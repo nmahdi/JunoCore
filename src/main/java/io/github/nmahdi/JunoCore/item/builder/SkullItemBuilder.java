@@ -2,12 +2,16 @@ package io.github.nmahdi.JunoCore.item.builder;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
@@ -15,9 +19,9 @@ import java.util.UUID;
 
 public class SkullItemBuilder implements IItemBuilder {
 
-    private ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);;
+    private ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
     private SkullMeta meta;
-    private ArrayList<String> lore = new ArrayList<>();
+    private ArrayList<Component> lore = new ArrayList<>();
 
     public SkullItemBuilder(String texture){
         meta = (SkullMeta) itemStack.getItemMeta();
@@ -33,74 +37,18 @@ public class SkullItemBuilder implements IItemBuilder {
     }
 
     @Override
-    public SkullItemBuilder setAmount(int amount) {
-        itemStack.setAmount(amount);
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder setName(String name) {
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder addLore(String... strings){
-        for (String  s : strings) {
-            this.lore.add(ChatColor.translateAlternateColorCodes('&', s));
-        }
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder addLore(String s) {
-        lore.add(ChatColor.translateAlternateColorCodes('&', s));
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder skipLore(){
-        lore.add("");
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder clearLore(){
-        lore.clear();
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder addLore(ArrayList<String> lore) {
-        for (String s : lore) {
-            this.lore.add(ChatColor.translateAlternateColorCodes('&', s));
-        }
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder spaceLore() {
-        lore.add(" ");
-        return this;
-    }
-
-    @Override
-    public SkullItemBuilder addFlag(ItemFlag itemFlag) {
-        meta.addItemFlags(itemFlag);
-        return this;
-    }
-
-    @Override
-    public ItemStack build() {
-        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        meta.addItemFlags(ItemFlag.HIDE_DYE);
-        meta.addItemFlags(ItemFlag.HIDE_PLACED_ON);
-        meta.setLore(lore);
-        meta.setUnbreakable(true);
-        itemStack.setItemMeta(meta);
+    public ItemStack getItemStack() {
         return itemStack;
+    }
+
+    @Override
+    public ItemMeta getItemMeta() {
+        return meta;
+    }
+
+    @Override
+    public ArrayList<Component> getLore() {
+        return lore;
     }
 
 

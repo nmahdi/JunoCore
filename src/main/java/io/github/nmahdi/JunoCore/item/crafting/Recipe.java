@@ -1,41 +1,40 @@
 package io.github.nmahdi.JunoCore.item.crafting;
 
-import io.github.nmahdi.JunoCore.item.JItem;
+import io.github.nmahdi.JunoCore.item.ItemContainer;
+import io.github.nmahdi.JunoCore.item.GameItem;
 
 import java.util.HashMap;
 
 public enum Recipe {
-    RookieSword(JItem.RookieSword, JItem.IronBar, JItem.IronBar, JItem.CompactedIron),
-    TreeFeller(JItem.TreeFeller, JItem.CompactedGold, JItem.CompactedIron)
+    RookieSword(new RecipeContainer(GameItem.RookieSword, 1 ,Recipe.Menu.Weapons).addItems(GameItem.CompactedIron, 2).addItems(GameItem.Stick, 1)),
+
     ;
 
+    private RecipeContainer recipeContainer;
 
-    private HashMap<JItem, Integer> items = new HashMap<>();
-    private String id;
-    private JItem result;
+    Recipe(RecipeContainer recipeContainer){
 
-    Recipe(JItem... items){
-        this.result = items[0];
-        this.id = result.getId();
-        for(int i = 1; i < items.length; i++){
-            if(!this.items.containsKey(items[i])){
-                this.items.put(items[i], 1);
-            }else{
-                this.items.put(items[i], this.items.get(items[i])+1);
-            }
-        }
-    }
-
-    public HashMap<JItem, Integer> getItems() {
-        return items;
+        this.recipeContainer = recipeContainer;
     }
 
     public String getId() {
-        return id;
+        return recipeContainer.id;
     }
 
-    public JItem getResult() {
-        return result;
+    public GameItem getResult() {
+        return recipeContainer.result;
+    }
+
+    public int getAmount() {
+        return recipeContainer.amount;
+    }
+
+    public Menu getMenu() {
+        return recipeContainer.menu;
+    }
+
+    public HashMap<GameItem, Integer> getRecipe() {
+        return recipeContainer.recipe;
     }
 
     public static Recipe getRecipe(String id){
@@ -43,6 +42,13 @@ public enum Recipe {
             if(recipe.getId().equals(id)) return recipe;
         }
         return null;
+    }
+
+    public static enum Menu{
+        Materials,
+        Tools,
+        Weapons,
+        Armor;
     }
 
 }

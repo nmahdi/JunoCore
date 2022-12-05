@@ -3,9 +3,22 @@ author: Mahdi_
 main: io.github.nmahdi.JunoCore.JCore
 version: 1.0
 api-version: 1.19
-depend: [Citizens,NBTAPI,DecentHolograms]
+depend: [Citizens,NBTAPI,DecentHolograms,ProtocolLib,WorldEdit,WorldGuard]
 commands:
-  jitem:
+  gameitem:
     description: Main Item Command.
-  jentity:
+    aliases: gitem
+  gameentity:
     description: Spawns a Juno Core Entity
+    aliases: gentity
+  customskull:
+    description: Spawns a skull based on url
+    aliases: cskull
+  generator:
+    description: Generator command.
+  coins:
+    description: Coins command.
+  heal:
+    description: Heals the player.
+  color:
+    description: Color tester

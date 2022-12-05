@@ -1,26 +1,26 @@
 package io.github.nmahdi.JunoCore.loot;
 
-import io.github.nmahdi.JunoCore.item.JItem;
+import io.github.nmahdi.JunoCore.item.GameItem;
 
 public class Loot{
 
-    private JItem item;
+    private GameItem item;
     private int minAmount;
     private int maxAmount;
 
-    Loot(JItem item, int minAmount, int maxAmount){
+    Loot(GameItem item, int minAmount, int maxAmount){
         this.item = item;
         this.minAmount = minAmount;
         this.maxAmount = maxAmount;
     }
 
-    Loot(JItem item, int amount){
+    Loot(GameItem item, int amount){
         this.item = item;
         this.minAmount = amount;
         this.maxAmount = amount;
     }
 
-    public JItem getItem() {
+    public GameItem getItem() {
         return item;
     }
 

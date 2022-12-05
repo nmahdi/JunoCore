@@ -1,8 +1,9 @@
 package io.github.nmahdi.JunoCore.gui;
 
 import io.github.nmahdi.JunoCore.JCore;
-import io.github.nmahdi.JunoCore.item.JItem;
+import io.github.nmahdi.JunoCore.item.SkullURL;
 import io.github.nmahdi.JunoCore.item.builder.SkullItemBuilder;
+import io.github.nmahdi.JunoCore.player.display.TextColors;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,7 @@ public abstract class NPCGUI extends GUI{
         super(main, name, size, previousMenu);
         this.npcName = ChatColor.translateAlternateColorCodes('&', npcName);
         this.skullLore = skullLore;
-        npcSkull = new SkullItemBuilder(JItem.SkullURL.GEODE).setName(getNPCName()).addLore(getSkullLore()).build();
+        npcSkull = new SkullItemBuilder(SkullURL.GEODE).setName(getNPCName(), TextColors.GRAY, false).addLore(getSkullLore(), TextColors.GRAY, false).build();
     }
 
     protected void addNpcSkull(Inventory inventory){

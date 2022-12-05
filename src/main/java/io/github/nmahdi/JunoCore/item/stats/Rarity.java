@@ -1,23 +1,26 @@
 package io.github.nmahdi.JunoCore.item.stats;
 
+import io.github.nmahdi.JunoCore.player.display.TextColors;
+import net.kyori.adventure.text.format.TextColor;
+
 public enum Rarity {
 
-    Junk("7"),
-    Common("f"),
-    Uncommon("a"),
-    Rare("b"),
-    Unique("e"),
-    Epic("5"),
-    Legendary("6"),
-    Mythic("d");
+    Junk(TextColors.JUNK),
+    Common(TextColors.COMMON),
+    Uncommon(TextColors.UNCOMMON),
+    Rare(TextColors.RARE),
+    Unique(TextColors.UNIQUE),
+    Epic(TextColors.EPIC),
+    Legendary(TextColors.LEGENDARY),
+    Mythic(TextColors.MYTHIC);
 
-    String color;
+    TextColor color;
 
-    Rarity(String color){
+    Rarity(TextColor color){
         this.color = color;
     }
 
-    public String getColor() {
+    public TextColor getColor() {
         return color;
     }
 }

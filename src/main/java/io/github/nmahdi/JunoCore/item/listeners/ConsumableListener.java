@@ -1,16 +1,7 @@
 package io.github.nmahdi.JunoCore.item.listeners;
 
 import io.github.nmahdi.JunoCore.JCore;
-import io.github.nmahdi.JunoCore.item.NBTJItem;
-import io.github.nmahdi.JunoCore.item.stats.ConsumableID;
-import io.github.nmahdi.JunoCore.item.stats.ItemStatID;
-import io.github.nmahdi.JunoCore.player.NBTPlayer;
-import io.github.nmahdi.JunoCore.player.PlayerStatID;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 public class ConsumableListener implements Listener {
 
@@ -21,7 +12,9 @@ public class ConsumableListener implements Listener {
         main.getServer().getPluginManager().registerEvents(this, main);
     }
 
-    @EventHandler
+    //TODO: FIX ALL THIS
+
+/*    @EventHandler
     public void onRightClick(PlayerInteractEvent e){
         if(e.getAction() != Action.RIGHT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_AIR) return;
         if(e.getItem() == null || e.getItem().getType().isAir()) return;
@@ -30,18 +23,18 @@ public class ConsumableListener implements Listener {
         NBTPlayer player = new NBTPlayer(e.getPlayer());
         if(!item.hasJuno()) return;
         if(!item.isConsumable()) return;
-        for(ConsumableID id : ConsumableID.values()){
+        for(Consumable id : Consumable.values()){
             if(item.getStats().hasKey(id.getPlayerID().getId())){
                 switch(id){
                     case Mana:
-                        if(player.getStat(id.getPlayerID())+Integer.parseInt(item.getStat(id.getPlayerID().getId())) > player.getStat(PlayerStatID.MaxMana)){
+                        if(player.getStat(id.getPlayerID())+Integer.parseInt(item.getStat(id.getPlayerID().getId())) > player.getStat(PlayerStat.MaxMana)){
                             player.setMana(player.getMaxMana());
                         }else{
                             player.plusMana(Integer.parseInt(item.getStat(id.getPlayerID().getId())));
                         }
                         break;
                     case Health:
-                        if(player.getStat(id.getPlayerID())+Integer.parseInt(item.getStat(id.getPlayerID().getId())) > player.getStat(PlayerStatID.MaxHealth)){
+                        if(player.getStat(id.getPlayerID())+Integer.parseInt(item.getStat(id.getPlayerID().getId())) > player.getStat(PlayerStat.MaxHealth)){
                             player.setHealth(player.getMaxHealth());
                         }else{
                             player.plusHealth(Integer.parseInt(item.getStat(id.getPlayerID().getId())));
@@ -56,6 +49,6 @@ public class ConsumableListener implements Listener {
                 e.getPlayer().getInventory().setItemInMainHand(null);
             }
         },1);
-    }
+    } */
 
 }
