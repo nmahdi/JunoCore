@@ -2,16 +2,12 @@ package io.github.nmahdi.JunoCore.gui.player.crafting;
 
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.CraftingGUI;
-import io.github.nmahdi.JunoCore.gui.GUI;
+import io.github.nmahdi.JunoCore.gui.player.PlayerCraftingGUI;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
-import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.item.crafting.Recipe;
-import io.github.nmahdi.JunoCore.utils.InventoryHelper;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,7 +17,7 @@ public class MaterialsCraftingGUI extends CraftingGUI {
 
 
 	public MaterialsCraftingGUI(JCore main, PlayerCraftingGUI craftingGUI) {
-		super(main, "&7Crafting - Materials", 54, craftingGUI);
+		super(main, "Crafting - Materials", 54, craftingGUI);
 	}
 
 	@Override

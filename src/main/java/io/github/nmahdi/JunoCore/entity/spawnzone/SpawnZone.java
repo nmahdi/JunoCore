@@ -56,6 +56,10 @@ public class SpawnZone {
         }
     }
 
+    public HashMap<Location, ArrayList<String>> getSpawnedEntities() {
+        return spawnedEntities;
+    }
+
     public ArrayList<Location> getSpawnLocations() {
         return spawnLocations;
     }

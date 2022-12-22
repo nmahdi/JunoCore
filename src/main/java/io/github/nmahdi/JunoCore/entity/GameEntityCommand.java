@@ -2,6 +2,7 @@ package io.github.nmahdi.JunoCore.entity;
 
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.entity.spawnzone.SpawnZone;
+import io.github.nmahdi.JunoCore.entity.spawnzone.SpawnZoneManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,9 +12,11 @@ import org.bukkit.entity.*;
 public class GameEntityCommand implements CommandExecutor {
 
     private GameEntityManager entityManager;
+    private SpawnZoneManager spawnZoneManager;
 
     public GameEntityCommand(JCore main){
         this.entityManager = main.getEntityManager();
+        this.spawnZoneManager = entityManager.getSpawnZoneManager();
         main.getCommand("gameentity").setExecutor(this);
     }
 
@@ -26,18 +29,6 @@ public class GameEntityCommand implements CommandExecutor {
             }
             if(args.length == 0){
                 sender.sendMessage(ChatColor.RED + "Invalid arguments.");
-                return true;
-            }
-            if(args[0].equalsIgnoreCase("spawn")){
-                if(!entityManager.getSpawnZones().isEmpty()){
-                    for(SpawnZone zone : entityManager.getSpawnZones()){
-                        zone.spawn(entityManager);
-                    }
-                }
-            }
-            if(args[0].equalsIgnoreCase("create")){
-                //jentity create ID EntityID SpawnNumber SpawnDelay
-                entityManager.createNewSpawnZone((Player)sender, ((Player) sender).getWorld(), args[1], GameEntity.getEntity(args[2]), Integer.parseInt(args[3]), Integer.parseInt(args[4]));
                 return true;
             }
             GameEntity e = GameEntity.getEntity(args[0]);

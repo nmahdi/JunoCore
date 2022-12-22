@@ -7,6 +7,7 @@ import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.utils.JunoManager;
 import io.github.nmahdi.JunoCore.player.stats.Skill;
+import io.github.nmahdi.JunoCore.utils.LocationHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -16,23 +17,21 @@ import java.util.Arrays;
 
 public class HologramManager implements JunoManager {
 
-    private JCore jcore;
+    private boolean debugMode;
+    private JCore main;
     private int counter = 0;
 
     private ArrayList<Hologram> holograms = new ArrayList<>();
 
-    public HologramManager(JCore jcore){
-        this.jcore = jcore;
+    public HologramManager(JCore main){
+        debugMode = main.getConfig().getBoolean("debug-mode.hologram");
+        this.main = main;
         JLogger.log("Holograms Manager has been enabled.");
     }
 
 
     public void createDamageHologram(Location location, int damage){
-        createHologram(location.add(randomWithRange(0.1, 0.5), randomWithRange(1, 1.5), randomWithRange(0.1, 0.5)), "&c" + damage);
-    }
-
-    public void createXPHologram(Location location, int xp, Skill skill, Player player){
-        createHologram(location.add(0, 1.4, 0),"&b+" + xp + " " + skill.getDisplayName() + " XP");
+        createHologram(location.add(LocationHelper.randomWithRange(0.1, 0.5), LocationHelper.randomWithRange(1, 1.5), LocationHelper.randomWithRange(0.1, 0.5)), "&c" + damage);
     }
 
 
@@ -40,7 +39,7 @@ public class HologramManager implements JunoManager {
         counter++;
         Hologram hologram = DHAPI.createHologram(String.valueOf(counter), location, Arrays.asList(strings));
         holograms.add(hologram);
-        Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(jcore, new Runnable() {
+        Bukkit.getServer().getScheduler().scheduleAsyncDelayedTask(main, new Runnable() {
             @Override
             public void run() {
                 holograms.remove(hologram);
@@ -59,19 +58,20 @@ public class HologramManager implements JunoManager {
         }
     }
 
-    private double randomWithRange(double min, double max) {
-        double range = max - min + 1.0D;
-        return Math.random() * range + min;
-    }
-
-    @Override
-    public boolean isDebugging() {
-        return false;
-    }
 
     @Override
     public void debug(String s) {
         JLogger.debug(this, s);
+    }
+
+    @Override
+    public boolean isDebugging() {
+        return debugMode;
+    }
+
+    @Override
+    public void setDebugMode(boolean mode) {
+        debugMode = mode;
     }
 
     @Override

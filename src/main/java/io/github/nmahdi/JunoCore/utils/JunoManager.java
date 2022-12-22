@@ -6,6 +6,7 @@ public interface JunoManager {
         JLogger.debug(this, s);
     }
 
+    void setDebugMode(boolean mode);
     boolean isDebugging();
     void onDisable();
 

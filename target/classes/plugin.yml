@@ -11,6 +11,9 @@ commands:
   gameentity:
     description: Spawns a Juno Core Entity
     aliases: gentity
+  spawnzone:
+    description: Spawn zone command
+    aliases: sz
   customskull:
     description: Spawns a skull based on url
     aliases: cskull
@@ -20,5 +23,5 @@ commands:
     description: Coins command.
   heal:
     description: Heals the player.
-  color:
-    description: Color tester
+  juno:
+    description: Main Juno Command

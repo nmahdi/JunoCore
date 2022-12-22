@@ -1,5 +1,6 @@
 package io.github.nmahdi.JunoCore.player.display;
 
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 
 public class TextColors {
@@ -13,8 +14,9 @@ public class TextColors {
 	public static final TextColor LEGENDARY = TextColor.color(0xFFAB00);
 	public static final TextColor MYTHIC = TextColor.color(0xFF4141);
 
-	public static final TextColor GRAY = TextColor.color(0xE0E0E0);
-	public static final TextColor LIGHT_GRAY = TextColor.color(0xF0F0F0);
+	public static final TextColor GRAY_DESCRIPTION = TextColor.color(0xE0E0E0);
+	public static final TextColor RUNE_AMOUNT_DESCRIPTION = TextColor.color(0x64A2FF);
+	//public static final TextColor LIGHT_GRAY = TextColor.color(0xF0F0F0);
 	public static final TextColor YELLOW = TextColor.color(0xFDF626);
 	public static final TextColor WHITE = TextColor.color(0xFFFFFF);
 

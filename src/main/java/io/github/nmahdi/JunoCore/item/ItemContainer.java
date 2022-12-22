@@ -1,9 +1,10 @@
 package io.github.nmahdi.JunoCore.item;
 
+import io.github.nmahdi.JunoCore.item.ability.equipment.EquipmentAbility;
+import io.github.nmahdi.JunoCore.item.ability.item.ItemAbility;
 import io.github.nmahdi.JunoCore.item.stats.ItemType;
 import io.github.nmahdi.JunoCore.item.stats.Rarity;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
-import io.github.nmahdi.JunoCore.loot.ILootTable;
 import io.github.nmahdi.JunoCore.loot.LootTable;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import net.kyori.adventure.text.Component;
@@ -36,15 +37,19 @@ public class ItemContainer {
 
     public int modelData = 999;
 
+    public ItemAbility itemAbility;
+    public EquipmentAbility equipmentAbility;
+
     public ItemContainer(String id, String displayName, Material material, Rarity rarity, ItemType itemType){
         this.id = id;
         this.displayName = displayName;
         this.material = material;
         this.rarity = rarity;
         this.itemType = itemType;
+        if(itemType != ItemType.Misc && itemType != ItemType.Block && itemType != ItemType.Rune){
+            hasUUID = true;
+        }
     }
-
-
 
     public ItemContainer addDescription(Component... components){
         for(Component component : components){
@@ -58,27 +63,20 @@ public class ItemContainer {
         return this;
     }
 
-
-
     public ItemContainer setHasUUID(){
         hasUUID = true;
         return this;
     }
-
-
 
     public ItemContainer setNPCSellPrice(int npcSellPrice){
         this.npcSellPrice = npcSellPrice;
         return this;
     }
 
-
-
     public ItemContainer setNPCBuyPrice(int npcBuyPrice){
         this.npcBuyPrice = npcBuyPrice;
         return this;
     }
-
 
     public ItemContainer setDismantlable(LootTable lootTable){
         dismantlable = true;
@@ -86,87 +84,66 @@ public class ItemContainer {
         return this;
     }
 
-
-
     public ItemContainer setRuneSlots(int runeSlots){
         this.runeSlots = runeSlots;
         return this;
     }
 
-
     public ItemContainer setHealth(int value){
         return setInt(PlayerStat.MaxHealth, value);
     }
-
-
 
     public ItemContainer setMana(int value){
         return setInt(PlayerStat.MaxMana, value);
     }
 
-
-
     public ItemContainer setDefense(int value){
         return setInt(PlayerStat.Defense, value);
     }
-
 
     public ItemContainer setFireElement(int value){
         return setInt(PlayerStat.FireElement, value);
     }
 
-
     public ItemContainer setWaterElement(int value){
         return setInt(PlayerStat.WaterElement, value);
     }
-
 
     public ItemContainer setAirElement(int value){
         return setInt(PlayerStat.AirElement, value);
     }
 
-
-
     public ItemContainer setEarthElement(int value){
         return setInt(PlayerStat.EarthElement, value);
     }
-
 
     public ItemContainer setLightningElement(int value){
         return setInt(PlayerStat.LightningElement, value);
     }
 
-
     public ItemContainer setIceElement(int value){
         return setInt(PlayerStat.IceElement, value);
     }
-
 
     public ItemContainer setSpeed(int value){
         return setInt(PlayerStat.Speed, value);
     }
 
-
     public ItemContainer setDamage(int value){
         return setInt(PlayerStat.Damage, value);
     }
-
 
     public ItemContainer setStrength(int value){
         return setInt(PlayerStat.Strength, value);
     }
 
-
-
     public ItemContainer setCritChance(int value){
         return setInt(PlayerStat.CritChance, value);
     }
 
-
     public ItemContainer setCritDamage(int value){
         return setInt(PlayerStat.CritDamage, value);
     }
-
 
     public ItemContainer setFortune(int value){
         return setInt(PlayerStat.Fortune, value);
@@ -176,27 +153,31 @@ public class ItemContainer {
         return setInt(PlayerStat.HarvestingSpeed, value);
     }
 
-
-    public ItemContainer setFishingSpeed(int value){
+    public ItemContainer setFishingSpeed(int value) {
         return setInt(PlayerStat.FishingSpeed, value);
     }
-
 
     private ItemContainer setInt(PlayerStat id, int value){
         stats.put(id, String.valueOf(value));
         return this;
     }
-
-
     public ItemContainer setRune(Rune rune){
         this.rune = rune;
         return this;
     }
 
-
-
     public ItemContainer setCustomModelData(int modelData) {
         this.modelData = modelData;
+        return this;
+    }
+
+    public ItemContainer setItemAbility(ItemAbility itemAbility){
+        this.itemAbility = itemAbility;
+        return this;
+    }
+
+    public ItemContainer setEquipmentAbility(EquipmentAbility equipmentAbility){
+        this.equipmentAbility = equipmentAbility;
         return this;
     }
 

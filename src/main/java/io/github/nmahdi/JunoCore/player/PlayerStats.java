@@ -5,7 +5,7 @@ import org.bukkit.Sound;
 
 import java.util.HashMap;
 
-public class PlayerStats extends HashMap<PlayerStat, Integer> {
+public class PlayerStats extends HashMap<PlayerStat, Double> {
 
 	private GamePlayer player;
 
@@ -82,7 +82,7 @@ public class PlayerStats extends HashMap<PlayerStat, Integer> {
 		if(player.getPlayerObject().getWalkSpeed() != walkSpeed) player.getPlayerObject().setWalkSpeed(walkSpeed);
 	}
 
-	public int getHealth(){
+	public double getHealth(){
 		return get(PlayerStat.Health);
 	}
 
@@ -91,40 +91,40 @@ public class PlayerStats extends HashMap<PlayerStat, Integer> {
 	 * If the amount entered is higher than the player's max health
 	 * then the player's health is set to it's max health
 	 */
-	public void setHealth(int health){
+	public void setHealth(double health){
 		if(health < 0){
 			player.kill();
 			return;
 		}
-		put(PlayerStat.Health, Math.min(health, getMaxHealth()));
+		put(PlayerStat.Health, (double) Math.min(health, getMaxHealth()));
 		player.getPlayerObject().setHealth((((double)getHealth()/(double)getMaxHealth())*10)*2);
 	}
 
-	public void plusHealth(int amount){
+	public void plusHealth(double amount){
 		setHealth(getHealth()+amount);
 	}
 
-	public void minusHealth(int amount){
+	public void minusHealth(double amount){
 		player.getPlayerObject().playSound(player.getPlayerObject(), Sound.ENTITY_PLAYER_HURT, 5f, 1f);
 		setHealth(getHealth()-amount);
 	}
 
-	public int getMaxHealth(){
+	public double getMaxHealth(){
 		return get(PlayerStat.MaxHealth);
 	}
 
 	/**
 	 * @return The amount of health a player should regen every 20 ticks(1 second)
 	 */
-	public int getHealthRegen(){
+	public double getHealthRegen(){
 		return get(PlayerStat.HealthRegen);
 	}
 
-	public void setHealthRegen(int regen){
+	public void setHealthRegen(double regen){
 		put(PlayerStat.HealthRegen, regen);
 	}
 
-	public int getMana(){
+	public double getMana(){
 		return get(PlayerStat.Mana);
 	}
 
@@ -133,101 +133,105 @@ public class PlayerStats extends HashMap<PlayerStat, Integer> {
 	 * If the amount entered is higher than the player's max mana
 	 * then the player's mana is set to it's max mana
 	 */
-	public void setMana(int mana){
+	public void setMana(double mana){
 		if(mana > getMaxMana()){
 			put(PlayerStat.Mana, getMaxMana());
 		}else put(PlayerStat.Mana, Math.max(mana, 0));
 		player.getPlayerObject().setFoodLevel((int)(((double)getMana()/(double)getMaxMana())*10)*2);
 	}
 
-	public void plusMana(int amount){
+	public void plusMana(double amount){
 		setMana(getMana()+amount);
 	}
 
-	public void minusMana(int amount){
+	public void minusMana(double amount){
 		setMana(getMana()-amount);
 	}
 
-	public int getMaxMana(){
+	public double getMaxMana(){
 		return get(PlayerStat.MaxMana);
 	}
 
 	/**
 	 * @return The amount of mana a player should regen every 20 ticks(1 second)
 	 */
-	public int getManaRegen(){
+	public double getManaRegen(){
 		return get(PlayerStat.ManaRegen);
 	}
 
-	public void setManaRegen(int regen){
+	public void setManaRegen(double regen){
 		put(PlayerStat.ManaRegen, regen);
 	}
 
-	public int getDefense(){
+	public double getDefense(){
 		return get(PlayerStat.Defense);
 	}
 
-	public int getFireElement(){
+	public void setDefense(double defense){
+		put(PlayerStat.Defense, defense);
+	}
+
+	public double getFireElement(){
 		return get(PlayerStat.FireElement);
 	}
 
-	public int getWaterElement(){
+	public double getWaterElement(){
 		return get(PlayerStat.WaterElement);
 	}
 
-	public int getAirElement(){
+	public double getAirElement(){
 		return get(PlayerStat.AirElement);
 	}
 
-	public int getEarthElement(){
+	public double getEarthElement(){
 		return get(PlayerStat.EarthElement);
 	}
 
-	public int getLightningElement(){
+	public double getLightningElement(){
 		return get(PlayerStat.LightningElement);
 	}
 
-	public int getIceElement(){
+	public double getIceElement(){
 		return get(PlayerStat.IceElement);
 	}
 
-	public int getSpeed(){
+	public double getSpeed(){
 		return get(PlayerStat.Speed);
 	}
 
-	public int getDamage(){
+	public double getDamage(){
 		return get(PlayerStat.Damage);
 	}
 
-	public int getStrength(){
+	public double getStrength(){
 		return get(PlayerStat.Strength);
 	}
 
-	public int getCritDamage(){
+	public double getCritDamage(){
 		return get(PlayerStat.CritDamage);
 	}
 
-	public int getCritChance(){
+	public double getCritChance(){
 		return get(PlayerStat.CritChance);
 	}
 
-	public int getAttackSpeed(){
+	public double getAttackSpeed(){
 		return get(PlayerStat.AttackSpeed);
 	}
 
-	public int getLuck(){
+	public double getLuck(){
 		return get(PlayerStat.Luck);
 	}
 
-	public int getFortune(){
+	public double getFortune(){
 		return get(PlayerStat.Fortune);
 	}
 
-	public int getHarvestingSpeed(){
+	public double getHarvestingSpeed(){
 		return get(PlayerStat.HarvestingSpeed);
 	}
 
-	public int getFishingSpeed(){
+	public double getFishingSpeed(){
 		return get(PlayerStat.FishingSpeed);
 	}
 

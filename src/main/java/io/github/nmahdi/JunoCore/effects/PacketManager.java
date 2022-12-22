@@ -18,11 +18,14 @@ import java.util.Random;
 
 public class PacketManager implements JunoManager {
 
+	private boolean debugMode;
+
 	private JCore main;
 	private Random random;
 	private ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
 
 	public PacketManager(JCore main){
+		debugMode = main.getConfig().getBoolean("debug-mode.packet");
 		this.main = main;
 		this.random = main.getRandom();
 	}
@@ -50,8 +53,13 @@ public class PacketManager implements JunoManager {
 	}
 
 	@Override
+	public void setDebugMode(boolean mode) {
+
+	}
+
+	@Override
 	public boolean isDebugging() {
-		return false;
+		return debugMode;
 	}
 
 	@Override

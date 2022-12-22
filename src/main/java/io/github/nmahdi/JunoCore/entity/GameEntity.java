@@ -1,35 +1,56 @@
 package io.github.nmahdi.JunoCore.entity;
 
+import io.github.nmahdi.JunoCore.entity.traits.*;
 import io.github.nmahdi.JunoCore.loot.ILootTable;
 import io.github.nmahdi.JunoCore.loot.Loot;
 import io.github.nmahdi.JunoCore.loot.LootTable;
+import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
+import java.util.ArrayList;
+
 public enum GameEntity {
+    //Animals
+    Cow(new GameEntityContainer(EntityType.COW, "Cow", "cow", 1, 10,
+            1, 5, 0, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d)
+            .addTrait(MobTrait.class)),
+    //Monsters
     Zombie(new GameEntityContainer(EntityType.ZOMBIE, "Zombie", "zombie", 10, 100,
-            1, 5, 5, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d)),
+            1, 5, 5, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d)
+            .addTrait(MobTrait.class).addTrait(SunburnTrait.class)),
 
     Spider(new GameEntityContainer(EntityType.SPIDER, "Spider", "spider", 20, 150,
-            1, 5, 8, LootTable.Spider).setAttackRange(1.5).setDistanceMargin(0.5)),
+            1, 5, 8, LootTable.Spider).setAttackRange(1.5).setDistanceMargin(0.5)
+            .addTrait(MobTrait.class)),
 
     Endermite(new GameEntityContainer(EntityType.ENDERMITE, "Endermite", "endermite", 15, 50,
-            2, 5, 3, LootTable.Endermite).setAttackRange(0.5).setDistanceMargin(0)),
+            2, 5, 3, LootTable.Endermite).setAttackRange(0.5).setDistanceMargin(0)
+            .addTrait(MobTrait.class)),
 
     MagmaCube(new GameEntityContainer(EntityType.MAGMA_CUBE, "Magma Cube", "magma_cube", 20, 150,
-            1, 5, 8, LootTable.MagmaCube).setAttackRange(0.5).setDistanceMargin(0.1)),
+            1, 5, 8, LootTable.MagmaCube).setAttackRange(0.5).setDistanceMargin(0.1)
+            .addTrait(MobTrait.class)),
 
     Slime(new GameEntityContainer(EntityType.SLIME, "Slime", "slime", 20, 150,
-            1, 5, 8, LootTable.Slime).setAttackRange(0.5).setDistanceMargin(0.1)),
+            1, 5, 8, LootTable.Slime).setAttackRange(0.5).setDistanceMargin(0.1)
+            .addTrait(MobTrait.class)),
 
     Skeleton(new GameEntityContainer(EntityType.SKELETON, "Skeleton", "skeleton", 10, 100,
-            1, 5, 4, LootTable.Skeleton).setAttackRange(0).setDistanceMargin(6).setRanged().setHeldItem(Material.BOW).setAttackDelay(50)),
+            1, 5, 4, LootTable.Skeleton).setAttackRange(0).setDistanceMargin(6).setRanged().setHeldItem(Material.BOW).setAttackDelay(50)
+            .addTrait(MobTrait.class).addTrait(SunburnTrait.class)),
 
     Enderman(new GameEntityContainer(EntityType.ENDERMAN, "Enderman", "enderman", 30, 200,
-            1, 5, 15, LootTable.Enderman).setAttackRange(2).setDistanceMargin(0.5)),
+            1, 5, 15, LootTable.Enderman).setAttackRange(2).setDistanceMargin(0.5)
+            .addTrait(MobTrait.class)),
+
+    LostWizard(new GameEntityContainer(EntityType.PILLAGER, "Lost Wizard", "lost_wizard", 50, 200,
+            1, 5, 100, LootTable.Zombie).setAttackRange(1).setDistanceMargin(10)
+            .addTrait(LostWizardTrait.class)),
 
     Smasher(new GameEntityContainer(EntityType.ZOMBIE, "Smasher", "smasher", 50, 4000,
-            10, 20, 15, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10).setSpeedModifier(2).setHeldItem(Material.ANVIL)),
+            10, 20, 15, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10).setSpeedModifier(2).setHeldItem(Material.ANVIL)
+            .addTrait(MobTrait.class)),
 
     ;
 
@@ -111,8 +132,6 @@ public enum GameEntity {
         return  container.helmet != null;
     }
 
-
-
     public Material getHelmet() {
         return  container.helmet;
     }
@@ -120,7 +139,6 @@ public enum GameEntity {
     public boolean hasChestplate(){
         return  container.chestplate != null;
     }
-
 
     public Material getChestplate() {
         return  container.chestplate;
@@ -130,7 +148,6 @@ public enum GameEntity {
         return  container.leggings != null;
     }
 
-
     public Material getLeggings() {
         return  container.leggings;
     }
@@ -139,13 +156,16 @@ public enum GameEntity {
         return  container.boots != null;
     }
 
-
     public Material getBoots() {
         return  container.boots;
     }
 
     public LootTable getLootTable() {
         return  container.lootTable;
+    }
+
+    public ArrayList<Class<? extends GameTrait>> getTraits(){
+        return container.traits;
     }
 
     public boolean isSlime(){

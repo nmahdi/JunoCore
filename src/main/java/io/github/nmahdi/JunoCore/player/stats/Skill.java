@@ -9,28 +9,28 @@ import org.bukkit.inventory.ItemStack;
 
 public enum Skill {
     Combat("combat", "CombatXP", "Combat", 100, new ItemStackBuilder(Material.NETHERITE_SWORD)
-            .addLore(Component.text("Kill monsters to level up this skill!").color(TextColors.GRAY)).skipLore().build()),
+            .addLore(Component.text("Kill monsters to level up this skill!").color(TextColors.GRAY_DESCRIPTION)).skipLore().build()),
 
     Mining("mining", "MiningXP", "Mining", 40, new ItemStackBuilder(Material.NETHERITE_PICKAXE)
-            .addLore(Component.text("Mine ores & gems to level up this skill!").color(TextColors.GRAY)).skipLore().build()),
+            .addLore(Component.text("Mine ores & gems to level up this skill!").color(TextColors.GRAY_DESCRIPTION)).skipLore().build()),
 
     Foraging("foraging", "ForagingXP", "Foraging", 40, new ItemStackBuilder(Material.SHEARS)
-            .addLore(Component.text("Forage for flowers & plants to level up").color(TextColors.GRAY))
-            .addLore(Component.text("this skill!").color(TextColors.GRAY)).skipLore().build()),
+            .addLore(Component.text("Forage for flowers & plants to level up").color(TextColors.GRAY_DESCRIPTION))
+            .addLore(Component.text("this skill!").color(TextColors.GRAY_DESCRIPTION)).skipLore().build()),
 
     Fishing("fishing", "FishingXP", "Fishing", 40, new ItemStackBuilder(Material.FISHING_ROD)
-            .addLore(Component.text("Fish treasures & kill underwater monsters").color(TextColors.GRAY))
-            .addLore(Component.text("to level up this skill!").color(TextColors.GRAY)).skipLore().build()),
+            .addLore(Component.text("Fish treasures & kill underwater monsters").color(TextColors.GRAY_DESCRIPTION))
+            .addLore(Component.text("to level up this skill!").color(TextColors.GRAY_DESCRIPTION)).skipLore().build()),
 
     Woodcutting("woodcutting", "WoodcuttingXP", "Woodcutting", 40, new ItemStackBuilder(Material.NETHERITE_AXE)
-            .addLore(Component.text("Cut down trees to level up this skill!").color(TextColors.GRAY)).skipLore().build()),
+            .addLore(Component.text("Cut down trees to level up this skill!").color(TextColors.GRAY_DESCRIPTION)).skipLore().build()),
 
     Farming("farming", "FarmingXP","Farming", 40, new ItemStackBuilder(Material.NETHERITE_HOE)
-            .addLore(Component.text("Harvest crops to level up this skill!").color(TextColors.GRAY)).skipLore().build()),
+            .addLore(Component.text("Harvest crops to level up this skill!").color(TextColors.GRAY_DESCRIPTION)).skipLore().build()),
 
     MetalDetecting("metal_detecting", "MetalDetectingXP","Metal Detecting", 40, new ItemStackBuilder(Material.LIGHTNING_ROD)
-            .addLore(Component.text("Metal detect & find rare treasures to level").color(TextColors.GRAY))
-            .addLore(Component.text("up this skill!").color(TextColors.GRAY)).skipLore().build())
+            .addLore(Component.text("Metal detect & find rare treasures to level").color(TextColors.GRAY_DESCRIPTION))
+            .addLore(Component.text("up this skill!").color(TextColors.GRAY_DESCRIPTION)).skipLore().build())
     ;
 
     private String id;

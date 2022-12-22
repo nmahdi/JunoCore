@@ -23,12 +23,12 @@ public class BankGUI extends NPCGUI {
     private ItemStack coins = new ItemStackBuilder(Material.GOLD_NUGGET).setName("Coins", NamedTextColor.GOLD, false).build();
 
     private ItemStack deposit = new ItemStackBuilder(Material.PAPER).setName("Deposit Coins", NamedTextColor.AQUA, false)
-            .addLore("Click to deposit all your coins!", TextColors.GRAY, false).build();
+            .addLore("Click to deposit all your coins!", TextColors.GRAY_DESCRIPTION, false).build();
     private ItemStack withdraw = new ItemStackBuilder(Material.MAP).setName("Withdraw Coins", NamedTextColor.AQUA, false)
-            .addLore("Click to withdraw all your coins!", TextColors.GRAY, false).build();
+            .addLore("Click to withdraw all your coins!", TextColors.GRAY_DESCRIPTION, false).build();
 
     public BankGUI(JCore main, PlayerMenuGUI playerMenuGUI) {
-        super(main, "&6Bank", 54, playerMenuGUI, "&7Banker", "Deposit your coins into the bank!");
+        super(main, "Bank", 54, playerMenuGUI, "&7Banker", "Deposit your coins into the bank!");
         this.playerManager = main.getPlayerManager();
     }
 

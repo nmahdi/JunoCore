@@ -1,9 +1,14 @@
 package io.github.nmahdi.JunoCore.entity;
 
+import io.github.nmahdi.JunoCore.entity.traits.GameTrait;
+import io.github.nmahdi.JunoCore.entity.traits.StatsTrait;
 import io.github.nmahdi.JunoCore.loot.ILootTable;
 import io.github.nmahdi.JunoCore.loot.LootTable;
+import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+
+import java.util.ArrayList;
 
 public class GameEntityContainer {
 
@@ -27,6 +32,8 @@ public class GameEntityContainer {
 
 	public LootTable lootTable;
 
+	public ArrayList<Class<? extends GameTrait>> traits = new ArrayList<>();
+
 
 	public GameEntityContainer(EntityType entityType, String displayName, String id, int combatXP, int baseHealth, int minLevel, int maxLevel, double damagePerHit, LootTable lootTable){
 		this.entityType = entityType;
@@ -38,6 +45,7 @@ public class GameEntityContainer {
 		this.maxLevel = maxLevel;
 		this.damagePerHit = damagePerHit;
 		this.lootTable = lootTable;
+		this.traits.add(StatsTrait.class);
 	}
 
 	public GameEntityContainer setAttackRange(double attackRange){
@@ -92,6 +100,11 @@ public class GameEntityContainer {
 
 	public GameEntityContainer setBoots(Material boots){
 		this.boots = boots;
+		return this;
+	}
+
+	public GameEntityContainer addTrait(Class<? extends GameTrait> trait){
+		this.traits.add(trait);
 		return this;
 	}
 

@@ -1,18 +1,20 @@
 package io.github.nmahdi.JunoCore.item.builder;
 
 import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.player.display.ComponentBuilder;
-import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.ability.equipment.AppliesWeaponBuff;
+import io.github.nmahdi.JunoCore.item.ability.equipment.EquipmentAbility;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.item.stats.ItemType;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
+import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import io.github.nmahdi.JunoCore.player.display.TextColors;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -32,12 +34,11 @@ public class ItemBuilder{
         gameItem.init(item.getId());
 
         ItemStack finalItem = gameItem.getItem().clone();
-        finalItem.setItemMeta(updateMeta(item, gameItem));
+        finalItem.setItemMeta(updateMeta(null, item, gameItem));
         return finalItem;
     }
 
-
-    public static ItemMeta updateMeta(GameItem item, NBTGameItem gameItem){
+    public static ItemMeta updateMeta(GamePlayer gamePlayer, GameItem item, NBTGameItem gameItem){
 
         if(item.hasUUID() && !gameItem.hasUUID()) gameItem.setUUID(UUID.randomUUID().toString());
         if(item.canApplyRunes() && !gameItem.hasRunes()) gameItem.createRunes();
@@ -45,9 +46,9 @@ public class ItemBuilder{
         ItemMeta meta = gameItem.getItem().getItemMeta();
 
         if(item.hasCustomModelData()) meta.setCustomModelData(item.getCusomModelData());
-        meta.displayName(new ComponentBuilder().append(item.getDisplayName(), item.getRarity().getColor()).build());
+        meta.displayName(Component.text(item.getDisplayName()).color(item.getRarity().getColor()).decoration(TextDecoration.ITALIC, false));
 
-        ArrayList<Component> description = new ArrayList<>();
+        DescriptionBuilder builder = new DescriptionBuilder(false);
 
         if(item.isRune()){
             //DO RUNE THINGS
@@ -69,55 +70,82 @@ public class ItemBuilder{
                 if (item.hasStat(stat)) {
                     value+= Integer.parseInt(stats.get(stat));
                 }
-                if(value != 0) {
-                    ComponentBuilder builder = new ComponentBuilder();
-                    builder.append("<", TextColors.GRAY);
-                    builder.append(stat.getSymbol(), stat.getColor());
-                    builder.append("> " + stat.getDisplayName() + ": ", TextColors.GRAY);
-                    builder.append((value > 0 ? "+" : "") + value, value > 0 ? TextColors.POSITIVE : TextColors.NEGATIVE);
 
-                    description.add(builder.build());
+                if(gamePlayer != null){
+
+                    for(int i = 0; i < gamePlayer.getActiveAbilities().size(); i++){
+                        EquipmentAbility ability = gamePlayer.getActiveAbilities().get(i);
+                        if(ability instanceof AppliesWeaponBuff) {
+
+                            if (((AppliesWeaponBuff) ability).getWeapon() == item) {
+
+                                if (((AppliesWeaponBuff) ability).getBuff(item, gameItem).containsKey(stat)) {
+                                    value += ((AppliesWeaponBuff) ability).getBuff(item, gameItem).get(stat);
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+                if(value != 0) {
+                    builder.append("<", TextColors.GRAY_DESCRIPTION)
+                            .append(stat.getSymbol(), stat.getColor())
+                            .append("> " + stat.getDisplayName() + ": ", TextColors.GRAY_DESCRIPTION)
+                            .append((value > 0 ? "+" : "") + value, value > 0 ? TextColors.POSITIVE : TextColors.NEGATIVE).endLine();
+
                 }
             }
 
-            description.add(Component.empty());
+            builder.skipLine();
         }
         if(item.canApplyRunes()){
 
-            int index = description.size();
+            int index = builder.getList().size();
             int amount = 0;
 
             if(gameItem.hasRunes()){
                 amount = gameItem.getRunesUsed();
 
-                for(Map.Entry<Rune, Integer> runes : gameItem.getRunes().entrySet()) {
-                    String value = "";
-                    if(runes.getValue() > 1) value = " x" + runes.getValue();
-                    description.add(new ComponentBuilder().append("- " + runes.getKey().toString() + " Rune" + value, TextColors.WHITE).build());
+                if(!gameItem.getRunes().isEmpty()) {
+                    for (Map.Entry<Rune, Integer> runes : gameItem.getRunes().entrySet()) {
+                        String value = "";
+                        if (runes.getValue() > 1) value = " x" + runes.getValue();
+                        builder.append("- " + runes.getKey().toString() + " Rune" + value, TextColors.WHITE).endLine();
+                    }
+                }else{
+                    builder.append("Apply runes at the rune station!", NamedTextColor.DARK_GRAY).endLine();
                 }
 
-                description.add(Component.empty());
+                builder.insert(index, "Runes (" + amount + "/" + item.getRuneSlots() + ")", TextColors.RUNE_AMOUNT_DESCRIPTION);
+                builder.skipLine();
             }
 
-            description.add(index, new ComponentBuilder().append("Runes: (" + amount + "/" + item.getRuneSlots() + ")", TextColors.LIGHT_GRAY).build());
-
+        }
+        if(item.hasItemAbility()){
+            builder.appendAll(item.getItemAbility().getAbilityDescription()).skipLine();
+        }
+        if(item.hasEquipmentAbility()){
+            builder.appendAll(item.getEquipmentAbility().getAbilityDescription()).skipLine();
         }
         if(item.hasDescription()){
-            description.addAll(item.getDescription());
-            description.add(Component.empty());
+            builder.appendAll(item.getDescription()).skipLine();
         }
-        description.add(buildRarity(item));
-        meta.lore(description);
+        /*if(item.canApplyRunes() && gameItem.hasRunes() && gameItem.getRunes().isEmpty()){
+            builder.append("Runes can be applied", NamedTextColor.DARK_GRAY).endLine();
+        }*/
+        builder.append(buildRarity(item)).endLine();
+        meta.lore(builder.getList());
         return meta;
     }
 
     private static Component buildRarity(GameItem item){
-        ComponentBuilder builder = new ComponentBuilder();
-        builder.append(item.getRarity().toString(), item.getRarity().getColor(), true);
+        String string = item.getRarity().toString();
         if(item.getItemType() != ItemType.Misc){
-            builder.append(" " + item.getItemType().toString(), item.getRarity().getColor(), true);
+            string+= " " + item.getItemType().toString();
         }
-        return builder.build();
+        return Component.text(string).color(item.getRarity().getColor()).decorate(TextDecoration.BOLD);
     }
 
 

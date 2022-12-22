@@ -15,6 +15,7 @@ import java.util.Date;
 
 public class ScoreboardManager implements JunoManager {
 
+	private boolean debugMode;
 	private JCore main;
 	private SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
 	private Date date = new Date();
@@ -24,6 +25,7 @@ public class ScoreboardManager implements JunoManager {
 	private String DATE_TEAM = "date";
 
 	public ScoreboardManager(JCore main){
+		debugMode = main.getConfig().getBoolean("debug-mode.scoreboard");
 		this.main = main;
 	}
 
@@ -68,8 +70,13 @@ public class ScoreboardManager implements JunoManager {
 	}
 
 	@Override
+	public void setDebugMode(boolean mode) {
+		debugMode = mode;
+	}
+
+	@Override
 	public boolean isDebugging() {
-		return false;
+		return debugMode;
 	}
 
 	@Override

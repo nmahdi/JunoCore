@@ -31,7 +31,7 @@ public enum PlayerStat {
 
     IceElement("ice_element", "Ice Element", TextSymbols.ICE_ELEMENT, "%ice_element%", true, TextColors.ICE_ELEMENT, 0),
 
-    Speed("speed", "Speed", TextSymbols.SPEED, "%speed%", true, TextColors.SPEED, 300),
+    Speed("speed", "Speed", TextSymbols.SPEED, "%speed%", true, TextColors.SPEED, 100),
 
     Damage("base_damage", "Damage", TextSymbols.DAMAGE, "%damage%", true, TextColors.DAMAGE, 1),
 
@@ -49,7 +49,8 @@ public enum PlayerStat {
 
     HarvestingSpeed("harvesting_speed", "Harvesting Speed", TextSymbols.HARVESTING_SPEED, "%harvesting_speed%", true, TextColors.HARVESTING_SPEED, 10),
 
-    FishingSpeed("fishing_speed", "Fishing Speed", TextSymbols.FISHING_SPEED, "%fishing_speed%", true, TextColors.FISHING_SPEED, 10)
+    FishingSpeed("fishing_speed", "Fishing Speed", TextSymbols.FISHING_SPEED, "%fishing_speed%", true, TextColors.FISHING_SPEED, 10),
+
     ;
 
     private String id;
@@ -58,9 +59,9 @@ public enum PlayerStat {
     private String placeHolder;
     private boolean onMenu;
     private TextColor color;
-    private int baseValue;
+    private double baseValue;
 
-    PlayerStat(String id, String displayName, String symbol, String placeHolder, boolean onMenu, TextColor color, int baseValue){
+    PlayerStat(String id, String displayName, String symbol, String placeHolder, boolean onMenu, TextColor color, double baseValue){
         this.id = id;
         this.displayName = displayName;
         this.symbol = symbol;
@@ -70,7 +71,7 @@ public enum PlayerStat {
         this.baseValue = baseValue;
     }
 
-    PlayerStat(String id, String displayName, String symbol, String placeHolder, int baseValue){
+    PlayerStat(String id, String displayName, String symbol, String placeHolder, double baseValue){
         this.id = id;
         this.displayName = displayName;
         this.symbol = symbol;
@@ -103,7 +104,7 @@ public enum PlayerStat {
         return color;
     }
 
-    public int getBaseValue() {
+    public double getBaseValue() {
         return baseValue;
     }
 

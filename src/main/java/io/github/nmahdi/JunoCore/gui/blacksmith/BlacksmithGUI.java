@@ -16,17 +16,17 @@ import org.bukkit.inventory.ItemStack;
 
 public class BlacksmithGUI extends NPCGUI {
 
-    private ItemStack dismantle = new ItemStackBuilder(Material.BLAZE_POWDER).setName("Dismantle", NamedTextColor.AQUA, false).skipLore().addLore("Dismantle old equipment", TextColors.GRAY, false)
-            .addLore("break open geodes.", TextColors.GRAY, false).build();
-    private ItemStack upgrade = new ItemStackBuilder(Material.ANVIL).setName("Upgrade", NamedTextColor.AQUA, false).skipLore().addLore("Upgrade equipment and weapons!", TextColors.GRAY, false).build();
-    private ItemStack shop = new ItemStackBuilder(Material.EMERALD).setName("Shop", NamedTextColor.AQUA, false).skipLore().addLore("Click here to open the blacksmith shop!", TextColors.GRAY, false).build();
+    private ItemStack dismantle = new ItemStackBuilder(Material.BLAZE_POWDER).setName("Dismantle", NamedTextColor.AQUA, false).skipLore().addLore("Dismantle old equipment", TextColors.GRAY_DESCRIPTION, false)
+            .addLore("break open geodes.", TextColors.GRAY_DESCRIPTION, false).build();
+    private ItemStack upgrade = new ItemStackBuilder(Material.ANVIL).setName("Upgrade", NamedTextColor.AQUA, false).skipLore().addLore("Upgrade equipment and weapons!", TextColors.GRAY_DESCRIPTION, false).build();
+    private ItemStack shop = new ItemStackBuilder(Material.EMERALD).setName("Shop", NamedTextColor.AQUA, false).skipLore().addLore("Click here to open the blacksmith shop!", TextColors.GRAY_DESCRIPTION, false).build();
 
     private DismantleGUI dismantleGUI;
     private UpgradeGUI upgradeGUI;
     private BlacksmithShopGUI shopGUI;
 
     public BlacksmithGUI(JCore main) {
-        super(main, "&7Blacksmith", 54, null, "&7Blacksmith", "Dismantle and upgrade items at the blacksmith!");
+        super(main, "Blacksmith", 54, null, "&7Blacksmith", "Dismantle and upgrade items at the blacksmith!");
         dismantleGUI = new DismantleGUI(main, this);
         upgradeGUI = new UpgradeGUI(main, this);
         shopGUI = new BlacksmithShopGUI(main, this);

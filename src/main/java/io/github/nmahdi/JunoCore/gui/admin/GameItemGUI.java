@@ -5,6 +5,7 @@ import io.github.nmahdi.JunoCore.gui.GUI;
 import io.github.nmahdi.JunoCore.item.GameItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
+import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
 import io.github.nmahdi.JunoCore.player.display.TextColors;
 import org.bukkit.Bukkit;
@@ -36,7 +37,9 @@ public class GameItemGUI extends GUI {
 			return;
 		}
 		if (e.getClickedInventory().getType() != InventoryType.PLAYER) {
-			if (!e.getCurrentItem().isSimilar(EMPTY)) e.getWhoClicked().getInventory().addItem(e.getCurrentItem());
+			GameItem item = GameItem.getItem(e.getCurrentItem());
+			if(item == null) return;
+			e.getWhoClicked().getInventory().addItem(ItemBuilder.buildGameItem(item));
 		}
 	}
 

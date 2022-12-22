@@ -26,6 +26,7 @@ import java.util.List;
 
 public class PlayerManager implements Listener, JunoManager {
 
+    private boolean debugMode;
     private JCore main;
     private SQLManager sqlManager;
     private ScoreboardManager scoreboardManager;
@@ -33,19 +34,20 @@ public class PlayerManager implements Listener, JunoManager {
     private ArrayList<GamePlayer> players = new ArrayList<>();
 
     public PlayerManager(JCore main){
+        debugMode = main.getConfig().getBoolean("debug-mode.player");
         this.main = main;
         this.main.getServer().getPluginManager().registerEvents(this, main);
         this.sqlManager = main.getSQLManager();
         this.scoreboardManager = new ScoreboardManager(main);
         for(Player player : main.getServer().getOnlinePlayers()){
-            login(new GamePlayer(player));
+            login(new GamePlayer(main, player));
         }
         JLogger.log("Player Manager has been enabled.");
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoin(PlayerJoinEvent e){
-        login(new GamePlayer(e.getPlayer()));
+        login(new GamePlayer(main, e.getPlayer()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -72,9 +74,18 @@ public class PlayerManager implements Listener, JunoManager {
         players.remove(player);
     }
 
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
+    }
+
+    @Override
+    public void setDebugMode(boolean mode) {
+        debugMode = mode;
+    }
+
     @Override
     public boolean isDebugging() {
-        return false;
+        return debugMode;
     }
 
     @Override

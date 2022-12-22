@@ -18,7 +18,7 @@ public abstract class NPCGUI extends GUI{
         super(main, name, size, previousMenu);
         this.npcName = ChatColor.translateAlternateColorCodes('&', npcName);
         this.skullLore = skullLore;
-        npcSkull = new SkullItemBuilder(SkullURL.GEODE).setName(getNPCName(), TextColors.GRAY, false).addLore(getSkullLore(), TextColors.GRAY, false).build();
+        npcSkull = new SkullItemBuilder(SkullURL.GEODE).setName(getNPCName(), TextColors.GRAY_DESCRIPTION, false).addLore(getSkullLore(), TextColors.GRAY_DESCRIPTION, false).build();
     }
 
     protected void addNpcSkull(Inventory inventory){

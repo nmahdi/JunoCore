@@ -1,7 +1,7 @@
 package io.github.nmahdi.JunoCore.entity.traits;
 
 import io.github.nmahdi.JunoCore.effects.ParticleHelper;
-import io.github.nmahdi.JunoCore.entity.traits.interfaces.DoesKnockBack;
+import io.github.nmahdi.JunoCore.entity.interfaces.DoesKnockBack;
 import net.citizensnpcs.api.event.NPCDamageEntityEvent;
 import net.citizensnpcs.api.event.NPCDamageEvent;
 import net.citizensnpcs.api.trait.Trait;

@@ -1,0 +1,13 @@
+###########################
+########Debug Mode#########
+debug-mode:
+  sql: false
+  world: false
+  packet: false
+  hologram: false
+  player: false
+  scoreboard: false
+  entity: false
+  spawn-zone: false
+  resource: false
+  item: false

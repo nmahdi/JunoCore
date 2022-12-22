@@ -1,15 +1,15 @@
 package io.github.nmahdi.JunoCore.dependencies;
 
+import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.item.GameItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
-import io.github.nmahdi.JunoCore.player.combat.EquipmentListener;
+import io.github.nmahdi.JunoCore.player.listeners.PlayerInventoryListener;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.utils.JunoManager;
-import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.*;
@@ -17,28 +17,30 @@ import java.util.Map;
 
 public class SQLManager implements JunoManager {
 
+    private boolean debugMode = false;
+
     private final String connectionURL = "jdbc:mysql://localhost:3306/JunoCore";
     private final String user = "JunoCore";
     private final String pass = "JunoCore12!";
 
     private final String DATA_TABLE = "PlayerData";
     private final String INVENTORY_TABLE = "PlayerInventory";
+    private final String STORAGE_TABLE = "PlayerStorage";
 
     private final String EMPTY = "EMPTY";
 
-    public SQLManager(){
+    public SQLManager(JCore main){
+        debugMode = main.getConfig().getBoolean("debug-mode.sql");
         try{
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             JLogger.log("MySQL driver not found.");
             throw new RuntimeException(e);
         }
-    }
 
-    public void loadPlayerData(GamePlayer player){
         Connection connection = establishConnection();
         if(connection == null){
-            debug("Connection is null.");
+            debug("Establishing connection on startup failed.");
             return;
         }
 
@@ -46,154 +48,56 @@ public class SQLManager implements JunoManager {
 
         try {
             statement = connection.createStatement();
-            ResultSet set = statement.executeQuery(existQuery(player));
 
-            if(set.next()){
-                debug("Found UUID matching " + player.getName() + "'s UUID. Attempting to load...");
+            if(!statement.executeQuery(tableExists(DATA_TABLE)).next()){
 
-                String invQuery = "SELECT * FROM " + INVENTORY_TABLE + " WHERE UUID='" + player.getUniqueId().toString()+"';";
-                ResultSet inv = statement.executeQuery(invQuery);
+                debug(DATA_TABLE + " not found. Creating...");
 
-                while(inv.next()){
-                    if(!inv.getString("Helmet").equals(EMPTY)) player.getInventory().setHelmet(unserialize(inv.getString("Helmet")));
-                    if(!inv.getString("Chestplate").equals(EMPTY)) player.getInventory().setChestplate(unserialize(inv.getString("Chestplate")));
-                    if(!inv.getString("Leggings").equals(EMPTY)) player.getInventory().setLeggings(unserialize(inv.getString("Leggings")));
-                    if(!inv.getString("Boots").equals(EMPTY)) player.getInventory().setBoots(unserialize(inv.getString("Boots")));
+                statement.execute("CREATE TABLE " + DATA_TABLE + " (UUID char(255) PRIMARY KEY, Name char(16) NOT NULL, " +
+                        "Coins BIGINT NOT NULL, CombatXP BIGINT NOT NULL, MiningXP BIGINT NOT NULL, ForagingXP BIGINT NOT NULL, FishingXP BIGINT NOT NULL," +
+                        "WoodcuttingXP BIGINT NOT NULL, FarmingXP BIGINT NOT NULL, MetalDetectingXP BIGINT NOT NULL);");
 
-                    if(!inv.getString("Cape").equals(EMPTY)) player.equipment.put(EquipmentListener.CAPE_SLOT, unserialize(inv.getString("Cape")));
-                    if(!inv.getString("Bracelet").equals(EMPTY)) player.equipment.put(EquipmentListener.BRACELET_SLOT, unserialize(inv.getString("Bracelet")));
-                    if(!inv.getString("Ring").equals(EMPTY)) player.equipment.put(EquipmentListener.RING_SLOT, unserialize(inv.getString("Ring")));
-                    if(!inv.getString("Headband").equals(EMPTY)) player.equipment.put(EquipmentListener.HEADBAND_SLOT, unserialize(inv.getString("Headband")));
-                    if(!inv.getString("Necklace").equals(EMPTY)) player.equipment.put(EquipmentListener.NECKLACE_SLOT, unserialize(inv.getString("Necklace")));
-
-                    for(int i = 0; i < 36; i++){
-                        if(!inv.getString("Slot"+(i+1)).equals(EMPTY))
-                            player.getInventory().setItem(i, unserialize(inv.getString("Slot"+(i+1))));
-                    }
-                }
-
-                String dataQuery = "SELECT * FROM " + DATA_TABLE + " WHERE UUID='" + player.getUniqueId().toString()+"';";
-                ResultSet rs = statement.executeQuery(dataQuery);
-
-                while(rs.next()) {
-                    player.loadData(rs);
-                }
-
-
-                debug("Loaded " + player.getName() + "'s data.");
-            }else{
-                debug("Failed to find " + player.getName() + "'s UUID in the database. Setting default parameters.");
-                player.newPlayer();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            statement.close();
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void savePlayerData(GamePlayer player) {
-        Connection connection = establishConnection();
-        if (connection == null) {
-            debug("Connection is null.");
-            return;
-        }
-
-        Statement statement = null;
-
-        try {
-            statement = connection.createStatement();
-            ResultSet set = statement.executeQuery(existQuery(player));
-
-            if (set.next()) {
-                debug("Found UUID matching " + player.getName() + "'s UUID. Attempting to save...");
-
-                String upDataQuery = "UPDATE " + DATA_TABLE + " SET Name='" + player.getName() + "',Coins=" + player.getCoins() + ",CombatXP=" + player.getCombat().getXP()
-                        + ",MiningXP=" + player.getMining().getXP() + ",ForagingXP=" + player.getForaging().getXP() + ",FishingXP=" + player.getFishing().getXP()
-                        + ",WoodcuttingXP=" + player.getWoodcutting().getXP() + ",FarmingXP=" + player.getFarming().getXP() + ",MetalDetectingXP=" + player.getMetalDetecting().getXP() +
-                        " WHERE UUID='" + player.getUniqueId().toString() + "';";
-                statement.execute(upDataQuery);
-
-                String upInvQuery = "UPDATE " + INVENTORY_TABLE + " SET " +
-                        "Helmet='" + serialize(player.getNBTHelmet()) +
-                        "',Chestplate='" + serialize(player.getNBTChestplate()) +
-                        "',Leggings='" + serialize(player.getNBTLeggings()) +
-                        "',Boots='" + serialize(player.getNBTBoots()) +
-                        "',Cape='" + serialize(player.getNBTCape()) +
-                        "',Bracelet='" + serialize(player.getNBTBracelet()) +
-                        "',Ring='" + serialize(player.getNBTRing()) +
-                        "',Headband='" + serialize(player.getNBTHeadband()) +
-                        "',Necklace='" + serialize(player.getNBTNecklace()) + "',";
-
-                for(int i = 0; i < 36; i++) {
-                    ItemStack stack = player.getInventory().getItem(i);
-                    String item = "EMPTY";
-                    if (!InventoryHelper.isAirOrNull(stack)) {
-                        item = serialize(new NBTGameItem(stack));
-                    }
-                    upInvQuery += "Slot" + (i+1) + "='" + item + "'";
-                    if (i != 35) {
-                        upInvQuery += ",";
-                    }
-                }
-
-                upInvQuery+= " WHERE UUID='" + player.getUniqueId().toString() + "';";
-
-                statement.execute(upInvQuery);
-
-                debug("Saved " + player.getName() + "'s data.");
-            } else {
-                String dataQuery = "INSERT INTO " + DATA_TABLE + " (UUID, Name, Coins, CombatXP, MiningXP, ForagingXP, FishingXP, WoodcuttingXP, FarmingXP, MetalDetectingXP) " +
-                        "VALUES('" + player.getUniqueId().toString() +"','" + player.getName() + "'," + player.getCoins() + "," +
-                        player.getCombat().getXP() + "," +
-                        player.getMining().getXP() + "," +
-                        player.getForaging().getXP() + "," +
-                        player.getFishing().getXP() + "," +
-                        player.getWoodcutting().getXP() + "," +
-                        player.getFishing().getXP() + "," +
-                        player.getMetalDetecting().getXP() + ");";
-                statement.execute(dataQuery);
-
-                String invQuery = "INSERT INTO " + INVENTORY_TABLE + "(UUID, Helmet, Chestplate, Leggings, Boots, Cape, Bracelet, Ring, Headband, Necklace, ";
-                for(int i = 0; i < 36; i++){
-                    invQuery+="Slot" + (i+1);
-                    if (i != 35) {
-                        invQuery += ",";
-                    }
-                }
-                invQuery+=") VALUES('" + player.getUniqueId().toString() + "'" +
-                        ",'" + serialize(player.getNBTHelmet()) +
-                        "','" + serialize(player.getNBTChestplate()) +
-                        "','" + serialize(player.getNBTLeggings()) +
-                        "','" + serialize(player.getNBTBoots()) +
-                        "','" + serialize(player.getNBTCape()) +
-                        "','" + serialize(player.getNBTBracelet()) +
-                        "','" + serialize(player.getNBTRing()) +
-                        "','" + serialize(player.getNBTHeadband()) +
-                        "','" + serialize(player.getNBTNecklace()) + "',";
-                for(int i = 0; i < 36; i++) {
-                    ItemStack stack = player.getInventory().getItem(i);
-                    String item = "EMPTY";
-                    if (!InventoryHelper.isAirOrNull(stack)) {
-                        item = serialize(new NBTGameItem(stack));
-                    }
-                    invQuery += "'" + item + "'";
-                    if (i != 35) {
-                        invQuery += ",";
-                    }
-                }
-                invQuery += ");";
-
-                statement.execute(invQuery);
-
-                debug("Inserted " + player.getName() + "'s info to " + DATA_TABLE + ". UUID: " + player.getUniqueId().toString() + ". Coins: " + player.getCoins());
+                debug("Created " + DATA_TABLE + ".");
             }
 
+            if(!statement.executeQuery(tableExists(INVENTORY_TABLE)).next()){
+                debug(INVENTORY_TABLE + " not found. Creating...");
+
+                String inventoryCreate = "CREATE TABLE " + INVENTORY_TABLE + " (UUID char(255) PRIMARY KEY, Name char(16) NOT NULL," +
+                        "Helmet char(255) NOT NULL, Chestplate char(255) NOT NULL, Leggings char(255) NOT NULL, Boots char(255) NOT NULL," +
+                        "Cape char(255) NOT NULL, Bracelet char(255) NOT NULL, Ring char(255) NOT NULL, Headband char(255) NOT NULL, Necklace char(255) NOT NULL,";
+
+                for(int i =0 ; i < 36; i++){
+                    if(i != 35){
+                        inventoryCreate += "Slot"+ i + " char(255) NOT NULL,";
+                    }else{
+                        inventoryCreate +="Slot"+i+" char(255) NOT NULL);";
+                    }
+                }
+
+                statement.execute(inventoryCreate);
+
+                debug("Created " + INVENTORY_TABLE + ".");
+            }
+
+            if(!statement.executeQuery(tableExists(STORAGE_TABLE)).next()){
+
+                debug(STORAGE_TABLE + " not found. Creating...");
+
+                String storageCreate = "CREATE TABLE " + STORAGE_TABLE + " (UUID char(255) PRIMARY KEY, Name char(16) NOT NULL,";
+
+                for(int i = 0; i < 54; i++){
+                    if(i != 53) {
+                        storageCreate += "Slot" + i + " char(255) NOT NULL,";
+                    }else{
+                        storageCreate += "Slot" + i + " char(255) NOT NULL);";
+                    }
+                }
+
+                statement.execute(storageCreate);
+
+                debug("Created " + STORAGE_TABLE + ".");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -207,6 +111,201 @@ public class SQLManager implements JunoManager {
         }
     }
 
+    public void loadPlayerData(GamePlayer player){
+        Connection connection = establishConnection();
+        if(connection == null){
+            debug("Connection is null");
+            return;
+        }
+
+        Statement statement = null;
+        try{
+            statement = connection.createStatement();
+
+            String loadInventoryQuery = "SELECT * FROM " + INVENTORY_TABLE + " WHERE UUID='" + player.getUniqueId().toString() + "';";
+            ResultSet inventory = statement.executeQuery(loadInventoryQuery);
+
+            while(inventory.next()){
+                if(!inventory.getString("Helmet").equals(EMPTY)) player.getInventory().setHelmet(deserializeItem(player, inventory.getString("Helmet")));
+                if(!inventory.getString("Chestplate").equals(EMPTY)) player.getInventory().setChestplate(deserializeItem(player, inventory.getString("Chestplate")));
+                if(!inventory.getString("Leggings").equals(EMPTY)) player.getInventory().setLeggings(deserializeItem(player, inventory.getString("Leggings")));
+                if(!inventory.getString("Boots").equals(EMPTY)) player.getInventory().setBoots(deserializeItem(player, inventory.getString("Boots")));
+
+                if(!inventory.getString("Cape").equals(EMPTY)) player.equipment.put(PlayerInventoryListener.CAPE_SLOT, deserializeItem(player, inventory.getString("Cape")));
+                if(!inventory.getString("Bracelet").equals(EMPTY)) player.equipment.put(PlayerInventoryListener.BRACELET_SLOT, deserializeItem(player, inventory.getString("Bracelet")));
+                if(!inventory.getString("Ring").equals(EMPTY)) player.equipment.put(PlayerInventoryListener.RING_SLOT, deserializeItem(player, inventory.getString("Ring")));
+                if(!inventory.getString("Headband").equals(EMPTY)) player.equipment.put(PlayerInventoryListener.HEADBAND_SLOT, deserializeItem(player, inventory.getString("Headband")));
+                if(!inventory.getString("Necklace").equals(EMPTY)) player.equipment.put(PlayerInventoryListener.NECKLACE_SLOT, deserializeItem(player, inventory.getString("Necklace")));
+
+                for(int i = 0; i < 36; i++){
+                    if(!inventory.getString("Slot"+i).equals(EMPTY))
+                        player.getInventory().setItem(i, deserializeItem(player, inventory.getString("Slot"+i)));
+                }
+            }
+
+            String loadDataQuery = "SELECT * FROM " + DATA_TABLE + " WHERE UUID='" + player.getUniqueId().toString() + "';";
+            ResultSet data = statement.executeQuery(loadDataQuery);
+
+            boolean exists = false;
+
+            while(data.next()){
+                exists = true;
+                player.loadData(data);
+            }
+            if(!exists){
+                player.newPlayer();
+            }
+
+            String loadStorageQuery = "SELECT * FROM " + STORAGE_TABLE + " WHERE UUID='" + player.getUniqueId().toString() + "';";
+            ResultSet storage = statement.executeQuery(loadStorageQuery);
+
+            while(storage.next()){
+                for(int i = 0; i < player.getStorage().getSize(); i++){
+                    player.getStorage().setItem(i, deserializeItem(player, storage.getString("Slot"+i)));
+                }
+            }
+
+            debug("Loaded " + player.getName() + "'s data.");
+
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+
+        try {
+            statement.close();
+            connection.close();
+            debug("Connection to database closed.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void savePlayerData(GamePlayer player){
+        Connection connection = establishConnection();
+
+        if (connection == null) {
+            debug("Connection is null.");
+            return;
+        }
+
+        Statement statement = null;
+
+        try {
+
+            statement = connection.createStatement();
+
+            debug("Saving " + player.getName() + "'s data...");
+
+            String[] inventory = new String[36];
+
+            for(int i = 0; i < 36; i++) {
+                ItemStack stack = player.getInventory().getItem(i);
+                String item = "EMPTY";
+                if (!InventoryHelper.isAirOrNull(stack)) {
+                    item = serializeItem(new NBTGameItem(stack));
+                }
+                inventory[i] = item;
+            }
+
+            String inventorySave = "INSERT INTO " + INVENTORY_TABLE + " VALUES(" +
+                    inSingleQuotation(player.getUniqueId().toString()) + "," + inSingleQuotation(player.getName()) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTHelmet())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTChestplate())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTLeggings())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTBoots())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTCape())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTBracelet())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTRing())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTHeadband())) + "," +
+                    inSingleQuotation(serializeItem(player.getNBTNecklace()));
+
+            for(int i = 0; i < inventory.length; i++) {
+                inventorySave += "," +  inSingleQuotation(inventory[i]);
+            }
+
+            inventorySave +=") ON DUPLICATE KEY UPDATE " +
+                    "Name=" + inSingleQuotation(player.getName()) +
+                    ",Helmet=" + inSingleQuotation(serializeItem(player.getNBTHelmet())) +
+                    ",Chestplate=" + inSingleQuotation(serializeItem(player.getNBTChestplate())) +
+                    ",Leggings=" + inSingleQuotation(serializeItem(player.getNBTLeggings())) +
+                    ",Boots=" + inSingleQuotation(serializeItem(player.getNBTBoots())) +
+                    ",Cape=" + inSingleQuotation(serializeItem(player.getNBTCape())) +
+                    ",Bracelet=" + inSingleQuotation(serializeItem(player.getNBTBracelet())) +
+                    ",Ring=" + inSingleQuotation(serializeItem(player.getNBTRing())) +
+                    ",Headband=" + inSingleQuotation(serializeItem(player.getNBTHeadband())) +
+                    ",Necklace=" + inSingleQuotation(serializeItem(player.getNBTNecklace()));
+
+            for(int i = 0; i < inventory.length; i++) {
+                inventorySave += ",Slot" + i + "=" + inSingleQuotation(inventory[i]);
+            }
+
+            inventorySave += ";";
+            statement.execute(inventorySave);
+
+            debug("Inventory saved.");
+
+            String dataSave = "INSERT INTO " + DATA_TABLE + " VALUES(" +
+                    inSingleQuotation(player.getUniqueId().toString()) + "," + inSingleQuotation(player.getName()) + "," +
+                    player.getCoins() + "," +
+                    player.getCombat().getXP() + "," +
+                    player.getMining().getXP() + "," +
+                    player.getForaging().getXP() + "," +
+                    player.getFishing().getXP() + "," +
+                    player.getWoodcutting().getXP() + "," +
+                    player.getFarming().getXP() + "," +
+                    player.getMetalDetecting().getXP() + ") ON DUPLICATE KEY UPDATE " +
+                    "Name='" + player.getName() + "',Coins=" + player.getCoins() + ",CombatXP=" + player.getCombat().getXP()
+                    + ",MiningXP=" + player.getMining().getXP() + ",ForagingXP=" + player.getForaging().getXP() + ",FishingXP=" + player.getFishing().getXP()
+                    + ",WoodcuttingXP=" + player.getWoodcutting().getXP() + ",FarmingXP=" + player.getFarming().getXP() + ",MetalDetectingXP=" + player.getMetalDetecting().getXP() + ";";
+            statement.execute(dataSave);
+
+            debug("Data saved.");
+
+            String[] storage = new String[player.getStorage().getSize()];
+
+            for(int i = 0; i < player.getStorage().getSize(); i++){
+                ItemStack stack = player.getStorage().getItem(i);
+                String item = "EMPTY";
+                if(!InventoryHelper.isAirOrNull(stack)){
+                    item = serializeItem(new NBTGameItem(stack));
+                }
+                storage[i] = item;
+            }
+
+            String storageSave = "INSERT INTO " + STORAGE_TABLE + " VALUES(" +
+                    inSingleQuotation(player.getUniqueId().toString()) + ", " + inSingleQuotation(player.getName());
+
+            for(int i = 0; i < storage.length; i++){
+                storageSave+= "," + inSingleQuotation(storage[i]);
+            }
+
+            storageSave += ") ON DUPLICATE KEY UPDATE " +
+            "Name=" + inSingleQuotation(player.getName());
+
+            for(int i = 0; i < storage.length; i++){
+                storageSave+=",Slot" + i + "=" + inSingleQuotation(storage[i]);
+            }
+
+            statement.execute(storageSave + ";");
+
+            debug("Storage saved.");
+
+
+            debug("Saved " + player.getName() + "'s data.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            statement.close();
+            connection.close();
+            debug("Connection to database closed.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private Connection establishConnection(){
         Connection connection = null;
         try{
@@ -219,14 +318,10 @@ public class SQLManager implements JunoManager {
         return connection;
     }
 
-    private String existQuery(GamePlayer player){
-        return "SELECT * FROM " + DATA_TABLE + " WHERE UUID='" + player.getUniqueId().toString() + "';";
-    }
-
-    private String serialize(NBTGameItem item){
+    private String serializeItem(NBTGameItem item){
         if(item == null) return EMPTY;
         if(!item.hasID()) return EMPTY;
-        String s = item.getID();
+        String s = item.getID() + "," + item.getItem().getAmount();
         if(item.hasRunes()){
             s+=",";
             for(Map.Entry<Rune, Integer> runes : item.getRunes().entrySet()){
@@ -236,18 +331,18 @@ public class SQLManager implements JunoManager {
         return s;
     }
 
-    private ItemStack unserialize(String s){
+    private ItemStack deserializeItem(GamePlayer gamePlayer, String s){
         if(s.equals(EMPTY)) return null;
         String[] string = s.split(",");
 
         GameItem gameItem = GameItem.getItem(string[0]);
 
         if(gameItem == null) return null;
-        NBTGameItem item = new NBTGameItem(ItemBuilder.buildGameItem(gameItem));
+        NBTGameItem item = new NBTGameItem(ItemBuilder.buildGameItem(gameItem, Integer.parseInt(string[1])));
 
-        if(gameItem.canApplyRunes() && string.length > 1){
+        if(gameItem.canApplyRunes() && string.length > 2){
 
-            String[] runes = string[1].split("/");
+            String[] runes = string[2].split("/");
 
             for (String value : runes) {
                 String[] r = value.split(":");
@@ -263,19 +358,36 @@ public class SQLManager implements JunoManager {
 
         }
 
-        item.getItem().setItemMeta(ItemBuilder.updateMeta(gameItem, item));
+        item.getItem().setItemMeta(ItemBuilder.updateMeta(gamePlayer, gameItem, item));
 
         return item.getItem();
     }
 
+    private String inSingleQuotation(String s){
+        return "'" + s + "'";
+    }
+
+    private String tableExists(String tableName){
+        return "SELECT * FROM information_schema.tables WHERE table_schema='junocore' AND table_name='" + tableName + "' LIMIT 1;";
+    }
+
+    private String playerExists(String tableName, String uuid){
+        return "SELECT * FROM " + tableName + " WHERE UUID='" + uuid+ "';";
+    }
+
     @Override
     public boolean isDebugging() {
-        return false;
+        return debugMode;
     }
 
     @Override
     public void debug(String s) {
         JLogger.debug(this, s);
+    }
+
+    @Override
+    public void setDebugMode(boolean mode) {
+        debugMode = mode;
     }
 
     @Override

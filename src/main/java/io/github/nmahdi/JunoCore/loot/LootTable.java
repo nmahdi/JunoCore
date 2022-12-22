@@ -4,7 +4,7 @@ import io.github.nmahdi.JunoCore.item.GameItem;
 
 public enum LootTable {
 
-	Zombie(new ChanceLootTable("zombie").addItem(GameItem.RottenFlesh, 1, 2, 50f)),
+	Zombie(new ChanceLootTable("zombie").addItem(GameItem.RottenFlesh, 1, 2, 100f)),
 	Spider(new ChanceLootTable("spider").addItem(GameItem.String, 2, 4, 100f)
                 .addItem(GameItem.SpiderEye, 1, 2, 50f)),
 	Endermite(new ChanceLootTable("endermite").addItem(GameItem.EnderPearl, 1, 100f)),
@@ -14,13 +14,23 @@ public enum LootTable {
 
 	Enderman(new ChanceLootTable("enderman").addItem(GameItem.EnderPearl, 1, 2, 100f)),
 
-	BasicGeode(new WeightLootTable("basic_geode")
+	LowQualityGeode(new WeightLootTable("low_geode")
                 .addItem(GameItem.CompactedCobblestone, 1, 5, 400)
                 .addItem(GameItem.CompactedCoal, 1, 4, 300)
                 .addItem(GameItem.CompactedIron, 1, 3, 200)
                 .addItem(GameItem.CompactedGold, 1, 2, 100)
                 .addItem(GameItem.CompactedDiamond, 1, 50)
                 .addItem(GameItem.CompactedEmerald, 1, 25)),
+
+	MediumQualityGeode(new WeightLootTable("medium_geode")
+			.addItem(GameItem.CompactedCobblestone, 3, 8, 400)
+			.addItem(GameItem.CompactedCoal, 4, 7, 300)
+			.addItem(GameItem.CompactedIron, 3, 6, 200)
+			.addItem(GameItem.CompactedGold, 2, 5, 100)
+			.addItem(GameItem.CompactedDiamond, 1, 2, 50)
+			.addItem(GameItem.CompactedEmerald, 1, 2, 25)
+			.addItem(GameItem.MagicStone, 1, 5)),
+
 
 	CommonEquipment(new ChanceLootTable("common_equipment").addItem(GameItem.MagicWand, 1, 2, 100f)),
 	RareEquipment(new ChanceLootTable("rare_equipment").addItem(GameItem.MagicStone, 3, 4, 100f)),

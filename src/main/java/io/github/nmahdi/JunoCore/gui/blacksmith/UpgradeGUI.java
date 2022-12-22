@@ -14,10 +14,10 @@ import org.bukkit.inventory.ItemStack;
 public class UpgradeGUI extends NPCGUI {
 
     private int insertSlot = 22;
-    ItemStack upgrade = new ItemStackBuilder(Material.ANVIL).setName("&bUpgrade", TextColors.GRAY, false).build();
+    ItemStack upgrade = new ItemStackBuilder(Material.ANVIL).setName("&bUpgrade", TextColors.GRAY_DESCRIPTION, false).build();
 
     public UpgradeGUI(JCore main, BlacksmithGUI blacksmithGUI) {
-        super(main, "&aUpgrade", 54, blacksmithGUI, blacksmithGUI.getName(), blacksmithGUI.getSkullLore());
+        super(main, "Upgrade", 54, blacksmithGUI, blacksmithGUI.getName(), blacksmithGUI.getSkullLore());
     }
 
     @Override

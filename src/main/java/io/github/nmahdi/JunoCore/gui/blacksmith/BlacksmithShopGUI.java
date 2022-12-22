@@ -23,7 +23,7 @@ public class BlacksmithShopGUI extends NPCGUI  implements ShopGUI {
     private int index = 10;
 
     public BlacksmithShopGUI(JCore main, BlacksmithGUI blacksmithGUI) {
-        super(main, "&7Blacksmith Shop", 54, blacksmithGUI, blacksmithGUI.getNPCName(), blacksmithGUI.getSkullLore());
+        super(main, "Blacksmith Shop", 54, blacksmithGUI, blacksmithGUI.getNPCName(), blacksmithGUI.getSkullLore());
         this.playerManager = main.getPlayerManager();
     }
 

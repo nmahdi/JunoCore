@@ -22,6 +22,7 @@ import java.util.Random;
 
 public class ResourceManager implements JunoManager {
 
+    private boolean debugMode;
     private JCore main;
     private ItemManager itemManager;
     private Random random;
@@ -31,6 +32,7 @@ public class ResourceManager implements JunoManager {
     private ArrayList<Integer> ticking = new ArrayList<>();
 
     public ResourceManager(JCore main){
+        debugMode = main.getConfig().getBoolean("debug-mode.resource");
         this.main = main;
         this.itemManager = main.getItemManager();
         this.random = main.getRandom();
@@ -49,20 +51,22 @@ public class ResourceManager implements JunoManager {
         if(!file.exists()){
             try {
                 ResourceGenerator generator = null;
+                ArrayList<Location> locations = null;
                 if(generatorType.equals(GeneratorType.Ore)) {
-                    generator = new OreGenerator(name, resourceType, ResourceType.Stone, player.getWorld(), WorldEditManager.getLocationsFromSelection(player, Material.SPONGE), random);
+                    locations = (WorldEditManager.getLocationsFromSelection(player, Material.SPONGE));
+                    generator = new OreGenerator(main, name, resourceType, ResourceType.Stone, player.getWorld(), locations, random);
                 }
                 if(generatorType.equals(GeneratorType.Tree)){
                     generator = new TreeGenerator(main, name, resourceType, player.getWorld(), random);
                 }
                 if(generatorType.equals(GeneratorType.Plant)){
-                    generator = new PlantGenerator(name, resourceType, player.getWorld(), WorldEditManager.getLocationsFromSelection(player, Material.SPONGE), random);
+                    locations = WorldEditManager.getLocationsFromSelection(player, Material.SPONGE);
+                    generator = new PlantGenerator(name, resourceType, player.getWorld(), locations, random);
                 }
                 if(generator == null) return;
                 generators.add(generator);
                 file.createNewFile();
-                save(file, generator.getName(), generator.getGeneratorType(), generator.getResourceType(),
-                        new ArrayList<>());
+                save(file, generator.getName(), generator.getGeneratorType(), generator.getResourceType(), locations);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -100,7 +104,7 @@ public class ResourceManager implements JunoManager {
                         if (resourceType != null) {
 
                             if (c.getString("generator-type").equals(GeneratorType.Ore.getId())) {
-                                generator = new OreGenerator(c.getString("name"), resourceType, ResourceType.Stone, main.getPrimaryWorld(), locations, random);
+                                generator = new OreGenerator(main, c.getString("name"), resourceType, ResourceType.Stone, main.getPrimaryWorld(), locations, random);
                             }
 
                             if(c.getString("generator-type").equals(GeneratorType.Tree.getId())){
@@ -178,8 +182,13 @@ public class ResourceManager implements JunoManager {
     }
 
     @Override
+    public void setDebugMode(boolean mode) {
+        debugMode = mode;
+    }
+
+    @Override
     public boolean isDebugging() {
-        return false;
+        return debugMode;
     }
 
 }

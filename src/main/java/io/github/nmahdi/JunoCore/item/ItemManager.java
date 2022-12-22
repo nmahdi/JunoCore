@@ -1,28 +1,42 @@
 package io.github.nmahdi.JunoCore.item;
 
 import io.github.nmahdi.JunoCore.JCore;
-import io.github.nmahdi.JunoCore.item.ability.abilities.MagicWandAbility;
-import io.github.nmahdi.JunoCore.item.ability.abilities.TreeFellerListener;
+import io.github.nmahdi.JunoCore.item.ability.AbilityListener;
+import io.github.nmahdi.JunoCore.item.ability.abilities.*;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.utils.JunoManager;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
 
 public class ItemManager implements JunoManager {
 
+	private boolean debugMode;
 	private JCore main;
 
 	public ItemManager(JCore main){
-		new MagicWandAbility(main, GameItem.MagicWand);
-		new TreeFellerListener(main, GameItem.TreeFeller);
+		this.debugMode = main.getConfig().getBoolean("debug-mode.item");
 		this.main = main;
-		JLogger.log("Items have been loaded.");
+		//Item Abilities
+		GameItem.MagicWand.setItemAbility(new MagicWand(main));
+		GameItem.BloodthirstyDagger.setItemAbility(new BloodThirstyDagger(main));
+		GameItem.LumberjacksLegacy.setItemAbility(new LumberJacksLegacy(main));
+		GameItem.HealingWand.setItemAbility(new HealingWand(main));
+
+		//Equipment sets
+		new RookieSet();
+		JLogger.log("Items have been initialized.");
+	}
+
+	public void postInit(){
+		new AbilityListener(main);
+	}
+
+	@Override
+	public void setDebugMode(boolean mode) {
+		debugMode = mode;
 	}
 
 	@Override
 	public boolean isDebugging() {
-		return false;
+		return debugMode;
 	}
 
 	@Override

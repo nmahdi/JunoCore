@@ -4,6 +4,7 @@ import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTItem;
 import io.github.nmahdi.JunoCore.item.crafting.Recipe;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
+import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -37,8 +38,6 @@ public class NBTGameItem extends ItemNBT {
     public boolean hasID(){
         return getJuno().hasKey(ID);
     }
-
-
 
     //Runes
     public boolean hasRunes(){

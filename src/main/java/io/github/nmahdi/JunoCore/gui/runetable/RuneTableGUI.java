@@ -3,11 +3,10 @@ package io.github.nmahdi.JunoCore.gui.runetable;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.GUI;
 import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.item.GameItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
+import io.github.nmahdi.JunoCore.player.PlayerManager;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
 import io.github.nmahdi.JunoCore.player.display.TextColors;
 import org.bukkit.Bukkit;
@@ -26,15 +25,18 @@ import java.util.ArrayList;
 
 public class RuneTableGUI extends GUI {
 
+	private PlayerManager playerManager;
+
 	private final int runeSlot = 29;
 	private final int inputSlot = 11;
 	private final int outputSlot = 24;
 
-	ItemStack accept = new ItemStackBuilder(Material.ENCHANTING_TABLE).setName("Confirm", TextColors.GRAY, false).build();
+	ItemStack accept = new ItemStackBuilder(Material.ENCHANTING_TABLE).setName("Confirm", TextColors.GRAY_DESCRIPTION, false).build();
 	private ArrayList<String> outputs = new ArrayList<>();
 
 	public RuneTableGUI(JCore main) {
-		super(main, "&bRune Table", 54, null);
+		super(main, "Rune Table", 54, null);
+		this.playerManager = main.getPlayerManager();
 	}
 
 	@EventHandler
@@ -69,7 +71,7 @@ public class RuneTableGUI extends GUI {
 					outputs.add(e.getWhoClicked().getUniqueId().toString());
 					inputItem.addRune(rune.getRune());
 
-					inputItem.getItem().setItemMeta(ItemBuilder.updateMeta(item, inputItem));
+					inputItem.getItem().setItemMeta(ItemBuilder.updateMeta(playerManager.getPlayer((Player)e.getWhoClicked()), item, inputItem));
 
 					e.getInventory().setItem(outputSlot, inputItem.getItem());
 					e.getInventory().setItem(inputSlot, null);

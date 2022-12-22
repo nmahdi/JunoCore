@@ -31,7 +31,7 @@ public class DismantleGUI extends NPCGUI {
     ItemStack accept = new ItemStackBuilder(Material.BLAZE_POWDER).setName("Confirm", NamedTextColor.RED, false).build();
 
     public DismantleGUI(JCore main, BlacksmithGUI blacksmithGUI) {
-        super(main,"&cDismantle", 54, blacksmithGUI, blacksmithGUI.getName(), blacksmithGUI.getSkullLore());
+        super(main,"Dismantle", 54, blacksmithGUI, blacksmithGUI.getName(), blacksmithGUI.getSkullLore());
         this.random = main.getRandom();
     }
 

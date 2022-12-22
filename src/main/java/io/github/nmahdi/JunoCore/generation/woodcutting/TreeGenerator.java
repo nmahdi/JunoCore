@@ -3,6 +3,7 @@ package io.github.nmahdi.JunoCore.generation.woodcutting;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import io.github.nmahdi.JunoCore.JCore;
+import io.github.nmahdi.JunoCore.ResourceHarvestEvent;
 import io.github.nmahdi.JunoCore.dependencies.WorldEditManager;
 import io.github.nmahdi.JunoCore.generation.GeneratorType;
 import io.github.nmahdi.JunoCore.generation.ResourceGenerator;
@@ -52,8 +53,8 @@ public class TreeGenerator extends ResourceGenerator implements Listener {
 	}
 
 	@EventHandler
-	public void onBreak(BlockBreakEvent e){
-		if(e.getPlayer().hasPermission("juno.generators.override")) return;
+	public void onHarvest(ResourceHarvestEvent e){
+		//if(e.getPlayer().getPlayerObject().hasPermission("juno.generators.override")) return;
 		Location location = e.getBlock().getLocation();
 		if(region.contains(location.getBlockX(), location.getBlockY(), location.getBlockZ())){
 			blocks.add(new RegeneratingBlock(location, e.getBlock().getType(), System.currentTimeMillis(), 30));
