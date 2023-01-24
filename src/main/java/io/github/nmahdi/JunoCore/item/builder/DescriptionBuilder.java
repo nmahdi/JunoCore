@@ -98,4 +98,9 @@ public class DescriptionBuilder {
 	public ArrayList<Component> getList() {
 		return list;
 	}
+
+	public static Component buildComponent(String text, TextColor color){
+		return Component.text(text).color(color);
+	}
+
 }

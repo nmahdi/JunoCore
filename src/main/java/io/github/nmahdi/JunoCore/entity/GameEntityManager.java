@@ -45,9 +45,10 @@ public class GameEntityManager implements JunoManager, Listener {
      * @param entity GameEntity template
      * @param location Location in the world
      */
-    public String spawnEntity(GameEntity entity, Location location){
+    public NPC spawnEntity(GameEntity entity, Location location){
         NPC npc = registry.createNPC(entity.getEntityType(), "entity " + counter);
         counter++;
+        npc.getDefaultGoalController().addBehavior(new CircleAroundGoal(npc), 1);
 
         for(Class<? extends GameTrait> trait : entity.getTraits()){
 
@@ -62,7 +63,7 @@ public class GameEntityManager implements JunoManager, Listener {
 
         npc.setProtected(false);
         npc.spawn(location.add(LocationHelper.randomWithRange(-1, 1), 0, LocationHelper.randomWithRange(-1, 1)));
-        return npc.getUniqueId().toString();
+        return npc;
     }
 
     @EventHandler

@@ -8,7 +8,7 @@ import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
@@ -105,8 +105,7 @@ public class PlayerMenuGUI extends GUI {
 
 
     @Override
-    public void openInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
+    public void setItems(Inventory inventory, Player player) {
         GamePlayer gamePlayer = playerManager.getPlayer(player);
 
         SkullItemBuilder bStats = (SkullItemBuilder) new SkullItemBuilder(player).setName("Stats", NamedTextColor.AQUA, true);
@@ -134,8 +133,6 @@ public class PlayerMenuGUI extends GUI {
         inventory.setItem(24, STORAGE);
 
         insertFiller(inventory);
-
-        player.openInventory(inventory);
     }
 
     @Override

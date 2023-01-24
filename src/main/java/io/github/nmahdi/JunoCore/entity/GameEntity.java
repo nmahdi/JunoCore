@@ -17,32 +17,12 @@ public enum GameEntity {
             .addTrait(MobTrait.class)),
     //Monsters
     Zombie(new GameEntityContainer(EntityType.ZOMBIE, "Zombie", "zombie", 10, 100,
-            1, 5, 5, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d)
+            1, 5, 5, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d).setSpeedModifier(2f)
             .addTrait(MobTrait.class).addTrait(SunburnTrait.class)),
-
-    Spider(new GameEntityContainer(EntityType.SPIDER, "Spider", "spider", 20, 150,
-            1, 5, 8, LootTable.Spider).setAttackRange(1.5).setDistanceMargin(0.5)
-            .addTrait(MobTrait.class)),
-
-    Endermite(new GameEntityContainer(EntityType.ENDERMITE, "Endermite", "endermite", 15, 50,
-            2, 5, 3, LootTable.Endermite).setAttackRange(0.5).setDistanceMargin(0)
-            .addTrait(MobTrait.class)),
-
-    MagmaCube(new GameEntityContainer(EntityType.MAGMA_CUBE, "Magma Cube", "magma_cube", 20, 150,
-            1, 5, 8, LootTable.MagmaCube).setAttackRange(0.5).setDistanceMargin(0.1)
-            .addTrait(MobTrait.class)),
-
-    Slime(new GameEntityContainer(EntityType.SLIME, "Slime", "slime", 20, 150,
-            1, 5, 8, LootTable.Slime).setAttackRange(0.5).setDistanceMargin(0.1)
-            .addTrait(MobTrait.class)),
 
     Skeleton(new GameEntityContainer(EntityType.SKELETON, "Skeleton", "skeleton", 10, 100,
             1, 5, 4, LootTable.Skeleton).setAttackRange(0).setDistanceMargin(6).setRanged().setHeldItem(Material.BOW).setAttackDelay(50)
             .addTrait(MobTrait.class).addTrait(SunburnTrait.class)),
-
-    Enderman(new GameEntityContainer(EntityType.ENDERMAN, "Enderman", "enderman", 30, 200,
-            1, 5, 15, LootTable.Enderman).setAttackRange(2).setDistanceMargin(0.5)
-            .addTrait(MobTrait.class)),
 
     LostWizard(new GameEntityContainer(EntityType.PILLAGER, "Lost Wizard", "lost_wizard", 50, 200,
             1, 5, 100, LootTable.Zombie).setAttackRange(1).setDistanceMargin(10)
@@ -51,6 +31,14 @@ public enum GameEntity {
     Smasher(new GameEntityContainer(EntityType.ZOMBIE, "Smasher", "smasher", 50, 4000,
             10, 20, 15, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10).setSpeedModifier(2).setHeldItem(Material.ANVIL)
             .addTrait(MobTrait.class)),
+
+    UndeadMonstrosity(new GameEntityContainer(EntityType.ZOMBIE, "Undead Monstrosity", "undead_monstrosity", 1000, 10000,
+            100, 100, 100, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10)),
+
+    //Fishing Mobs
+    Drowned(new GameEntityContainer(EntityType.DROWNED, "Drowned", "drowned", 10, 100,
+            1, 5, 10, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d)
+            .addTrait(MobTrait.class))
 
     ;
 

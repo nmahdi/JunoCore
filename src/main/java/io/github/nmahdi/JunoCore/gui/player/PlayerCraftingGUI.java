@@ -55,9 +55,7 @@ public class PlayerCraftingGUI extends GUI {
     }
 
     @Override
-    public void openInventory(Player player) {
-        Inventory inventory = createInventory();
-
+    public void setItems(Inventory inventory, Player player) {
         inventory.setItem(10, materialsCraftingGUI.ICON);
         inventory.setItem(11, toolsCraftingGUI.ICON);
         inventory.setItem(12, weaponsCraftingGUI.ICON);
@@ -65,8 +63,6 @@ public class PlayerCraftingGUI extends GUI {
 
         insertBack(inventory);
         insertFiller(inventory);
-
-        player.openInventory(inventory);
     }
 
     @Override

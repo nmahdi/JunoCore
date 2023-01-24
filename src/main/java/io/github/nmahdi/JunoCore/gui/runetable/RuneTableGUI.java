@@ -8,8 +8,7 @@ import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
-import org.bukkit.Bukkit;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -110,15 +109,11 @@ public class RuneTableGUI extends GUI {
 	}
 
 	@Override
-	public void openInventory(Player player) {
-		Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
-
+	public void setItems(Inventory inventory, Player player) {
 		inventory.setItem(22, accept);
 		inventory.setItem(outputSlot, OUTPUT);
 
 		insertFiller(inventory, runeSlot, inputSlot, outputSlot);
-
-		player.openInventory(inventory);
 	}
 
 	@Override

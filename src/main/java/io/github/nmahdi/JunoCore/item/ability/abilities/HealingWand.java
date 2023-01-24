@@ -6,7 +6,7 @@ import io.github.nmahdi.JunoCore.item.ability.item.RightClickItemAbility;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.PlayerStats;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import net.kyori.adventure.text.Component;
 

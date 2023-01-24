@@ -6,8 +6,8 @@ import io.github.nmahdi.JunoCore.item.GameItem;
 import java.util.HashMap;
 
 public enum Recipe {
-    RookieSword(new RecipeContainer(GameItem.RookieSword, 1 ,Recipe.Menu.Weapons).addItems(GameItem.CompactedIron, 2).addItems(GameItem.Stick, 1)),
-
+    CompactedCobblestone(new RecipeContainer(GameItem.CompactedCobblestone, 1, Menu.Materials).addItems(GameItem.Cobblestone, 160)),
+    CompactedIronBar(new RecipeContainer(GameItem.IronBar, 1, Menu.Materials).addItems(GameItem.IronBar, 160))
     ;
 
     private RecipeContainer recipeContainer;

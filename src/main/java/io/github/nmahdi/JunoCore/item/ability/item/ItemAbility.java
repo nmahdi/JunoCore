@@ -2,7 +2,7 @@ package io.github.nmahdi.JunoCore.item.ability.item;
 
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;

@@ -8,7 +8,7 @@ import io.github.nmahdi.JunoCore.item.ability.item.RightClickItemAbility;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.effects.ParticleHelper;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;

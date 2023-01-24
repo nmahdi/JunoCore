@@ -7,7 +7,7 @@ import io.github.nmahdi.JunoCore.item.GameItem;
 import io.github.nmahdi.JunoCore.item.ability.item.BlockBreakItemAbility;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.kyori.adventure.text.Component;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

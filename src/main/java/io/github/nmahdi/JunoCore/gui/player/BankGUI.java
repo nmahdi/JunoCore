@@ -5,10 +5,9 @@ import io.github.nmahdi.JunoCore.gui.NPCGUI;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,9 +43,7 @@ public class BankGUI extends NPCGUI {
     }
 
     @Override
-    public void openInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
-
+    public void setItems(Inventory inventory, Player player) {
         GamePlayer gamePlayer = playerManager.getPlayer(player);
 
         inventory.setItem(20, deposit);
@@ -55,8 +52,6 @@ public class BankGUI extends NPCGUI {
 
         insertBack(inventory);
         insertFiller(inventory);
-
-        player.openInventory(inventory);
     }
 
     @Override

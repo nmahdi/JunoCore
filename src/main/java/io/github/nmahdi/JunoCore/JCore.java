@@ -20,6 +20,7 @@ import io.github.nmahdi.JunoCore.item.GameItemCommand;
 import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.listeners.ConsumableListener;
 import io.github.nmahdi.JunoCore.player.listeners.GameItemPickupListener;
+import io.github.nmahdi.JunoCore.player.listeners.fishing.FishingListener;
 import io.github.nmahdi.JunoCore.player.stats.CoinCommand;
 import io.github.nmahdi.JunoCore.player.listeners.PlayerInventoryListener;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
@@ -109,6 +110,7 @@ public class JCore extends JavaPlugin implements Listener {
         //Player
         new PlayerCombatListener(this);
         new PlayerResourceListener(this);
+        new FishingListener(this);
 
         //GUI
         new PlayerMenuGUI(this);

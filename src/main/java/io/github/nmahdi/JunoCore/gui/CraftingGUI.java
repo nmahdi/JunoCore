@@ -1,13 +1,13 @@
 package io.github.nmahdi.JunoCore.gui;
 
 import io.github.nmahdi.JunoCore.JCore;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import io.github.nmahdi.JunoCore.item.GameItem;
 import io.github.nmahdi.JunoCore.item.builder.DescriptionBuilder;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTCraftingItem;
 import io.github.nmahdi.JunoCore.item.crafting.Recipe;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -45,9 +45,7 @@ public abstract class CraftingGUI extends GUI{
 	}
 
 	@Override
-	public void openInventory(Player player) {
-		Inventory inventory = createInventory();
-
+	public void setItems(Inventory inventory, Player player) {
 		int index = 0;
 
 		for(Recipe recipe : Recipe.values()){
@@ -60,8 +58,6 @@ public abstract class CraftingGUI extends GUI{
 
 		insertFiller(inventory);
 		insertBack(inventory);
-
-		player.openInventory(inventory);
 	}
 
 	public abstract Recipe.Menu getMenuType();

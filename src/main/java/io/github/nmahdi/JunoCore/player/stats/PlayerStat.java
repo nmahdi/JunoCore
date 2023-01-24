@@ -1,7 +1,7 @@
 package io.github.nmahdi.JunoCore.player.stats;
 
-import io.github.nmahdi.JunoCore.player.display.TextColors;
-import io.github.nmahdi.JunoCore.player.display.TextSymbols;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextSymbols;
 import net.kyori.adventure.text.format.TextColor;
 
 public enum PlayerStat {

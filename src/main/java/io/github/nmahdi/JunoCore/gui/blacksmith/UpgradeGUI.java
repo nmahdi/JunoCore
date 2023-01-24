@@ -3,8 +3,7 @@ package io.github.nmahdi.JunoCore.gui.blacksmith;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.NPCGUI;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
-import org.bukkit.Bukkit;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -26,14 +25,10 @@ public class UpgradeGUI extends NPCGUI {
     }
 
     @Override
-    public void openInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
-
+    public void setItems(Inventory inventory, Player player) {
         addNpcSkull(inventory);
         insertBack(inventory);
         insertFiller(inventory);
-
-        player.openInventory(inventory);
     }
 
     @Override

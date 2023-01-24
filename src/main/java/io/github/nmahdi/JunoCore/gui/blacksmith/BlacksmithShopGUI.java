@@ -46,17 +46,13 @@ public class BlacksmithShopGUI extends NPCGUI  implements ShopGUI {
     }
 
     @Override
-    public void openInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
-
+    public void setItems(Inventory inventory, Player player) {
         for(int i = index; i < index+items.size(); i++){
             //inventory.setItem(i, ItemBuilder.buildShopItem(items.get(i)));
         }
 
         insertBack(inventory);
         insertFiller(inventory);
-
-        player.openInventory(inventory);
     }
 
     @Override

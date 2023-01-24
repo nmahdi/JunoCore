@@ -1,9 +1,9 @@
 package io.github.nmahdi.JunoCore.gui;
 
 import io.github.nmahdi.JunoCore.JCore;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,8 +41,15 @@ public abstract class GUI implements Listener {
 
     public abstract void onInvClick(InventoryClickEvent e);
 
-    public abstract void openInventory(Player player);
+    public abstract void setItems(Inventory inventory, Player player);
+
     public abstract void onInvClose(Inventory inventory, Player player);
+
+    public void openInventory(Player player){
+        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
+        setItems(inventory, player);
+        player.openInventory(inventory);
+    }
 
     @EventHandler
     public void invClick(InventoryClickEvent e){
@@ -60,10 +67,6 @@ public abstract class GUI implements Listener {
     public void invClose(InventoryCloseEvent e){
         if(!e.getView().getTitle().equalsIgnoreCase(getName())) return;
         onInvClose(e.getInventory(), (Player)e.getPlayer());
-    }
-
-    protected Inventory createInventory(){
-        return Bukkit.createInventory(null, getSize(), getName());
     }
 
     protected void insertBack(Inventory inventory){

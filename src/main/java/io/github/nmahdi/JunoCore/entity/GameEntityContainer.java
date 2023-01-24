@@ -4,6 +4,7 @@ import io.github.nmahdi.JunoCore.entity.traits.GameTrait;
 import io.github.nmahdi.JunoCore.entity.traits.StatsTrait;
 import io.github.nmahdi.JunoCore.loot.ILootTable;
 import io.github.nmahdi.JunoCore.loot.LootTable;
+import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
 import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -34,6 +35,7 @@ public class GameEntityContainer {
 
 	public ArrayList<Class<? extends GameTrait>> traits = new ArrayList<>();
 
+	public ArrayList<Class<? extends BehaviorGoalAdapter>> goals = new ArrayList<>();
 
 	public GameEntityContainer(EntityType entityType, String displayName, String id, int combatXP, int baseHealth, int minLevel, int maxLevel, double damagePerHit, LootTable lootTable){
 		this.entityType = entityType;
@@ -63,7 +65,7 @@ public class GameEntityContainer {
 		return this;
 	}
 
-	public GameEntityContainer setSpeedModifier(int speedModifier){
+	public GameEntityContainer setSpeedModifier(float speedModifier){
 		this.speedModifier = speedModifier;
 		return this;
 	}
@@ -105,6 +107,11 @@ public class GameEntityContainer {
 
 	public GameEntityContainer addTrait(Class<? extends GameTrait> trait){
 		this.traits.add(trait);
+		return this;
+	}
+
+	public GameEntityContainer addGoal(Class<? extends BehaviorGoalAdapter> goal){
+		this.goals.add(goal);
 		return this;
 	}
 

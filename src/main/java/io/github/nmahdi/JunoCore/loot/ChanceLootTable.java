@@ -9,11 +9,9 @@ import java.util.Random;
 
 public class ChanceLootTable implements ILootTable {
 
-    private String id;
     private HashMap<Loot, Float> loot = new HashMap<>();
 
-    public ChanceLootTable(String id){
-        this.id = id;
+    public ChanceLootTable(){
     }
 
     public ChanceLootTable addItem(GameItem item, int amount, float chance){
@@ -47,11 +45,6 @@ public class ChanceLootTable implements ILootTable {
 
     public HashMap<Loot, Float> getLoot() {
         return loot;
-    }
-
-    @Override
-    public String getID() {
-        return id;
     }
 
     @Override

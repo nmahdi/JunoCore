@@ -21,8 +21,20 @@ public enum ItemType {
     Shovel(Catagory.TOOL),
     Hoe(Catagory.TOOL),
     Shears(Catagory.TOOL),
+    FishingRod(Catagory.TOOL),
 
     Rune(Catagory.RUNE),
+
+    CombatResource(Catagory.RESOURCE),
+    MiningResource(Catagory.RESOURCE),
+    ForagingResource(Catagory.RESOURCE),
+    FishingResource(Catagory.RESOURCE),
+    WoodcuttingResource(Catagory.RESOURCE),
+    FarmingResource(Catagory.RESOURCE),
+
+    Resource(Catagory.RESOURCE),
+    CompactedResource(Catagory.RESOURCE),
+    Ore(Catagory.RESOURCE),
 
     Misc(Catagory.MISC),
     Block(Catagory.MISC);
@@ -44,7 +56,8 @@ public enum ItemType {
         public static final int WEAPON = 2;
         public static final int TOOL = 3;
         public static final int RUNE = 4;
-        public static final int MISC = 5;
+        public static final int RESOURCE = 5;
+        public static final int MISC = 6;
     }
 
 }

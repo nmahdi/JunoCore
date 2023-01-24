@@ -7,15 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Rune {
-	Efficiency(PlayerStat.HarvestingSpeed, 100, 1, ItemType.Catagory.TOOL),
+	Efficiency(PlayerStat.HarvestingSpeed, 100, 1, ItemType.Catagory.TOOL, ItemType.Catagory.ARMOR),
 
-	Fortune(PlayerStat.Fortune, 10, 1, ItemType.Catagory.TOOL),
+	Fortune(PlayerStat.Fortune, 10, 1, ItemType.Catagory.TOOL, ItemType.Catagory.ARMOR),
 
 	Smelting(null, 0, 1, ItemType.Catagory.TOOL),
 
 	Silktouch(null, 0, 1, ItemType.Catagory.TOOL),
-
-	Damage(PlayerStat.Damage, 10,1, ItemType.Catagory.WEAPON),
 
 	Strength(PlayerStat.Strength, 25, 1, ItemType.Catagory.ARMOR, ItemType.Catagory.EQUIPMENT),
 

@@ -1,6 +1,6 @@
 package io.github.nmahdi.JunoCore.item.stats;
 
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.kyori.adventure.text.format.TextColor;
 
 public enum Rarity {

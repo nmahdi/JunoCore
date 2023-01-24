@@ -19,6 +19,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Random;
@@ -38,6 +39,11 @@ public class PlayerCombatListener implements Listener {
         this.entityManager = main.getEntityManager();
         this.hologramsManager = main.getHologramsManager();
         main.getServer().getPluginManager().registerEvents(this, main);
+    }
+
+    @EventHandler
+    public void armorStand(PlayerArmorStandManipulateEvent e){
+        e.setCancelled(true);
     }
 
     /**

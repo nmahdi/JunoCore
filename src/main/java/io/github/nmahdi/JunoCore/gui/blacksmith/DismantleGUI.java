@@ -107,16 +107,12 @@ public class DismantleGUI extends NPCGUI {
     }
 
     @Override
-    public void openInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
-
+    public void setItems(Inventory inventory, Player player) {
         inventory.setItem(31, accept);
 
         addNpcSkull(inventory);
         insertBack(inventory);
         insertFiller(inventory, inputSlot, outputSlot);
-
-        player.openInventory(inventory);
     }
 
     @Override

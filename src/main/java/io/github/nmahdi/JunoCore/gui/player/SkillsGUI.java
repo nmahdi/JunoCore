@@ -7,12 +7,11 @@ import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
 import io.github.nmahdi.JunoCore.player.stats.Skill;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -35,9 +34,7 @@ public class SkillsGUI extends GUI {
     }
 
     @Override
-    public void openInventory(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, getSize(), getName());
-
+    public void setItems(Inventory inventory, Player player) {
         GamePlayer gamePlayer = playerManager.getPlayer(player);
 
         int index = 20;
@@ -62,8 +59,6 @@ public class SkillsGUI extends GUI {
 
         insertBack(inventory);
         insertFiller(inventory);
-
-        player.openInventory(inventory);
     }
 
     public Component getSkillProgress(long currentXP, long needed, double percentage){

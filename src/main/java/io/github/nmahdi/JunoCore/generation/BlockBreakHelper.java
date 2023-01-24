@@ -52,6 +52,7 @@ public interface BlockBreakHelper {
 			}
 
 			GameItem drop = resourceType.getDrop();
+			double amount = 1 + (player.getStats().getFortune()/100);
 
 			if (player.getNBTHeldItem() != null) {
 				if (player.getHeldItem().canApplyRunes() && player.getNBTHeldItem().hasRunes()) {
@@ -67,7 +68,7 @@ public interface BlockBreakHelper {
 				}
 			}
 
-			HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(ItemBuilder.buildGameItem(drop));
+			HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(ItemBuilder.buildGameItem(drop, resourceType.getAmount()*(int)amount));
 			if (!leftOver.isEmpty()) {
 				for (ItemStack itemStack : leftOver.values()) {
 					player.getWorld().dropItemNaturally(block.getLocation(), itemStack);

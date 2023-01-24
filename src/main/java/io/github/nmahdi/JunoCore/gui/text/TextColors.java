@@ -1,4 +1,4 @@
-package io.github.nmahdi.JunoCore.player.display;
+package io.github.nmahdi.JunoCore.gui.text;
 
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;

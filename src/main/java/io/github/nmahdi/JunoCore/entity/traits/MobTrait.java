@@ -58,7 +58,7 @@ public class MobTrait extends GameTrait {
 	public void run() {
 		if(!npc.isSpawned()) return;
 
-		if(target == null){
+		/*if(target == null){
 			HashMap<Player, Double> players = new HashMap<>();
 			Player temp = null;
 
@@ -102,6 +102,7 @@ public class MobTrait extends GameTrait {
 			}
 		}
 
+		 */
 	}
 
 	public double getDamage() {

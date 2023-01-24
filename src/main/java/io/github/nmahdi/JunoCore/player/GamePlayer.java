@@ -19,10 +19,14 @@ import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import io.github.nmahdi.JunoCore.player.stats.Skill;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
 import io.github.nmahdi.JunoCore.utils.JLogger;
+import io.papermc.paper.math.Rotations;
+import it.unimi.dsi.fastutil.Hash;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.CraftingInventory;
@@ -32,6 +36,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.EulerAngle;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -198,12 +203,15 @@ public class GamePlayer{
 	private void tick(JCore main, ScoreboardManager scoreboardManager){
 		this.taskID = main.getServer().getScheduler().scheduleAsyncRepeatingTask(main, () -> {
 			updateTicks++;
-			//Display
-			actionBar.send();
-			scoreboardManager.update(this);
 
-			if(updateTicks == 4) {
-				updateTicks = 0;
+			//Tick amount might change
+			if(updateTicks % 5 == 0) {
+				//Display
+				actionBar.send();
+				scoreboardManager.update(this);
+			}
+
+			if(updateTicks % 5 == 0) {
 				//Regen
 				if (stats.getHealth() < stats.getMaxHealth()) {
 					stats.plusHealth(stats.getHealthRegen());
@@ -218,8 +226,10 @@ public class GamePlayer{
 				}
 			}
 
+			if(updateTicks == 20) updateTicks = 0;
 
-		}, 20, 5);
+
+		}, 0, 1);
 	}
 
 	public int getDamage(Random random){
@@ -229,8 +239,6 @@ public class GamePlayer{
 		if(hasHeldItem()){
 			//Runes
 			if(getHeldItem().canApplyRunes()) {
-				if (getNBTHeldItem().getRunes().containsKey(Rune.Damage))
-					damage += Rune.Damage.getAmount() * getNBTHeldItem().getRunes().get(Rune.Damage);
 				if (getNBTHeldItem().getRunes().containsKey(Rune.Strength))
 					strength += Rune.Strength.getAmount() * getNBTHeldItem().getRunes().get(Rune.Strength);
 			}
@@ -480,6 +488,13 @@ public class GamePlayer{
 	public PlayerSkill getSkill(Skill skill){
 		return skills.get(skill);
 	}
+
+	public void addItem(GameItem item, int amount){
+
+		HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(ItemBuilder.buildGameItem(item, amount));
+
+	}
+
 
 	public boolean hasHeldItem(){
 		return heldItem != null;

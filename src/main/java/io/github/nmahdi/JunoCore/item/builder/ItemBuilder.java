@@ -8,7 +8,7 @@ import io.github.nmahdi.JunoCore.item.stats.ItemType;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -130,7 +130,20 @@ public class ItemBuilder{
             builder.appendAll(item.getEquipmentAbility().getAbilityDescription()).skipLine();
         }
         if(item.hasDescription()){
-            builder.appendAll(item.getDescription()).skipLine();
+            StringBuilder line = new StringBuilder();
+            String[] words = item.getDescription().split(" ");
+            int lineLength = 0;
+            for(String word : words){
+                if(lineLength + word.length() > 35){
+                    builder.append(line.toString(), TextColors.GRAY_DESCRIPTION).endLine();
+                    line = new StringBuilder();
+                    lineLength = 0;
+                }
+                line.append(word).append(" ");
+                lineLength += word.length() + 1;
+            }
+            if(line.length() > 0) builder.append(line.toString(), TextColors.GRAY_DESCRIPTION).endLine();
+            builder.skipLine();
         }
         /*if(item.canApplyRunes() && gameItem.hasRunes() && gameItem.getRunes().isEmpty()){
             builder.append("Runes can be applied", NamedTextColor.DARK_GRAY).endLine();
@@ -142,7 +155,7 @@ public class ItemBuilder{
 
     private static Component buildRarity(GameItem item){
         String string = item.getRarity().toString();
-        if(item.getItemType() != ItemType.Misc){
+        if(item.getItemType().getCatagory() != ItemType.Catagory.MISC && item.getItemType().getCatagory() != ItemType.Catagory.RESOURCE){
             string+= " " + item.getItemType().toString();
         }
         return Component.text(string).color(item.getRarity().getColor()).decorate(TextDecoration.BOLD);

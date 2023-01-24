@@ -3,13 +3,18 @@ package io.github.nmahdi.JunoCore.item;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.item.ability.AbilityListener;
 import io.github.nmahdi.JunoCore.item.ability.abilities.*;
+import io.github.nmahdi.JunoCore.item.temp.TempItem;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.utils.JunoManager;
+
+import java.util.ArrayList;
 
 public class ItemManager implements JunoManager {
 
 	private boolean debugMode;
 	private JCore main;
+
+	private ArrayList<TempItem> items = new ArrayList<>();
 
 	public ItemManager(JCore main){
 		this.debugMode = main.getConfig().getBoolean("debug-mode.item");
@@ -21,8 +26,11 @@ public class ItemManager implements JunoManager {
 		GameItem.HealingWand.setItemAbility(new HealingWand(main));
 
 		//Equipment sets
-		new RookieSet();
 		JLogger.log("Items have been initialized.");
+	}
+
+	public void addItem(TempItem item){
+		this.items.add(item);
 	}
 
 	public void postInit(){

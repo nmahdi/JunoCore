@@ -5,9 +5,8 @@ import io.github.nmahdi.JunoCore.gui.GUI;
 import io.github.nmahdi.JunoCore.item.GameItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
-import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -60,6 +59,11 @@ public class GameItemGUI extends GUI {
 		if(InventoryHelper.isAirOrNull(e.getCurrentItem())) return;
 		if(!e.getView().getTitle().contains(getName())) return;
 		onInvClick(e);
+	}
+
+	@Override
+	public void setItems(Inventory inventory, Player player) {
+		
 	}
 
 	@Override

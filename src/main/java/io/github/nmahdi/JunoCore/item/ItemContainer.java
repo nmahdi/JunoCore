@@ -21,7 +21,7 @@ public class ItemContainer {
     public Material material;
 
     public Rarity rarity;
-    public ArrayList<Component> description = new ArrayList<>();
+    public String description;
     public boolean hasUUID = false;
     public ItemType itemType;
     public int npcSellPrice = 0;
@@ -46,20 +46,14 @@ public class ItemContainer {
         this.material = material;
         this.rarity = rarity;
         this.itemType = itemType;
-        if(itemType != ItemType.Misc && itemType != ItemType.Block && itemType != ItemType.Rune){
+        if(itemType.getCatagory() == ItemType.Catagory.ARMOR || itemType.getCatagory() == ItemType.Catagory.EQUIPMENT || itemType.getCatagory() == ItemType.Catagory.TOOL
+        || itemType.getCatagory() == ItemType.Catagory.WEAPON){
             hasUUID = true;
         }
     }
 
-    public ItemContainer addDescription(Component... components){
-        for(Component component : components){
-            description.add(component.decoration(TextDecoration.ITALIC, false));
-        }
-        return this;
-    }
-
-    public ItemContainer addDescription(Component component){
-        description.add(component.decoration(TextDecoration.ITALIC, false));
+    public ItemContainer addDescription(String description){
+        this.description = description;
         return this;
     }
 

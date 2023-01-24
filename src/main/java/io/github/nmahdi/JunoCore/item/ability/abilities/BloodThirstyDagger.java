@@ -5,7 +5,7 @@ import io.github.nmahdi.JunoCore.entity.traits.StatsTrait;
 import io.github.nmahdi.JunoCore.item.GameItem;
 import io.github.nmahdi.JunoCore.item.ability.item.AttackItemAbility;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
-import io.github.nmahdi.JunoCore.player.display.TextColors;
+import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;

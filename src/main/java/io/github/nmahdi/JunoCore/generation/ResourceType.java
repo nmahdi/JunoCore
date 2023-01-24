@@ -9,101 +9,85 @@ import org.bukkit.block.Block;
 public enum ResourceType {
     //Mining
     Cobblestone("cobblestone", Material.COBBLESTONE, Skill.Mining, 1,
-            GameItem.Cobblestone, GameItem.Stone, GameItem.Cobblestone,
+            GameItem.Cobblestone, GameItem.Stone, null, 1,
             ItemType.Pickaxe, 450, Material.BEDROCK),
 
     Stone("stone", Material.STONE, Skill.Mining, 1,
-            GameItem.Cobblestone, GameItem.Stone, GameItem.Stone,
+            GameItem.Cobblestone, GameItem.Stone, GameItem.Stone, 1,
             ItemType.Pickaxe, 500, Material.BEDROCK),
 
     Andesite("andsite", Material.ANDESITE, Skill.Mining, 1,
-            GameItem.Andesite, null, null,
+            GameItem.Andesite, null, null, 1,
             ItemType.Pickaxe, 500, Material.BEDROCK),
 
     Clay("clay", Material.CLAY, Skill.Mining, 5,
-            GameItem.Clay, GameItem.Brick, GameItem.ClayBlock,
+            GameItem.Clay, null, GameItem.ClayBlock, 2,
             ItemType.Shovel,200, Material.AIR),
 
     Flint("flint", Material.GRAVEL, Skill.Mining, 5,
-            GameItem.Flint, null, GameItem.Gravel,
+            GameItem.Flint, null, GameItem.Gravel, 1,
             ItemType.Shovel,200, Material.AIR),
 
     Coal ("coal", Material.COAL_ORE, Skill.Mining, 5,
-            GameItem.Coal, null, GameItem.CoalOre,
-            ItemType.Pickaxe,500, Material.STONE),
-
-    LapisLazuli("lapis_lazuli", Material.LAPIS_LAZULI, Skill.Mining, 8,
-            GameItem.LapisLazuli, null, GameItem.LapisLazuliOre,
-            ItemType.Pickaxe,650, Material.STONE),
-
-    Redstone("redstone", Material.REDSTONE, Skill.Mining, 8,
-            GameItem.Redstone, null, GameItem.RedstoneOre,
-            ItemType.Pickaxe,650, Material.STONE),
-
-    Quartz("quartz", Material.QUARTZ, Skill.Mining, 15,
-            GameItem.Quartz, null, GameItem.QuartzOre,
-            ItemType.Pickaxe,800, Material.NETHERRACK),
-
-    Copper("copper", Material.COPPER_ORE, Skill.Mining, 8,
-            GameItem.CopperOre, GameItem.CopperBar, GameItem.CopperOre,
+            GameItem.Coal, null, GameItem.CoalOre, 1,
             ItemType.Pickaxe,500, Material.STONE),
 
     Iron("iron", Material.IRON_ORE, Skill.Mining, 10,
-            GameItem.IronOre, GameItem.IronBar, GameItem.IronOre,
+            GameItem.IronOre, GameItem.IronBar, null, 1,
             ItemType.Pickaxe,600, Material.STONE),
 
     Gold ("gold", Material.GOLD_ORE, Skill.Mining, 15,
-            GameItem.GoldOre, GameItem.GoldBar, GameItem.GoldOre,
+            GameItem.GoldOre, GameItem.GoldBar, null, 1,
             ItemType.Pickaxe,700, Material.STONE),
 
     Diamond("diamond", Material.DIAMOND_ORE, Skill.Mining, 25,
-            GameItem.Diamond, null, GameItem.DiamondOre,
+            GameItem.Diamond, null, GameItem.DiamondOre, 1,
             ItemType.Pickaxe,900, Material.STONE),
 
     Emerald("emerald", Material.EMERALD_ORE, Skill.Mining, 30,
-            GameItem.Emerald, null, GameItem.EmeraldOre,
+            GameItem.Emerald, null, GameItem.EmeraldOre, 1,
             ItemType.Pickaxe,950, Material.STONE),
 
     Obsidian("obsidian", Material.OBSIDIAN, Skill.Mining, 35,
-            GameItem.Obsidian, null, GameItem.Obsidian,
+            GameItem.Obsidian, null, null, 1,
             ItemType.Pickaxe, 10000, Material.STONE),
 
-    Mithiril("mithril", true, Material.LIGHT_BLUE_WOOL, Skill.Mining, 60,
-            GameItem.Bone, null, null,
+    Eternite("eternite", true, Material.GRAY_WOOL, Skill.Mining, 60,
+            GameItem.EterniteBar, null, null, 1,
             ItemType.Pickaxe, 1000, Material.BEDROCK),
 
     //Woodcutting
     Oak ("oak", Material.OAK_LOG, Skill.Woodcutting, 5,
-            GameItem.OakLog, GameItem.Charcoal, GameItem.OakLog,
+            GameItem.OakWood, GameItem.Charcoal, null, 1,
             ItemType.Axe,200, Material.AIR),
 
     Spruce("spruce", Material.SPRUCE_LOG, Skill.Woodcutting, 5,
-            GameItem.SpruceLog, GameItem.Charcoal, GameItem.SpruceLog,
+            GameItem.SpruceWood, GameItem.Charcoal, null, 1,
             ItemType.Axe,200, Material.AIR),
 
     Birch("birch", Material.BIRCH_LOG, Skill.Woodcutting, 5,
-            GameItem.BirchLog, GameItem.Charcoal, GameItem.BirchLog,
+            GameItem.BirchWood, GameItem.Charcoal, null, 1,
             ItemType.Axe,200, Material.AIR),
 
     Jungle ("jungle", Material.JUNGLE_LOG, Skill.Woodcutting, 5,
-            GameItem.JungleLog, GameItem.Charcoal, GameItem.JungleLog,
+            GameItem.JungleWood, GameItem.Charcoal, null, 1,
             ItemType.Axe,200, Material.AIR),
 
     Acacia("acacia", Material.ACACIA_LOG, Skill.Woodcutting, 5,
-            GameItem.AcaciaLog, GameItem.Charcoal, GameItem.AcaciaLog,
+            GameItem.AcaciaWood, GameItem.Charcoal, null, 1,
             ItemType.Axe,200, Material.AIR),
 
     DarkOak("dark_oak", Material.DARK_OAK_LOG, Skill.Woodcutting, 5,
-            GameItem.DarkOakLog, GameItem.Charcoal, GameItem.DarkOakLog,
+            GameItem.DarkOakWood, GameItem.Charcoal, null, 1,
             ItemType.Axe,200, Material.AIR),
 
     Magrove("magrove", Material.MANGROVE_LOG, Skill.Woodcutting, 5,
-            GameItem.MangroveLog, GameItem.Charcoal, GameItem.MangroveLog,
+            GameItem.MangroveWood, GameItem.Charcoal, null, 1,
             ItemType.Axe,200, Material.AIR),
 
     //Foraging
     Poppy("poppy", Material.POPPY, Skill.Foraging, 10,
-            GameItem.Poppy, null, GameItem.Poppy,
+            GameItem.Poppy, null, null, 1,
             ItemType.Shears,0, Material.AIR),
     ;
 
@@ -115,11 +99,12 @@ public enum ResourceType {
     private final GameItem drop;
     private final GameItem smelted;
     private final GameItem silkTouch;
+    private final int amount;
     private final ItemType tool;
     private final int breakingTime;
     private final Material replacement;
 
-    ResourceType(String id, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, ItemType tool, int breakingTime, Material replacement){
+    ResourceType(String id, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, int amount, ItemType tool, int breakingTime, Material replacement){
         this.id = id;
         this.material = material;
         this.xpType = xpType;
@@ -127,12 +112,13 @@ public enum ResourceType {
         this.drop = drop;
         this.smelted = smelted;
         this.silkTouch = silkTouch;
+        this.amount = amount;
         this.tool = tool;
         this.breakingTime = breakingTime;
         this.replacement = replacement;
     }
 
-    ResourceType(String id, boolean useTag, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, ItemType tool, int breakingTime, Material replacement){
+    ResourceType(String id, boolean useTag, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, int amount, ItemType tool, int breakingTime, Material replacement){
         this.id = id;
         this.useTag = useTag;
         this.material = material;
@@ -141,6 +127,7 @@ public enum ResourceType {
         this.drop = drop;
         this.smelted = smelted;
         this.silkTouch = silkTouch;
+        this.amount = amount;
         this.tool = tool;
         this.breakingTime = breakingTime;
         this.replacement = replacement;
@@ -176,6 +163,10 @@ public enum ResourceType {
 
     public GameItem getSilkTouch() {
         return silkTouch;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 
     public ItemType getTool() {
