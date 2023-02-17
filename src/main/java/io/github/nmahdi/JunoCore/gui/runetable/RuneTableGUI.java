@@ -3,9 +3,12 @@ package io.github.nmahdi.JunoCore.gui.runetable;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.GUI;
 import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.RuneItem;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.Runeable;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
 import io.github.nmahdi.JunoCore.gui.text.TextColors;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 
 public class RuneTableGUI extends GUI {
 
+	private ItemManager itemManager;
 	private PlayerManager playerManager;
 
 	private final int runeSlot = 29;
@@ -35,6 +39,7 @@ public class RuneTableGUI extends GUI {
 
 	public RuneTableGUI(JCore main) {
 		super(main, "Rune Table", 54, null);
+		this.itemManager = main.getItemManager();
 		this.playerManager = main.getPlayerManager();
 	}
 
@@ -54,21 +59,23 @@ public class RuneTableGUI extends GUI {
 			if (InventoryHelper.isAirOrNull(e.getInventory().getItem(runeSlot)) || InventoryHelper.isAirOrNull(e.getInventory().getItem(inputSlot))) return;
 
 			NBTGameItem inputItem = new NBTGameItem(e.getInventory().getItem(inputSlot));
-			GameItem item = GameItem.getItem(inputItem.getID());
-			GameItem rune = GameItem.getItem(new NBTGameItem(e.getInventory().getItem(runeSlot)).getID());
+			GameItem item = itemManager.getItem(inputItem.getID());
+			GameItem rune = itemManager.getItem(new NBTGameItem(e.getInventory().getItem(runeSlot)).getID());
 
 			if(item == null || rune == null) return;
 
-			if (item.canApplyRunes() && rune.isRune()) {
+			if (item instanceof Runeable && rune instanceof RuneItem) {
+				Runeable runeableItem = (Runeable) item;
+				RuneItem runeItem = (RuneItem) rune;
 
-				if(inputItem.getRunesUsed()+rune.getRune().getCost() <= item.getRuneSlots()){
+				if(inputItem.getRunesUsed()+runeItem.getCost() <= runeableItem.getMaxRunes()){
 
 					if(!e.getInventory().getItem(outputSlot).isSimilar(OUTPUT)) return;
 
-					if(!rune.getRune().canBeAppliedTo(item.getItemType().getCatagory())) return;
+					if(!runeItem.canBeAppliedTo(item.getItemType().getCatagory())) return;
 
 					outputs.add(e.getWhoClicked().getUniqueId().toString());
-					inputItem.addRune(rune.getRune());
+					inputItem.addRune(runeItem.getRuneType());
 
 					inputItem.getItem().setItemMeta(ItemBuilder.updateMeta(playerManager.getPlayer((Player)e.getWhoClicked()), item, inputItem));
 

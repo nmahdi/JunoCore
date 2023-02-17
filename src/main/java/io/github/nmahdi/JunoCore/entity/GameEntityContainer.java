@@ -2,10 +2,8 @@ package io.github.nmahdi.JunoCore.entity;
 
 import io.github.nmahdi.JunoCore.entity.traits.GameTrait;
 import io.github.nmahdi.JunoCore.entity.traits.StatsTrait;
-import io.github.nmahdi.JunoCore.loot.ILootTable;
-import io.github.nmahdi.JunoCore.loot.LootTable;
+import io.github.nmahdi.JunoCore.loot.items.LootTable;
 import net.citizensnpcs.api.ai.tree.BehaviorGoalAdapter;
-import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
@@ -31,13 +29,9 @@ public class GameEntityContainer {
 	public boolean ranged = false;
 	public Material heldItem, helmet, chestplate, leggings, boots;
 
-	public LootTable lootTable;
+	public ArrayList<Class<? extends GameGoal>> goals = new ArrayList<>();
 
-	public ArrayList<Class<? extends GameTrait>> traits = new ArrayList<>();
-
-	public ArrayList<Class<? extends BehaviorGoalAdapter>> goals = new ArrayList<>();
-
-	public GameEntityContainer(EntityType entityType, String displayName, String id, int combatXP, int baseHealth, int minLevel, int maxLevel, double damagePerHit, LootTable lootTable){
+	public GameEntityContainer(EntityType entityType, String displayName, String id, int combatXP, int baseHealth, int minLevel, int maxLevel, double damagePerHit){
 		this.entityType = entityType;
 		this.displayName = displayName;
 		this.id = id;
@@ -46,8 +40,6 @@ public class GameEntityContainer {
 		this.minLevel = minLevel;
 		this.maxLevel = maxLevel;
 		this.damagePerHit = damagePerHit;
-		this.lootTable = lootTable;
-		this.traits.add(StatsTrait.class);
 	}
 
 	public GameEntityContainer setAttackRange(double attackRange){
@@ -105,12 +97,7 @@ public class GameEntityContainer {
 		return this;
 	}
 
-	public GameEntityContainer addTrait(Class<? extends GameTrait> trait){
-		this.traits.add(trait);
-		return this;
-	}
-
-	public GameEntityContainer addGoal(Class<? extends BehaviorGoalAdapter> goal){
+	public GameEntityContainer addGoal(Class<? extends GameGoal> goal){
 		this.goals.add(goal);
 		return this;
 	}

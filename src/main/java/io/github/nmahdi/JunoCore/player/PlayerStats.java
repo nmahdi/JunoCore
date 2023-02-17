@@ -1,5 +1,6 @@
 package io.github.nmahdi.JunoCore.player;
 
+import io.github.nmahdi.JunoCore.item.stats.ItemType;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import org.bukkit.Sound;
 
@@ -18,52 +19,52 @@ public class PlayerStats extends HashMap<PlayerStat, Double> {
 
 	public void login(){
 		if(player.hasHeldItem()){
-			if(player.getHeldItem().isHandEquipable()){
+			if(ItemType.isHandEquipable(player.getHeldItem())){
 				player.equip(player.getHeldItem(), player.getNBTHeldItem());
 			}
 		}
 		if(player.hasHelmet()){
-			if(player.getHelmet().isArmor()){
+			if(ItemType.isArmor(player.getHelmet())){
 				player.equip(player.getHelmet(), player.getNBTHelmet());
 			}
 		}
 		if(player.hasChestplate()){
-			if(player.getChestplate().isArmor()){
+			if(ItemType.isArmor(player.getChestplate())){
 				player.equip(player.getChestplate(), player.getNBTChestplate());
 			}
 		}
 		if(player.hasLeggings()){
-			if(player.getLeggings().isArmor()){
+			if(ItemType.isArmor(player.getLeggings())){
 				player.equip(player.getLeggings(), player.getNBTLeggings());
 			}
 		}
 		if(player.hasBoots()){
-			if(player.getBoots().isArmor()){
+			if(ItemType.isArmor(player.getBoots())){
 				player.equip(player.getBoots(), player.getNBTBoots());
 			}
 		}
 		if(player.hasCape()){
-			if(player.getCape().isEquipment()){
+			if(ItemType.isEquipment(player.getCape())){
 				player.equip(player.getCape(), player.getNBTCape());
 			}
 		}
 		if(player.hasBracelet()){
-			if(player.getBracelet().isEquipment()){
+			if(ItemType.isEquipment(player.getBracelet())){
 				player.equip(player.getBracelet(), player.getNBTBracelet());
 			}
 		}
 		if(player.hasRing()){
-			if(player.getRing().isEquipment()){
+			if(ItemType.isEquipment(player.getRing())){
 				player.equip(player.getRing(), player.getNBTRing());
 			}
 		}
 		if(player.hasHeadband()){
-			if(player.getHeadband().isEquipment()){
+			if(ItemType.isEquipment(player.getHeadband())){
 				player.equip(player.getHeadband(), player.getNBTHeadband());
 			}
 		}
 		if(player.hasNecklace()){
-			if(player.getNecklace().isEquipment()){
+			if(ItemType.isEquipment(player.getNecklace())){
 				player.equip(player.getNecklace(), player.getNBTNecklace());
 			}
 		}

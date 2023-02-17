@@ -5,9 +5,9 @@ import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.dependencies.HologramManager;
 import io.github.nmahdi.JunoCore.entity.GameEntityManager;
 import io.github.nmahdi.JunoCore.entity.traits.StatsTrait;
-import io.github.nmahdi.JunoCore.item.ability.item.AttackItemAbility;
+import io.github.nmahdi.JunoCore.item.modifiers.abilities.AttackItemAbility;
+import io.github.nmahdi.JunoCore.item.modifiers.abilities.RightClickAbility;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
-import io.github.nmahdi.JunoCore.player.stats.DamageType;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
 import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
 import net.citizensnpcs.api.event.NPCDamageEntityEvent;
@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Random;
@@ -58,6 +59,18 @@ public class PlayerCombatListener implements Listener {
     }
 
     @EventHandler
+    public void onRightClick(PlayerInteractEvent e){
+        if(!e.getAction().isRightClick()) return;
+
+        GamePlayer player = playerManager.getPlayer(e.getPlayer());
+
+        if(!player.hasHeldItem()) return;
+        if(player.getHeldItem() instanceof RightClickAbility){
+            ((RightClickAbility) player.getHeldItem()).onRightClick(main, player, player.getNBTHeldItem());
+        }
+    }
+
+    @EventHandler
     public void onPlayerDamaged(NPCDamageEntityEvent e){
         if(!e.getNPC().hasTrait(StatsTrait.class)) return;
         if(!(e.getDamaged() instanceof Player)) return;
@@ -83,7 +96,7 @@ public class PlayerCombatListener implements Listener {
 
         if(!entity.hasMetadata("NPC")) return;
 
-        NPC npc = entityManager.getRegistry().getByUniqueId(entity.getUniqueId());
+        NPC npc = entityManager.getMainRegistry().getByUniqueId(entity.getUniqueId());
 
         if(npc != null && npc.hasTrait(StatsTrait.class)){
             //playerManager.getPlayer((Player)e.getEntity()).damage((int) npc.getTraitNullable(StatsTrait.class).getDamage(), DamageType.Projectile, null);
@@ -145,9 +158,8 @@ public class PlayerCombatListener implements Listener {
             if(player.getHeldItem().getItemType() != ItemType.Sword) weaponDamage = false;
         }
         */
-        if(player.getHeldItem() != null && player.getHeldItem().hasItemAbility()){
-            if(player.getHeldItem().getItemAbility() instanceof AttackItemAbility)
-                ((AttackItemAbility) player.getHeldItem().getItemAbility()).activate(player, e.getNPC().getTraitNullable(StatsTrait.class));
+        if(player.getHeldItem() != null && player.getHeldItem() instanceof AttackItemAbility){
+            ((AttackItemAbility) player.getHeldItem()).onAttack(main, e.getNPC().getTraitNullable(StatsTrait.class), player, player.getNBTHeldItem());
         }
         e.getNPC().getTraitNullable(StatsTrait.class).damage((Player)e.getDamager(), player.getDamage(random));
     }

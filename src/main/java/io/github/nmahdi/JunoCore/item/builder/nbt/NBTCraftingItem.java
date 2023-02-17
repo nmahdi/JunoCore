@@ -14,7 +14,7 @@ public class NBTCraftingItem extends ItemNBT{
 	}
 
 	public boolean isRecipeItem(){
-		return getJuno().hasKey(RECIPE);
+		return getJuno().hasTag(RECIPE);
 	}
 
 	public String getRecipe(){

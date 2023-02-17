@@ -19,7 +19,7 @@ public class NBTGameItem extends ItemNBT {
 
 
     public boolean hasUUID(){
-        return getJuno().hasKey(UUID);
+        return getJuno().hasTag(UUID);
     }
 
     public String getUUID(){
@@ -36,12 +36,12 @@ public class NBTGameItem extends ItemNBT {
     }
 
     public boolean hasID(){
-        return getJuno().hasKey(ID);
+        return getJuno().hasTag(ID);
     }
 
     //Runes
     public boolean hasRunes(){
-        return getJuno().hasKey(RUNE);
+        return getJuno().hasTag(RUNE);
     }
 
     public void createRunes(){
@@ -51,7 +51,7 @@ public class NBTGameItem extends ItemNBT {
     public HashMap<Rune, Integer> getRunes(){
         HashMap<Rune, Integer> map = new HashMap<>();
         for(Rune rune : Rune.values()){
-            if(getJuno().getCompound(RUNE).hasKey(rune.toString()))
+            if(getJuno().getCompound(RUNE).hasTag(rune.toString()))
                 map.put(rune, getJuno().getCompound(RUNE).getInteger(rune.toString()));
         }
         return map;
@@ -66,7 +66,7 @@ public class NBTGameItem extends ItemNBT {
     }
 
     public void addRune(Rune rune){
-        if(getRune().hasKey(rune.toString())) {
+        if(getRune().hasTag(rune.toString())) {
             getRune().setInteger(rune.toString(), getRune().getInteger(rune.toString())+1);
         }else{
             getRune().setInteger(rune.toString(), 1);

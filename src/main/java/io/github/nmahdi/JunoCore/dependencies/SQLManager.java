@@ -2,8 +2,10 @@ package io.github.nmahdi.JunoCore.dependencies;
 
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.Runeable;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.listeners.PlayerInventoryListener;
@@ -29,8 +31,11 @@ public class SQLManager implements JunoManager {
 
     private final String EMPTY = "EMPTY";
 
+    private ItemManager itemManager;
+
     public SQLManager(JCore main){
         debugMode = main.getConfig().getBoolean("debug-mode.sql");
+        this.itemManager = main.getItemManager();
         try{
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -335,12 +340,12 @@ public class SQLManager implements JunoManager {
         if(s.equals(EMPTY)) return null;
         String[] string = s.split(",");
 
-        GameItem gameItem = GameItem.getItem(string[0]);
+        GameItem gameItem = itemManager.getItem(string[0]);
 
         if(gameItem == null) return null;
         NBTGameItem item = new NBTGameItem(ItemBuilder.buildGameItem(gameItem, Integer.parseInt(string[1])));
 
-        if(gameItem.canApplyRunes() && string.length > 2){
+        if(gameItem instanceof Runeable && string.length > 2){
 
             String[] runes = string[2].split("/");
 

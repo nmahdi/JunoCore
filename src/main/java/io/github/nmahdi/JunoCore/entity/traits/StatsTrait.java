@@ -3,22 +3,12 @@ package io.github.nmahdi.JunoCore.entity.traits;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.dependencies.HologramManager;
 import io.github.nmahdi.JunoCore.entity.GameEntity;
-import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
-import io.github.nmahdi.JunoCore.loot.ChanceLootTable;
-import io.github.nmahdi.JunoCore.loot.LootTable;
-import io.github.nmahdi.JunoCore.player.GamePlayer;
+import io.github.nmahdi.JunoCore.loot.items.LootTable;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import io.github.nmahdi.JunoCore.player.stats.Skill;
-import io.github.nmahdi.JunoCore.utils.JLogger;
-import net.citizensnpcs.api.ai.EntityTarget;
-import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
 import net.citizensnpcs.api.event.NPCDamageEvent;
-import net.citizensnpcs.api.event.NPCDeathEvent;
-import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.TraitName;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -39,8 +29,8 @@ public class StatsTrait extends GameTrait {
 	private String displayName;
 	private int level;
 
-	private int maxHealth;
-	private int currentHealth;
+	private double maxHealth;
+	private double currentHealth;
 
 	private float speedModifier;
 
@@ -63,7 +53,6 @@ public class StatsTrait extends GameTrait {
 		this.currentHealth = this.maxHealth;
 		this.speedModifier = entity.getSpeedModifier();
 		this.combatXP = entity.getCombatXP() + (level - 1) * 2;
-		this.lootTable = entity.getLootTable();
 	}
 
 	@Override
@@ -80,7 +69,7 @@ public class StatsTrait extends GameTrait {
 			if (player != null) {
 				playerManager.getPlayer(player).gainXP(Skill.Combat, combatXP);
 
-				if(lootTable.getTable() instanceof ChanceLootTable) {
+				/*if(lootTable.getTable() instanceof ChanceLootTable) {
 					ChanceLootTable table = (ChanceLootTable) lootTable.getTable();
 					for (Map.Entry<GameItem, Integer> items : table.rollForItems(main.getRandom(), false).entrySet()){
 						HashMap<Integer, ItemStack> leftover = player.getInventory().addItem(ItemBuilder.buildGameItem(items.getKey(), items.getValue()));
@@ -88,7 +77,7 @@ public class StatsTrait extends GameTrait {
 							getEntity().getWorld().dropItemNaturally(getEntity().getLocation(), leftover.get(i));
 						}
 					}
-				}
+				} */
 
 			}
 
@@ -99,7 +88,6 @@ public class StatsTrait extends GameTrait {
 	public void kill(){
 		currentHealth = 0;
 		((LivingEntity)getNPC().getEntity()).setHealth(0);
-
 	}
 
 	@EventHandler
@@ -119,11 +107,11 @@ public class StatsTrait extends GameTrait {
 		return level;
 	}
 
-	public int getMaxHealth() {
+	public double getMaxHealth() {
 		return maxHealth;
 	}
 
-	public int getHealth() {
+	public double getHealth() {
 		return currentHealth;
 	}
 

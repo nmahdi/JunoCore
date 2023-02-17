@@ -1,10 +1,7 @@
 package io.github.nmahdi.JunoCore.entity;
 
-import io.github.nmahdi.JunoCore.entity.traits.*;
-import io.github.nmahdi.JunoCore.loot.ILootTable;
-import io.github.nmahdi.JunoCore.loot.Loot;
-import io.github.nmahdi.JunoCore.loot.LootTable;
-import net.citizensnpcs.api.trait.Trait;
+import io.github.nmahdi.JunoCore.entity.undeadmonstrosity.UndeadMonstrosityAttackGoal;
+import io.github.nmahdi.JunoCore.entity.undeadmonstrosity.UndeadMonstrosityMinionGoal;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
@@ -13,32 +10,32 @@ import java.util.ArrayList;
 public enum GameEntity {
     //Animals
     Cow(new GameEntityContainer(EntityType.COW, "Cow", "cow", 1, 10,
-            1, 5, 0, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d)
-            .addTrait(MobTrait.class)),
+            1, 5, 0).setAttackRange(2).setDistanceMargin(0.5d)),
     //Monsters
     Zombie(new GameEntityContainer(EntityType.ZOMBIE, "Zombie", "zombie", 10, 100,
-            1, 5, 5, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d).setSpeedModifier(2f)
-            .addTrait(MobTrait.class).addTrait(SunburnTrait.class)),
+            1, 5, 5).setAttackRange(2).setDistanceMargin(0.5d).setSpeedModifier(2f)),
 
     Skeleton(new GameEntityContainer(EntityType.SKELETON, "Skeleton", "skeleton", 10, 100,
-            1, 5, 4, LootTable.Skeleton).setAttackRange(0).setDistanceMargin(6).setRanged().setHeldItem(Material.BOW).setAttackDelay(50)
-            .addTrait(MobTrait.class).addTrait(SunburnTrait.class)),
+            1, 5, 4).setAttackRange(0).setDistanceMargin(6).setRanged().setHeldItem(Material.BOW).setAttackDelay(50)),
 
     LostWizard(new GameEntityContainer(EntityType.PILLAGER, "Lost Wizard", "lost_wizard", 50, 200,
-            1, 5, 100, LootTable.Zombie).setAttackRange(1).setDistanceMargin(10)
-            .addTrait(LostWizardTrait.class)),
+            1, 5, 100).setAttackRange(1).setDistanceMargin(10)),
 
     Smasher(new GameEntityContainer(EntityType.ZOMBIE, "Smasher", "smasher", 50, 4000,
-            10, 20, 15, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10).setSpeedModifier(2).setHeldItem(Material.ANVIL)
-            .addTrait(MobTrait.class)),
+            10, 20, 15).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10).setSpeedModifier(2).setHeldItem(Material.ANVIL)),
+
+    //Undead Monstrosity
 
     UndeadMonstrosity(new GameEntityContainer(EntityType.ZOMBIE, "Undead Monstrosity", "undead_monstrosity", 1000, 10000,
-            100, 100, 100, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10)),
+            100, 100, 100).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10).setSpeedModifier(1.5f)
+            .addGoal(UndeadMonstrosityAttackGoal.class).addGoal(UndeadMonstrosityMinionGoal.class)),
+
+    UndeadMinion(new GameEntityContainer(EntityType.ZOMBIE, "Undead Minion", "undead_minion", 10, 500,
+            20, 25, 20).setAttackRange(2).setDistanceMargin(0.5).setAttackDelay(10)),
 
     //Fishing Mobs
     Drowned(new GameEntityContainer(EntityType.DROWNED, "Drowned", "drowned", 10, 100,
-            1, 5, 10, LootTable.Zombie).setAttackRange(2).setDistanceMargin(0.5d)
-            .addTrait(MobTrait.class))
+            1, 5, 10).setAttackRange(2).setDistanceMargin(0.5d))
 
     ;
 
@@ -148,12 +145,8 @@ public enum GameEntity {
         return  container.boots;
     }
 
-    public LootTable getLootTable() {
-        return  container.lootTable;
-    }
-
-    public ArrayList<Class<? extends GameTrait>> getTraits(){
-        return container.traits;
+    public ArrayList<Class<? extends GameGoal>> getGoals(){
+        return container.goals;
     }
 
     public boolean isSlime(){

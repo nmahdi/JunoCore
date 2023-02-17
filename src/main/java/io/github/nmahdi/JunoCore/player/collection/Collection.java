@@ -10,44 +10,73 @@ import java.util.HashMap;
 
 public enum Collection {
 	//Mining
-	Cobblestone(new CollectionContainer("Cobblestone", Skill.Mining).addItem(GameItem.Cobblestone, 1).addItem(GameItem.CompactedCobblestone, 160)),
-	Obsidian(new CollectionContainer("Obsidian", Skill.Mining).addItem(GameItem.Obsidian, 1).addItem(GameItem.CompactedObsidian, 160)),
-	Clay(new CollectionContainer("Clay", Skill.Mining).addItem(GameItem.Clay, 1).addItem(GameItem.CompactedClay, 160)),
-	Flint(new CollectionContainer("Flint", Skill.Mining).addItem(GameItem.Flint, 1).addItem(GameItem.CompactedFlint, 160)),
-	Coal(new CollectionContainer("Coal", Skill.Mining).addItem(GameItem.Coal, 1).addItem(GameItem.CompactedCoal, 160).addItem(GameItem.Charcoal, 1)),
-	IronBar(new CollectionContainer("Iron Bar", Skill.Mining).addItem(GameItem.IronBar, 1).addItem(GameItem.CompactedIronBar, 160)),
-	GoldBar(new CollectionContainer("Gold Bar", Skill.Mining).addItem(GameItem.GoldBar, 1).addItem(GameItem.CompactedGoldBar, 160)),
-	Emerald(new CollectionContainer("Emerald", Skill.Mining).addItem(GameItem.Emerald, 1).addItem(GameItem.CompactedEmerald, 160)),
-	Diamond(new CollectionContainer("Diamond", Skill.Mining).addItem(GameItem.Diamond, 1).addItem(GameItem.CompactedDiamond, 160)),
-	NetheriteBar(new CollectionContainer("Netherite Bar", Skill.Mining).addItem(GameItem.NetheriteBar, 1).addItem(GameItem.CompactedNetheriteBar, 160)),
-	EterniteBar(new CollectionContainer("Eternite Bar", Skill.Mining).addItem(GameItem.EterniteBar, 1).addItem(GameItem.CompactedEterniteBar, 160)),
+	Cobblestone("Cobblestone", Menu.Mining),
+	Obsidian("Obsidian", Menu.Mining),
+	Clay("Clay", Menu.Mining),
+	Flint("Flint", Menu.Mining),
+	Coal("Coal", Menu.Mining),
+	Iron("Iron Bar", Menu.Mining),
+	Gold("Gold Bar", Menu.Mining),
+	Emerald("Emerald", Menu.Mining),
+	Diamond("Diamond", Menu.Mining),
+	Netherite("Netherite Bar", Menu.Mining),
+	Eternite("Eternite Bar", Menu.Mining),
 
 	//Woodcutting
-	OakWood(new CollectionContainer("Oak Wood", Skill.Woodcutting).addItem(GameItem.OakWood, 1).addItem(GameItem.CompactedOakWood, 160)),
-	SpruceWood(new CollectionContainer("Spruce Wood", Skill.Woodcutting).addItem(GameItem.SpruceWood, 1).addItem(GameItem.SpruceWood, 160)),
+	Oak("Oak Wood", Menu.Woodcutting),
+	Spruce("Spruce Wood", Menu.Woodcutting),
+	Birch("Birch Wood", Menu.Woodcutting),
+	Jungle("Jungle Wood", Menu.Woodcutting),
+	Acacia("Acacia Wood", Menu.Woodcutting),
+	DarkOak("Dark Oak Wood", Menu.Woodcutting),
+	Mangrove("Mangrove Wood", Menu.Woodcutting),
 
 	//Foraging
-	Poppy(new CollectionContainer("Poppy", Skill.Foraging).addItem(GameItem.Poppy, 1).addItem(GameItem.CompactedPoppy, 160)),
+	Poppy("Poppy", Menu.Foraging),
 
 	//Fishing
+	Cod("Cod", Menu.Fishing),
+	Pufferfish("Pufferfish", Menu.Fishing),
+	Sponge("Sponge", Menu.Fishing),
+
+	//Combat
+	RottenFlesh("Rotten Flesh", Menu.Combat),
+	Bone("Bone", Menu.Combat),
+
+	//Farming
+	Beef("Beef", Menu.Farming),
+	Leather("Leather", Menu.Farming),
+	Chicken("Chicken", Menu.Farming),
+	Feather("Feather", Menu.Farming),
+	Mutton("Mutton", Menu.Farming),
+	Wool("Wool", Menu.Farming),
 	;
 
-	private CollectionContainer container;
+	private String name;
+	private Menu menu;
 
-	Collection(CollectionContainer container){
-		this.container = container;
+	Collection(String name, Menu menu){
+		this.name = name;
+		this.menu = menu;
 	}
 
-	public String getDisplayName() {
-		return container.displayName;
+	public String getName() {
+		return name;
 	}
 
-	public Skill getCategory() {
-		return container.category;
+	public Menu getMenu() {
+		return menu;
 	}
 
-	public HashMap<GameItem, Integer> getItems() {
-		return container.items;
+	public static enum Menu{
+		Mining,
+		Woodcutting,
+		Foraging,
+		Fishing,
+		Farming,
+		Combat,
+		;
+
 	}
 
 }

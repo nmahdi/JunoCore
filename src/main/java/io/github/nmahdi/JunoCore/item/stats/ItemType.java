@@ -1,63 +1,87 @@
 package io.github.nmahdi.JunoCore.item.stats;
 
+import io.github.nmahdi.JunoCore.item.GameItem;
+
 public enum ItemType {
-    Helmet(Catagory.ARMOR),
-    Chestplate(Catagory.ARMOR),
-    Leggings(Catagory.ARMOR),
-    Boots(Catagory.ARMOR),
+    Helmet(Catagory.Armor),
+    Chestplate(Catagory.Armor),
+    Leggings(Catagory.Armor),
+    Boots(Catagory.Armor),
 
-    Ring(Catagory.EQUIPMENT),
-    Necklace(Catagory.EQUIPMENT),
-    Bracelet(Catagory.EQUIPMENT),
-    Headband(Catagory.EQUIPMENT),
-    Cape(Catagory.EQUIPMENT),
+    Ring(Catagory.Equipment),
+    Necklace(Catagory.Equipment),
+    Bracelet(Catagory.Equipment),
+    Headband(Catagory.Equipment),
+    Cape(Catagory.Equipment),
 
-    Sword(Catagory.WEAPON),
-    Bow(Catagory.WEAPON),
-    Wand(Catagory.WEAPON),
+    Sword(Catagory.Weapon),
+    Bow(Catagory.Weapon),
+    Wand(Catagory.Weapon),
 
-    Pickaxe(Catagory.TOOL),
-    Axe(Catagory.TOOL),
-    Shovel(Catagory.TOOL),
-    Hoe(Catagory.TOOL),
-    Shears(Catagory.TOOL),
-    FishingRod(Catagory.TOOL),
+    Pickaxe(Catagory.Tool),
+    Axe(Catagory.Tool),
+    Shovel(Catagory.Tool),
+    Hoe(Catagory.Tool),
+    Shears(Catagory.Tool),
+    FishingRod(Catagory.Tool),
 
-    Rune(Catagory.RUNE),
+    Rune(Catagory.Rune),
 
-    CombatResource(Catagory.RESOURCE),
-    MiningResource(Catagory.RESOURCE),
-    ForagingResource(Catagory.RESOURCE),
-    FishingResource(Catagory.RESOURCE),
-    WoodcuttingResource(Catagory.RESOURCE),
-    FarmingResource(Catagory.RESOURCE),
+    CombatResource(Catagory.Resource),
+    MiningResource(Catagory.Resource),
+    ForagingResource(Catagory.Resource),
+    FishingResource(Catagory.Resource),
+    WoodcuttingResource(Catagory.Resource),
+    FarmingResource(Catagory.Resource),
 
-    Resource(Catagory.RESOURCE),
-    CompactedResource(Catagory.RESOURCE),
-    Ore(Catagory.RESOURCE),
+    Resource(Catagory.Resource),
+    CompactedResource(Catagory.Resource),
+    Ore(Catagory.Resource),
+    MobDrop(Catagory.Resource),
 
-    Misc(Catagory.MISC),
-    Block(Catagory.MISC);
+    Misc(Catagory.Misc),
+    Block(Catagory.Misc);
 
-    private int catagory;
+    private Catagory catagory;
 
-    ItemType(int catagory){
+    ItemType(Catagory catagory){
         this.catagory = catagory;
     }
 
-    public int getCatagory() {
+    public Catagory getCatagory() {
         return catagory;
     }
 
-    public static class Catagory{
+    public static enum Catagory{
+        Armor,
+        Equipment,
+        Weapon,
+        Tool,
+        Rune,
+        Resource,
+        Misc
+        ;
 
-        public static final int ARMOR = 0;
-        public static final int EQUIPMENT = 1;
-        public static final int WEAPON = 2;
-        public static final int TOOL = 3;
-        public static final int RUNE = 4;
-        public static final int RESOURCE = 5;
-        public static final int MISC = 6;
+    }
+
+    public static boolean isArmor(GameItem item){
+        return item.getItemType().getCatagory() == Catagory.Armor;
+    }
+
+    public static boolean isEquipment(GameItem item){
+        return item.getItemType().getCatagory() == Catagory.Equipment;
+    }
+
+    public static boolean isWeapon(GameItem item){
+        return item.getItemType().getCatagory() == Catagory.Weapon;
+    }
+
+    public static boolean isTool(GameItem item){
+        return item.getItemType().getCatagory() == Catagory.Tool;
+    }
+
+    public static boolean isHandEquipable(GameItem item){
+        return isTool(item) || isWeapon(item);
     }
 
 }

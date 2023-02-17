@@ -3,6 +3,7 @@ package io.github.nmahdi.JunoCore.gui.admin;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.GUI;
 import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.ItemStackBuilder;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
@@ -18,10 +19,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class GameItemGUI extends GUI {
 
+	private ItemManager itemManager;
+
 	private ItemStack NEXT = new ItemStackBuilder(Material.ARROW).setName("Next", TextColors.WHITE, false).build();
 
 	public GameItemGUI(JCore main) {
 		super(main, "&bGame Items", 54, null);
+		this.itemManager = main.getItemManager();
 	}
 
 	@Override
@@ -36,7 +40,7 @@ public class GameItemGUI extends GUI {
 			return;
 		}
 		if (e.getClickedInventory().getType() != InventoryType.PLAYER) {
-			GameItem item = GameItem.getItem(e.getCurrentItem());
+			GameItem item = itemManager.getItem(e.getCurrentItem());
 			if(item == null) return;
 			e.getWhoClicked().getInventory().addItem(ItemBuilder.buildGameItem(item));
 		}
@@ -77,7 +81,7 @@ public class GameItemGUI extends GUI {
 	 */
 	private void setContents(Inventory inventory, int page){
 		for(int i = (getSize()-9)*page; i < (getSize()-9)*(page+1); i++){
-			if(i < GameItem.values().length) inventory.setItem(i-((getSize()-9)*page), ItemBuilder.buildGameItem(GameItem.values()[i]));
+			if(i < itemManager.getItems().size()) inventory.setItem(i-((getSize()-9)*page), ItemBuilder.buildGameItem(itemManager.getItems().get(i)));
 		}
 	}
 

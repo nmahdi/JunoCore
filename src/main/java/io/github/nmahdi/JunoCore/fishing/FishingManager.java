@@ -1,7 +1,6 @@
 package io.github.nmahdi.JunoCore.fishing;
 
 import io.github.nmahdi.JunoCore.JCore;
-import io.github.nmahdi.JunoCore.loot.WeightLootTable;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.utils.JunoManager;
 

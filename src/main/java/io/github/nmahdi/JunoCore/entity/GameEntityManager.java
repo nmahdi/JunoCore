@@ -3,7 +3,7 @@ package io.github.nmahdi.JunoCore.entity;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.entity.spawnzone.SpawnZone;
 import io.github.nmahdi.JunoCore.entity.spawnzone.SpawnZoneManager;
-import io.github.nmahdi.JunoCore.entity.traits.GameTrait;
+import io.github.nmahdi.JunoCore.entity.temp.UndeadMonstrosityTargetStrategy;
 import io.github.nmahdi.JunoCore.entity.traits.StatsTrait;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.utils.JunoManager;
@@ -13,28 +13,30 @@ import net.citizensnpcs.api.event.NPCDeathEvent;
 import net.citizensnpcs.api.npc.MemoryNPCDataStore;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.npc.NPCRegistry;
-import net.citizensnpcs.api.trait.Trait;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class GameEntityManager implements JunoManager, Listener {
 
     private boolean debugMode;
+    private JCore main;
 
+    private ArrayList<NPCRegistry> registries = new ArrayList<>();
     public int counter = 0;
-
-    private final NPCRegistry registry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
+    private final NPCRegistry mainRegistry = CitizensAPI.createAnonymousNPCRegistry(new MemoryNPCDataStore());
 
     private SpawnZoneManager spawnZoneManager;
 
     public GameEntityManager(JCore main){
-        main.getServer().getPluginManager().registerEvents(this, main);
         this.debugMode = main.getConfig().getBoolean("debug-mode.entity");
+        this.main = main;
         this.spawnZoneManager = new SpawnZoneManager(main, this);
+        main.getServer().getPluginManager().registerEvents(this, main);
         JLogger.log("Entity Manager has been enabled.");
     }
 
@@ -46,17 +48,24 @@ public class GameEntityManager implements JunoManager, Listener {
      * @param location Location in the world
      */
     public NPC spawnEntity(GameEntity entity, Location location){
+        return spawnEntityToRegistry(mainRegistry, entity, location);
+    }
+
+    public NPC spawnEntityToRegistry(NPCRegistry registry, GameEntity entity, Location location){
+        if(!registries.contains(registry)) registries.add(registry);
         NPC npc = registry.createNPC(entity.getEntityType(), "entity " + counter);
         counter++;
-        npc.getDefaultGoalController().addBehavior(new CircleAroundGoal(npc), 1);
+        StatsTrait statsTrait = new StatsTrait();
+        statsTrait.init(entity);
+        npc.addTrait(statsTrait);
 
-        for(Class<? extends GameTrait> trait : entity.getTraits()){
+        for(Class<? extends GameGoal> goal : entity.getGoals()){
 
             try {
-                GameTrait gameTrait = trait.newInstance();
-                gameTrait.init(entity);
-                npc.addTrait(gameTrait);
-            } catch (InstantiationException | IllegalAccessException e) {
+                GameGoal gamegoal = goal.getDeclaredConstructor(JCore.class, NPC.class).newInstance(main, npc);
+                npc.getDefaultGoalController().addBehavior(gamegoal, 1);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -80,8 +89,8 @@ public class GameEntityManager implements JunoManager, Listener {
         spawnZoneManager.tick();
     }
 
-    public NPCRegistry getRegistry() {
-        return registry;
+    public NPCRegistry getMainRegistry() {
+        return mainRegistry;
     }
 
     public SpawnZoneManager getSpawnZoneManager() {
@@ -105,8 +114,10 @@ public class GameEntityManager implements JunoManager, Listener {
 
     @Override
     public void onDisable() {
-        for(NPC npc : registry){
-            npc.despawn();
+        for(NPCRegistry registry : registries){
+            for(NPC npc : registry){
+                npc.despawn();
+            }
         }
     }
 

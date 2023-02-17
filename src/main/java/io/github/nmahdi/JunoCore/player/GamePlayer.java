@@ -4,12 +4,18 @@ import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.dependencies.HologramManager;
 import io.github.nmahdi.JunoCore.entity.GameEntity;
 import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.item.ability.equipment.AppliesWeaponBuff;
-import io.github.nmahdi.JunoCore.item.ability.equipment.EquipmentAbility;
+import io.github.nmahdi.JunoCore.item.ItemManager;
+import io.github.nmahdi.JunoCore.item.modifiers.abilities.ItemBuffAbility;
+import io.github.nmahdi.JunoCore.item.items.set.SetEffect;
+import io.github.nmahdi.JunoCore.item.modifiers.abilities.SetAbility;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.CollectionItem;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.Runeable;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.StatItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.item.stats.ItemType;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
+import io.github.nmahdi.JunoCore.player.collection.Collection;
 import io.github.nmahdi.JunoCore.player.listeners.PlayerInventoryListener;
 import io.github.nmahdi.JunoCore.player.display.ActionBar;
 import io.github.nmahdi.JunoCore.player.display.ScoreboardManager;
@@ -18,15 +24,11 @@ import io.github.nmahdi.JunoCore.player.stats.Element;
 import io.github.nmahdi.JunoCore.player.stats.PlayerStat;
 import io.github.nmahdi.JunoCore.player.stats.Skill;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
-import io.github.nmahdi.JunoCore.utils.JLogger;
-import io.papermc.paper.math.Rotations;
 import it.unimi.dsi.fastutil.Hash;
 import net.citizensnpcs.api.npc.NPC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.*;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.CraftingInventory;
@@ -36,7 +38,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.util.EulerAngle;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,6 +48,7 @@ public class GamePlayer{
 	public static final String PROJECTILE_META = "PROJECTILE_DAMAGE";
 
 	private HologramManager hologramManager;
+	private ItemManager itemManager;
 
 	private Player player;
 
@@ -55,26 +57,30 @@ public class GamePlayer{
 	private PlayerStats stats;
 	private HashMap<Skill, PlayerSkill> skills = new HashMap<>();
 
+	//Collections
+	private HashMap<Collection, Long> collections = new HashMap<>();
+
 	//Equipment
-	private GameItem heldItem;
+	private StatItem heldItem;
 
-	private GameItem helmet;
-	private GameItem chestplate;
-	private GameItem leggings;
-	private GameItem boots;
+	private StatItem helmet;
+	private StatItem chestplate;
+	private StatItem leggings;
+	private StatItem boots;
 
-	private GameItem bracelet;
-	private GameItem ring;
-	private GameItem headband;
-	private GameItem necklace;
-	private GameItem cape;
+	private StatItem bracelet;
+	private StatItem ring;
+	private StatItem headband;
+	private StatItem necklace;
+	private StatItem cape;
 
-	private ArrayList<GameItem> abilityEquipment = new ArrayList<>();
+	//TEMPORARY
+	public ArrayList<GameItem> equiped = new ArrayList<>();
 
 	public HashMap<Integer, ItemStack> equipment = new HashMap<>();
 
 	//Abilities
-	private final ArrayList<EquipmentAbility> activeAbilities = new ArrayList<>();
+	private final ArrayList<SetEffect> activeSetEffects = new ArrayList<>();
 
 	//private VirtualInventory virtualInventory;
 	private Inventory storage;
@@ -85,6 +91,7 @@ public class GamePlayer{
 
 	public GamePlayer(JCore main, Player player){
 		this.hologramManager = main.getHologramsManager();
+		this.itemManager = main.getItemManager();
 		this.player = player;
 		this.stats = new PlayerStats(this);
 		this.actionBar = new ActionBar(main, this);
@@ -119,76 +126,80 @@ public class GamePlayer{
 		}
 
 		if(getNBTHeldItem() != null && getNBTHeldItem().hasID()){
-			GameItem temp = GameItem.getItem(getNBTHeldItem().getID());
-			if(temp != null && temp.isHandEquipable()) {
+			StatItem temp = (StatItem) itemManager.getItem(getNBTHeldItem().getID());
+			if(temp != null && ItemType.isHandEquipable(temp)) {
 				heldItem = temp;
 			}
 		}
 
 		if(getNBTHelmet() != null && getNBTHelmet().hasID()){
-			GameItem temp = GameItem.getItem(getNBTHelmet().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTHelmet().getID());
 			if(temp != null && temp.getItemType() == ItemType.Helmet) {
 				helmet = temp;
 			}
 		}
 
 		if(getNBTChestplate() != null && getNBTChestplate().hasID()){
-			GameItem temp = GameItem.getItem(getNBTChestplate().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTChestplate().getID());
 			if(temp != null && temp.getItemType() == ItemType.Chestplate) {
 				chestplate = temp;
 			}
 		}
 
 		if(getNBTLeggings() != null && getNBTLeggings().hasID()){
-			GameItem temp = GameItem.getItem(getNBTLeggings().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTLeggings().getID());
 			if(temp != null && temp.getItemType() == ItemType.Leggings) {
 				leggings = temp;
 			}
 		}
 
 		if(getNBTBoots() != null && getNBTBoots().hasID()){
-			GameItem temp = GameItem.getItem(getNBTBoots().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTBoots().getID());
 			if(temp != null && temp.getItemType() == ItemType.Boots) {
 				boots = temp;
 			}
 		}
 
 		if(getNBTCape() != null && getNBTCape().hasID()){
-			GameItem temp = GameItem.getItem(getNBTCape().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTCape().getID());
 			if(temp != null && temp.getItemType() == ItemType.Cape) {
 				cape = temp;
 			}
 		}
 
 		if(getNBTBracelet() != null && getNBTBracelet().hasID()){
-			GameItem temp = GameItem.getItem(getNBTBracelet().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTBracelet().getID());
 			if(temp != null && temp.getItemType() == ItemType.Bracelet) {
 				bracelet = temp;
 			}
 		}
 
 		if(getNBTRing() != null && getNBTRing().hasID()){
-			GameItem temp = GameItem.getItem(getNBTRing().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTRing().getID());
 			if(temp != null && temp.getItemType() == ItemType.Ring) {
 				ring = temp;
 			}
 		}
 
 		if(getNBTHeadband() != null && getNBTHeadband().hasID()){
-			GameItem temp = GameItem.getItem(getNBTHeadband().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTHeadband().getID());
 			if(temp != null && temp.getItemType() == ItemType.Headband) {
 				headband = temp;
 			}
 		}
 
 		if(getNBTNecklace() != null && getNBTNecklace().hasID()){
-			GameItem temp = GameItem.getItem(getNBTNecklace().getID());
+			StatItem temp = (StatItem) itemManager.getItem(getNBTNecklace().getID());
 			if(temp != null && temp.getItemType() == ItemType.Necklace) {
 				necklace = temp;
 			}
 		}
 
 		stats.login();
+
+		for(Collection collection : Collection.values()){
+			collections.put(collection, 0L);
+		}
 
 		tick(main, scoreboardManager);
 	}
@@ -221,8 +232,8 @@ public class GamePlayer{
 				}
 
 				//Abilities
-				for(int i = 0; i < activeAbilities.size(); i++){
-					activeAbilities.get(i).run(this);
+				for(int i = 0; i < activeSetEffects.size(); i++){
+					activeSetEffects.get(i).tick(this);
 				}
 			}
 
@@ -238,7 +249,7 @@ public class GamePlayer{
 
 		if(hasHeldItem()){
 			//Runes
-			if(getHeldItem().canApplyRunes()) {
+			if(getHeldItem() instanceof Runeable) {
 				if (getNBTHeldItem().getRunes().containsKey(Rune.Strength))
 					strength += Rune.Strength.getAmount() * getNBTHeldItem().getRunes().get(Rune.Strength);
 			}
@@ -277,35 +288,35 @@ public class GamePlayer{
 	/**
 	 * Equips an item and updates the stats.
 	 */
-	public void equip(GameItem item, NBTGameItem gameItem){
+	public void equip(StatItem item, NBTGameItem gameItem){
 		if(item == null || gameItem == null) return;
 
 		updateEquipment(item, item.getItemType());
-		updateActiveAbilities(item, false);
+		//updateActiveAbilities(item, false);
 
 		for(PlayerStat stat : PlayerStat.values()){
-			int value = 0;
+			double value = 0;
 
 			if(item.hasStat(stat)){
-				value+=Integer.parseInt(item.getStat(stat));
+				value+=item.getStat(stat);
 			}
 
 			//Runes
-			if(item.canApplyRunes()) {
+			if(item instanceof Runeable) {
 				Rune rune = Rune.getRune(stat);
 				if (rune != null && gameItem.getRunes().containsKey(rune))
 					value += rune.getAmount() * gameItem.getRunes().get(rune);
 			}
 
 			//Abilities & Buffs
-			for(EquipmentAbility ability : activeAbilities){
-				if(ability instanceof AppliesWeaponBuff abilityBuff){
+			for(SetEffect ability : activeSetEffects){
+				if(ability instanceof ItemBuffAbility abilityBuff){
 
-					if(item == abilityBuff.getWeapon()) {
+					/*if(item == abilityBuff.getWeapon()) {
 						HashMap<PlayerStat, Integer> buffs = abilityBuff.getBuff(item, gameItem);
 						if(buffs.containsKey(stat))
 							value += buffs.get(stat);
-					}
+					} */
 				}
 			}
 
@@ -321,35 +332,35 @@ public class GamePlayer{
 	/**
 	 * Unequips an item and updates the stats.
 	 */
-	public void unequip(GameItem item, NBTGameItem gameItem){
+	public void unequip(StatItem item, NBTGameItem gameItem){
 		if(item == null || gameItem == null) return;
 
 		updateEquipment(null, item.getItemType());
-		updateActiveAbilities(item, true);
+		updateSetEffects(item, true);
 
 		for(PlayerStat stat : PlayerStat.values()){
 
-			int value = 0;
+			double value = 0;
 			if(item.hasStat(stat)){
-				value+=Integer.parseInt(item.getStat(stat));
+				value+=item.getStat(stat);
 			}
 
 			//Runes
-			if(item.canApplyRunes()) {
+			if(item instanceof Runeable) {
 				Rune rune = Rune.getRune(stat);
 				if (rune != null && gameItem.getRunes().containsKey(rune))
 					value += rune.getAmount() * gameItem.getRunes().get(rune);
 			}
 
 			//Abilities & Buffs
-			for(EquipmentAbility ability : activeAbilities){
-				if(ability instanceof AppliesWeaponBuff abilityBuff){
+			for(SetEffect ability : activeSetEffects){
+				if(ability instanceof ItemBuffAbility abilityBuff){
 
-					if(item == abilityBuff.getWeapon()) {
+					/*if(item == abilityBuff.getWeapon()) {
 						HashMap<PlayerStat, Integer> buffs = abilityBuff.getBuff(item, gameItem);
 						if(buffs.containsKey(stat))
 							value += buffs.get(stat);
-					}
+					} */
 				}
 			}
 
@@ -362,7 +373,7 @@ public class GamePlayer{
 		stats.updateStats();
 	}
 
-	private void updateEquipment(GameItem item, ItemType itemType){
+	private void updateEquipment(StatItem item, ItemType itemType){
 		switch (itemType) {
 			case Helmet -> helmet = item;
 			case Chestplate -> chestplate = item;
@@ -377,26 +388,27 @@ public class GamePlayer{
 		}
 	}
 
-	//TODO: Fix bug where held item stats stay when a set effect is removed.
-	private void updateActiveAbilities(GameItem item, boolean removing){
+	private void updateSetEffects(GameItem item, boolean removing){
 		if(removing){
 
-			if(item.hasEquipmentAbility()){
-				if(activeAbilities.contains(item.getEquipmentAbility())){
+			equiped.remove(item);
 
-					activeAbilities.remove(item.getEquipmentAbility().onUnEquip(this));
+			if(item instanceof SetAbility ability){
+				if(activeSetEffects.contains(ability.getSet())){
+
+					activeSetEffects.remove(ability.getSet().onUnequip(this));
 					updateInventory();
 				}
 			}
 
-			abilityEquipment.remove(item);
 		}else{
-			abilityEquipment.add(item);
-			if(item.hasEquipmentAbility()) {
+			if(item instanceof SetAbility ability) {
 
-				if (abilityEquipment.containsAll(item.getEquipmentAbility().getSet())) {
+				equiped.add(item);
 
-					activeAbilities.add(item.getEquipmentAbility().onEquip(this));
+				if (equiped.containsAll(ability.getSet().getItems())) {
+
+					activeSetEffects.add(ability.getSet().onEquip(this));
 					updateInventory();
 
 				}
@@ -414,13 +426,14 @@ public class GamePlayer{
 			NBTGameItem gameItem = new NBTGameItem(stack);
 			if(!gameItem.hasID()) continue;
 
-			GameItem item = GameItem.getItem(gameItem.getID());
+			GameItem item = itemManager.getItem(gameItem.getID());
 			if(item == null) continue;
 
 			stack.setItemMeta(ItemBuilder.updateMeta(this, item, gameItem));
 
 		}
 	}
+
 
 	public void kill(){
 		player.damage(0);
@@ -489,18 +502,29 @@ public class GamePlayer{
 		return skills.get(skill);
 	}
 
-	public void addItem(GameItem item, int amount){
+	public HashMap<Integer, ItemStack> addItem(ItemStack itemStack){
+		HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(itemStack);
 
-		HashMap<Integer, ItemStack> leftOver = player.getInventory().addItem(ItemBuilder.buildGameItem(item, amount));
+		//TODO: Add leftovers to virtual inventory;
 
+		return leftOver;
 	}
 
+	public void addItem(GameItem item, int amount){
+		HashMap<Integer, ItemStack> leftOver = addItem(ItemBuilder.buildGameItem(item, amount));
+
+		if(item instanceof CollectionItem collectionItem) {
+			int collectionAmount = amount - leftOver.get(0).getAmount();
+			collections.put(collectionItem.getCollection(), collections.get(collectionItem.getCollection())+(collectionAmount+collectionItem.getCollectionAmount()));
+		}
+
+	}
 
 	public boolean hasHeldItem(){
 		return heldItem != null;
 	}
 
-	public GameItem getHeldItem(){
+	public StatItem getHeldItem(){
 		return heldItem;
 	}
 
@@ -512,7 +536,7 @@ public class GamePlayer{
 		return helmet != null;
 	}
 
-	public GameItem getHelmet(){
+	public StatItem getHelmet(){
 		return helmet;
 	}
 
@@ -524,7 +548,7 @@ public class GamePlayer{
 		return chestplate != null;
 	}
 
-	public GameItem getChestplate(){
+	public StatItem getChestplate(){
 		return chestplate;
 	}
 
@@ -536,7 +560,7 @@ public class GamePlayer{
 		return leggings != null;
 	}
 
-	public GameItem getLeggings() {
+	public StatItem getLeggings() {
 		return leggings;
 	}
 
@@ -548,7 +572,7 @@ public class GamePlayer{
 		return boots != null;
 	}
 
-	public GameItem getBoots() {
+	public StatItem getBoots() {
 		return boots;
 	}
 
@@ -560,7 +584,7 @@ public class GamePlayer{
 		return cape != null;
 	}
 
-	public GameItem getCape() {
+	public StatItem getCape() {
 		return cape;
 	}
 
@@ -572,7 +596,7 @@ public class GamePlayer{
 		return bracelet != null;
 	}
 
-	public GameItem getBracelet() {
+	public StatItem getBracelet() {
 		return bracelet;
 	}
 
@@ -584,7 +608,7 @@ public class GamePlayer{
 		return ring != null;
 	}
 
-	public GameItem getRing(){
+	public StatItem getRing(){
 		return ring;
 	}
 
@@ -596,7 +620,7 @@ public class GamePlayer{
 		return headband != null;
 	}
 
-	public GameItem getHeadband(){
+	public StatItem getHeadband(){
 		return headband;
 	}
 
@@ -608,7 +632,7 @@ public class GamePlayer{
 		return necklace != null;
 	}
 
-	public GameItem getNecklace() {
+	public StatItem getNecklace() {
 		return necklace;
 	}
 
@@ -616,9 +640,9 @@ public class GamePlayer{
 		return !InventoryHelper.isAirOrNull(equipment.get(PlayerInventoryListener.NECKLACE_SLOT)) ? new NBTGameItem(equipment.get(PlayerInventoryListener.NECKLACE_SLOT)) : null;
 	}
 
-	public ArrayList<EquipmentAbility> getActiveAbilities() {
+	/*public ArrayList<EquipmentAbility> getActiveAbilities() {
 		return activeAbilities;
-	}
+	}*/
 
 	public void gainXP(Skill skill, int amount){
 		getSkill(skill).addXP(amount);
@@ -705,6 +729,10 @@ public class GamePlayer{
 
 	public String getName(){
 		return player.getName();
+	}
+
+	public void sendMessage(String message){
+		player.sendMessage(message);
 	}
 
 	public Player getPlayerObject(){

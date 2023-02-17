@@ -2,8 +2,10 @@ package io.github.nmahdi.JunoCore.player.listeners;
 
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.StatItem;
 import io.github.nmahdi.JunoCore.item.stats.ItemType;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
@@ -37,6 +39,7 @@ public class PlayerInventoryListener implements Listener {
 
     private JCore main;
     private PlayerManager playerManager;
+    private ItemManager itemManager;
 
 
     private final int OFFHAND_SLOT = 40;
@@ -63,6 +66,7 @@ public class PlayerInventoryListener implements Listener {
     public PlayerInventoryListener(JCore main) {
         this.main = main;
         this.playerManager = main.getPlayerManager();
+        this.itemManager = main.getItemManager();
         main.getServer().getPluginManager().registerEvents(this, main);
     }
 
@@ -171,7 +175,7 @@ public class PlayerInventoryListener implements Listener {
                         NBTGameItem nbtItem = new NBTGameItem(e.getCurrentItem());
                         if (!nbtItem.hasID()) return;
 
-                        GameItem item = GameItem.getItem(nbtItem.getID());
+                        GameItem item = itemManager.getItem(nbtItem.getID());
                         if (item == null) return;
 
                         int slot = getEquipmentSlot(item.getItemType());
@@ -181,7 +185,7 @@ public class PlayerInventoryListener implements Listener {
 
                             ItemStack current = e.getCurrentItem();
 
-                            if (item.isEquipment()) {
+                            if (ItemType.isEquipment(item)) {
 
                                 CraftingInventory craftingInventory = (CraftingInventory) e.getView().getTopInventory();
 
@@ -196,7 +200,7 @@ public class PlayerInventoryListener implements Listener {
 
                             }
 
-                            if(item.isArmor()){
+                            if(ItemType.isArmor(item)){
 
                                 if(InventoryHelper.isAirOrNull(playerInventory.getItem(slot))){
                                     e.setCancelled(true);
@@ -227,8 +231,8 @@ public class PlayerInventoryListener implements Listener {
                     NBTGameItem nbtHotbar = new NBTGameItem(hotbar);
                     if(!nbtHotbar.hasID()) return;
 
-                    GameItem item = GameItem.getItem(nbtHotbar.getID());
-                    if(item == null || !item.isArmor() || e.getSlot() != getEquipmentSlot(item.getItemType())){
+                    GameItem item = itemManager.getItem(nbtHotbar.getID());
+                    if(item == null || !ItemType.isArmor(item) || e.getSlot() != getEquipmentSlot(item.getItemType())){
                         e.setCancelled(true);
                         return;
                     }
@@ -245,9 +249,9 @@ public class PlayerInventoryListener implements Listener {
                         NBTGameItem nbtHotbar = new NBTGameItem(hotbar);
                         if(!nbtHotbar.hasID()) return;
 
-                        GameItem item = GameItem.getItem(nbtHotbar.getID());
+                        GameItem item = itemManager.getItem(nbtHotbar.getID());
                         if(item == null) return;
-                        if(!item.isEquipment() || e.getSlot() != getEquipmentSlot(item.getItemType())){
+                        if(!ItemType.isEquipment(item) || e.getSlot() != getEquipmentSlot(item.getItemType())){
                             e.setCancelled(true);
                             return;
                         }
@@ -316,8 +320,8 @@ public class PlayerInventoryListener implements Listener {
                     NBTGameItem nbtItem = new NBTGameItem(cursor);
                     if(!nbtItem.hasID()) return;
 
-                    GameItem gameItem = GameItem.getItem(nbtItem.getID());
-                    if(gameItem == null || !gameItem.isArmor()) return;
+                    GameItem gameItem = itemManager.getItem(nbtItem.getID());
+                    if(gameItem == null || !ItemType.isArmor(gameItem)) return;
 
                     if(getEquipmentSlot(gameItem.getItemType()) != e.getSlot()) return;
 
@@ -339,8 +343,8 @@ public class PlayerInventoryListener implements Listener {
                         NBTGameItem nbtItem = new NBTGameItem(cursor);
                         if(!nbtItem.hasID()) return;
 
-                        GameItem gameItem = GameItem.getItem(nbtItem.getID());
-                        if(gameItem == null || !gameItem.isEquipment() || getEquipmentSlot(gameItem.getItemType()) != e.getSlot()){
+                        GameItem gameItem = itemManager.getItem(nbtItem.getID());
+                        if(gameItem == null || !ItemType.isEquipment(gameItem) || getEquipmentSlot(gameItem.getItemType()) != e.getSlot()){
                             e.setCancelled(true);
                             return;
                         }
@@ -378,13 +382,13 @@ public class PlayerInventoryListener implements Listener {
         NBTGameItem nbtItem = new NBTGameItem(e.getItem());
         if (!nbtItem.hasID()) return;
 
-        GameItem item = GameItem.getItem(nbtItem.getID());
+        GameItem item = itemManager.getItem(nbtItem.getID());
         if (item == null) return;
 
         GamePlayer gamePlayer = playerManager.getPlayer(e.getPlayer());
         int equipmentSlot = getEquipmentSlot(item.getItemType());
 
-        if (item.isArmor()) {
+        if (ItemType.isArmor(item)) {
 
             if (InventoryHelper.isAirOrNull(e.getPlayer().getInventory().getItem(equipmentSlot))) {
 
@@ -401,7 +405,7 @@ public class PlayerInventoryListener implements Listener {
             }
         }
 
-        if (item.isEquipment()) {
+        if (ItemType.isEquipment(item)) {
 
             if (e.getPlayer().getOpenInventory().getTopInventory().getType() == InventoryType.CRAFTING) {
                 CraftingInventory craftingInventory = (CraftingInventory) e.getPlayer().getOpenInventory().getTopInventory();
@@ -437,7 +441,7 @@ public class PlayerInventoryListener implements Listener {
             return;
         }
 
-        GameItem item = GameItem.getItem(new NBTGameItem(e.getOldCursor()).getID());
+        GameItem item = itemManager.getItem(new NBTGameItem(e.getOldCursor()).getID());
         if(item == null){
             e.setCancelled(true);
             return;
@@ -455,7 +459,7 @@ public class PlayerInventoryListener implements Listener {
 
 
                 if (slots.contains(HELMET_DRAG_SLOT) || slots.contains(CHESTPLATE_DRAG_SLOT) || slots.contains(LEGGINGS_DRAG_SLOT) || slots.contains(BOOTS_DRAG_SLOT)) {
-                    if(item.isArmor() && slots.contains(equipmentSlot)) {
+                    if(ItemType.isArmor(item) && slots.contains(equipmentSlot)) {
 
                         //Overriding to allow block type helmets
                         if(item.getItemType() == ItemType.Helmet){
@@ -472,7 +476,7 @@ public class PlayerInventoryListener implements Listener {
                 }
 
                 if (slots.contains(CAPE_SLOT) || slots.contains(RING_SLOT) || slots.contains(BRACELET_SLOT) || slots.contains(HEADBAND_SLOT) || slots.contains(NECKLACE_SLOT)) {
-                    if (item.isEquipment() && slots.contains(equipmentSlot)) {
+                    if (ItemType.isEquipment(item) && slots.contains(equipmentSlot)) {
 
                         //Setting cape slot (crafting result slot) to cursor
                         if(item.getItemType() == ItemType.Cape){
@@ -498,9 +502,9 @@ public class PlayerInventoryListener implements Listener {
     @EventHandler
     public void onItemPlace(BlockPlaceEvent e){
         if(InventoryHelper.isAirOrNull(e.getItemInHand())) return;
-        GameItem item = GameItem.getItem(new NBTGameItem(e.getItemInHand()).getID());
+        GameItem item = itemManager.getItem(new NBTGameItem(e.getItemInHand()).getID());
         if(item == null) return;
-        if(item.getItemType().getCatagory() != ItemType.Catagory.MISC) e.setCancelled(true);
+        if(item.getItemType().getCatagory() != ItemType.Catagory.Misc) e.setCancelled(true);
     }
 
     @EventHandler
@@ -540,17 +544,17 @@ public class PlayerInventoryListener implements Listener {
 
     private void equipEquipment(GamePlayer player, NBTGameItem oldItem, NBTGameItem newItem){
         if(oldItem != null){
-            GameItem item = GameItem.getItem(oldItem.getID());
-            if(item != null && item.isEquipment()) {
-                player.unequip(item, oldItem);
+            GameItem item = itemManager.getItem(oldItem.getID());
+            if(item != null && ItemType.isEquipment(item)) {
+                player.unequip((StatItem) item, oldItem);
                 player.equipment.put(getEquipmentSlot(item.getItemType()), null);
                 player.getPlayerObject().sendMessage(ChatColor.RED + "Unequipped: " + oldItem.getItem().getItemMeta().getDisplayName());
             }
         }
         if (newItem != null) {
-            GameItem item = GameItem.getItem(newItem.getID());
-            if(item != null && item.isEquipment()) {
-                player.equip(item, newItem);
+            GameItem item = itemManager.getItem(newItem.getID());
+            if(item != null && ItemType.isEquipment(item)) {
+                player.equip((StatItem) item, newItem);
                 player.equipment.put(getEquipmentSlot(item.getItemType()), newItem.getItem());
                 player.getPlayerObject().sendMessage(ChatColor.GREEN + "Equipped " + newItem.getItem().getItemMeta().getDisplayName());
             }
@@ -559,16 +563,16 @@ public class PlayerInventoryListener implements Listener {
 
     private void equipArmor(GamePlayer player, NBTGameItem oldItem, NBTGameItem newItem){
         if(oldItem != null){
-            GameItem item = GameItem.getItem(oldItem.getID());
-            if(item != null && item.isArmor()) {
-                player.unequip(item, oldItem);
+            GameItem item = itemManager.getItem(oldItem.getID());
+            if(item != null && ItemType.isArmor(item)) {
+                player.unequip((StatItem) item, oldItem);
                 player.getPlayerObject().sendMessage(ChatColor.RED + "Unequipped: " + oldItem.getItem().getItemMeta().getDisplayName());
             }
         }
         if (newItem != null) {
-            GameItem item = GameItem.getItem(newItem.getID());
-            if(item != null && item.isArmor()) {
-                player.equip(item, newItem);
+            GameItem item = itemManager.getItem(newItem.getID());
+            if(item != null && ItemType.isArmor(item)) {
+                player.equip((StatItem) item, newItem);
                 player.getPlayerObject().sendMessage(ChatColor.GREEN + "Equipped " + newItem.getItem().getItemMeta().getDisplayName());
             }
         }
@@ -576,16 +580,16 @@ public class PlayerInventoryListener implements Listener {
 
     private void equipHand(GamePlayer player, NBTGameItem oldItem, NBTGameItem newItem){
         if(oldItem != null){
-            GameItem item = GameItem.getItem(oldItem.getID());
-            if(item != null && item.isHandEquipable()) {
-                player.unequip(item, oldItem);
+            GameItem item = itemManager.getItem(oldItem.getID());
+            if(item != null && ItemType.isHandEquipable(item)) {
+                player.unequip((StatItem) item, oldItem);
                 player.getPlayerObject().sendMessage(ChatColor.RED + "Unequipped: " + oldItem.getItem().getItemMeta().getDisplayName());
             }
         }
         if(newItem != null){
-            GameItem item = GameItem.getItem(newItem.getID());
-            if(item != null && item.isHandEquipable()) {
-                player.equip(item, newItem);
+            GameItem item = itemManager.getItem(newItem.getID());
+            if(item != null && ItemType.isHandEquipable(item)) {
+                player.equip((StatItem) item, newItem);
                 player.getPlayerObject().sendMessage(ChatColor.GREEN + "Equipped " + newItem.getItem().getItemMeta().getDisplayName());
             }
         }

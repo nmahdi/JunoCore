@@ -56,9 +56,9 @@ public class ActionBar {
 
     public void send() {
         player.getPlayerObject().sendActionBar(
-                Component.text((int)stats.getHealth() + "/" + (int)stats.getMaxHealth() + PlayerStat.MaxHealth.getSymbol() + " ").color(TextColor.color(PlayerStat.MaxHealth.getColor()))
+                Component.text((int)stats.getHealth() + "/" + (int)stats.getMaxHealth() + PlayerStat.MaxHealth.getSymbol() + "      ").color(TextColor.color(PlayerStat.MaxHealth.getColor()))
                         .append(current)
-                        .append(Component.text(" " + (int)stats.getMana() + "/" + (int)stats.getMaxMana() + PlayerStat.Mana.getSymbol()).color(TextColor.color(PlayerStat.MaxMana.getColor()))));
+                        .append(Component.text("      " + (int)stats.getMana() + "/" + (int)stats.getMaxMana() + PlayerStat.Mana.getSymbol()).color(TextColor.color(PlayerStat.MaxMana.getColor()))));
     }
 
 }

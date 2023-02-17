@@ -11,6 +11,7 @@ public class ItemNBT extends NBTItem {
 	public final String UUID = "uuid";
 	public final String RUNE = "runes";
 	public final String RECIPE = "recipe";
+	public final String SHOP = "shop";
 
 	public ItemNBT(ItemStack item) {
 		super(item);
@@ -21,7 +22,7 @@ public class ItemNBT extends NBTItem {
 	}
 
 	public boolean hasJuno(){
-		return hasKey(JUNO);
+		return hasTag(JUNO);
 	}
 
 	public NBTCompound getJuno(){

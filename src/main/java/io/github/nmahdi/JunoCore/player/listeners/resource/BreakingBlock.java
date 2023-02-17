@@ -5,7 +5,7 @@ import io.github.nmahdi.JunoCore.effects.PacketManager;
 import io.github.nmahdi.JunoCore.generation.ResourceManager;
 import io.github.nmahdi.JunoCore.generation.ResourceType;
 import io.github.nmahdi.JunoCore.generation.BlockBreakHelper;
-import io.github.nmahdi.JunoCore.item.ability.item.BlockBreakItemAbility;
+import io.github.nmahdi.JunoCore.item.modifiers.abilities.BlockBreakAbility;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import org.bukkit.Location;
 
@@ -64,9 +64,9 @@ public class BreakingBlock implements BlockBreakHelper {
 
 		ResourceType currentBlock = null;
 		if(location.getBlock().hasMetadata("resource")) {
-			currentBlock = ResourceType.getType(location.getBlock().getMetadata("resource").get(0).asString());
+			currentBlock = resourceManager.getResourceType(location.getBlock().getMetadata("resource").get(0).asString());
 		}else{
-			currentBlock = ResourceType.getType(location.getBlock());
+			currentBlock = resourceManager.getResourceType(location.getBlock());
 		}
 
 			if (currentBlock != null) {
@@ -96,10 +96,9 @@ public class BreakingBlock implements BlockBreakHelper {
 				} else {
 					setResourceType(currentBlock);
 					resetBreakingTime();
-					BlockBreakItemAbility ability = null;
-					if (player.getHeldItem() != null && player.getHeldItem().getItemAbility() != null) {
-						if (player.getHeldItem().getItemAbility() instanceof BlockBreakItemAbility)
-							ability = (BlockBreakItemAbility) player.getHeldItem().getItemAbility();
+					BlockBreakAbility ability = null;
+					if (player.getHeldItem() instanceof BlockBreakAbility) {
+						ability = (BlockBreakAbility) player.getHeldItem();
 					}
 					breakBlock(main, player, resourceType, getLocation().getBlock(), ability);
 

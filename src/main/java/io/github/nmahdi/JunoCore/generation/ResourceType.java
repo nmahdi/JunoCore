@@ -6,8 +6,8 @@ import io.github.nmahdi.JunoCore.player.stats.Skill;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-public enum ResourceType {
-    //Mining
+public class ResourceType {
+    /*//Mining
     Cobblestone("cobblestone", Material.COBBLESTONE, Skill.Mining, 1,
             GameItem.Cobblestone, GameItem.Stone, null, 1,
             ItemType.Pickaxe, 450, Material.BEDROCK),
@@ -89,7 +89,7 @@ public enum ResourceType {
     Poppy("poppy", Material.POPPY, Skill.Foraging, 10,
             GameItem.Poppy, null, null, 1,
             ItemType.Shears,0, Material.AIR),
-    ;
+    ; */
 
     private final String id;
     private boolean useTag = false;
@@ -104,7 +104,7 @@ public enum ResourceType {
     private final int breakingTime;
     private final Material replacement;
 
-    ResourceType(String id, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, int amount, ItemType tool, int breakingTime, Material replacement){
+    public ResourceType(ResourceManager resourceManager, String id, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, int amount, ItemType tool, int breakingTime, Material replacement){
         this.id = id;
         this.material = material;
         this.xpType = xpType;
@@ -116,9 +116,10 @@ public enum ResourceType {
         this.tool = tool;
         this.breakingTime = breakingTime;
         this.replacement = replacement;
+        resourceManager.addResource(this);
     }
 
-    ResourceType(String id, boolean useTag, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, int amount, ItemType tool, int breakingTime, Material replacement){
+    public ResourceType(ResourceManager resourceManager, String id, boolean useTag, Material material, Skill xpType, int xp, GameItem drop, GameItem smelted, GameItem silkTouch, int amount, ItemType tool, int breakingTime, Material replacement){
         this.id = id;
         this.useTag = useTag;
         this.material = material;
@@ -131,6 +132,7 @@ public enum ResourceType {
         this.tool = tool;
         this.breakingTime = breakingTime;
         this.replacement = replacement;
+        resourceManager.addResource(this);
     }
 
     public String getId() {
@@ -179,20 +181,6 @@ public enum ResourceType {
 
     public Material getReplacement() {
         return replacement;
-    }
-
-    public static ResourceType getType(String id){
-        for(ResourceType type : ResourceType.values()){
-            if(type.getId().equals(id)) return type;
-        }
-        return null;
-    }
-
-    public static ResourceType getType(Block block){
-       for(ResourceType type : ResourceType.values()){
-           if(type.getMaterial() == block.getType()) return type;
-       }
-       return null;
     }
 
 }

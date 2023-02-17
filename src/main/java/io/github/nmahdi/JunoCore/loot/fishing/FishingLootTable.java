@@ -2,54 +2,51 @@ package io.github.nmahdi.JunoCore.loot.fishing;
 
 import io.github.nmahdi.JunoCore.entity.GameEntity;
 import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.loot.ILootTable;
-import io.github.nmahdi.JunoCore.loot.Loot;
-import io.github.nmahdi.JunoCore.loot.WeightLoot;
-import io.github.nmahdi.JunoCore.loot.WeightLootTable;
+import io.github.nmahdi.JunoCore.loot.items.LootTable;
 
 import java.util.ArrayList;
 
-public class FishingLootTable implements ILootTable {
+public class FishingLootTable implements LootTable {
 
 	private int totalWeight = 0;
-	private ArrayList<FishingLoot> loot = new ArrayList<>();
+	private ArrayList<FishingDrop> loot = new ArrayList<>();
 
 	public FishingLootTable(){
 	}
 
 	public FishingLootTable addItem(GameItem item, int amount, int weight){
 		totalWeight+=weight;
-		loot.add(new FishingLootItem(item, amount, amount, weight, totalWeight));
+		loot.add(new FishingItemDrop(item, amount, amount, weight, totalWeight));
 		return this;
 	}
 
 	public FishingLootTable addItem(GameItem item, int minAmount, int maxAmount, int weight){
 		totalWeight+=weight;
-		loot.add(new FishingLootItem(item, minAmount, maxAmount, weight, totalWeight));
+		loot.add(new FishingItemDrop(item, minAmount, maxAmount, weight, totalWeight));
 		return this;
 	}
 
 	public FishingLootTable addEntity(GameEntity entity, int weight){
 		totalWeight+=weight;
-		loot.add(new FishingLootEntity(entity, weight, totalWeight));
+		loot.add(new FishingEntityDrop(entity, weight, totalWeight));
 		return this;
 	}
 
 	public FishingLootTable merge(FishingLootTable... tables){
 
 		for(FishingLootTable table : tables){
-			for(FishingLoot fishingLoot : table.getLoot()){
-				FishingLoot newLoot = null;
+			for(FishingDrop fishingLoot : table.getLoot()){
+				FishingDrop newLoot = null;
 
 				totalWeight+= fishingLoot.getWeight();
-				if(fishingLoot instanceof FishingLootItem){
-					FishingLootItem oldLoot = (FishingLootItem) fishingLoot;
-					newLoot = new FishingLootItem(oldLoot.getGameItem(), oldLoot.getMinAmount(), oldLoot.getMaxAmount(), oldLoot.getWeight(), totalWeight);
+				if(fishingLoot instanceof FishingItemDrop){
+					FishingItemDrop oldLoot = (FishingItemDrop) fishingLoot;
+					newLoot = new FishingItemDrop(oldLoot.getGameItem(), oldLoot.getMinAmount(), oldLoot.getMaxAmount(), oldLoot.getWeight(), totalWeight);
 				}
 
-				if(fishingLoot instanceof FishingLootEntity){
-					FishingLootEntity oldLoot = (FishingLootEntity) fishingLoot;
-					newLoot = new FishingLootEntity(oldLoot.getGameEntity(), oldLoot.getWeight(), totalWeight);
+				if(fishingLoot instanceof FishingEntityDrop){
+					FishingEntityDrop oldLoot = (FishingEntityDrop) fishingLoot;
+					newLoot = new FishingEntityDrop(oldLoot.getGameEntity(), oldLoot.getWeight(), totalWeight);
 				}
 
 				if(newLoot != null) loot.add(newLoot);
@@ -63,7 +60,7 @@ public class FishingLootTable implements ILootTable {
 		return totalWeight;
 	}
 
-	public ArrayList<FishingLoot> getLoot() {
+	public ArrayList<FishingDrop> getLoot() {
 		return loot;
 	}
 

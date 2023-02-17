@@ -2,7 +2,7 @@ package io.github.nmahdi.JunoCore.gui;
 
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.text.TextColors;
-import io.github.nmahdi.JunoCore.item.SkullURL;
+import io.github.nmahdi.JunoCore.item.stats.SkullURL;
 import io.github.nmahdi.JunoCore.item.builder.SkullItemBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.Inventory;

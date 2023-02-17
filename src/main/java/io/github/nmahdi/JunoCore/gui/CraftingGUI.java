@@ -3,9 +3,12 @@ package io.github.nmahdi.JunoCore.gui;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.text.TextColors;
 import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.builder.DescriptionBuilder;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTCraftingItem;
+import io.github.nmahdi.JunoCore.item.crafting.CraftingManager;
+import io.github.nmahdi.JunoCore.item.crafting.Crafttable;
 import io.github.nmahdi.JunoCore.item.crafting.Recipe;
 import io.github.nmahdi.JunoCore.utils.InventoryHelper;
 import net.kyori.adventure.text.Component;
@@ -21,8 +24,13 @@ import java.util.Map;
 
 public abstract class CraftingGUI extends GUI{
 
+	private ItemManager itemManager;
+	private CraftingManager craftingManager;
+
 	public CraftingGUI(JCore main, String name, int size, GUI previousMenu) {
 		super(main, name, size, previousMenu);
+		this.itemManager = main.getItemManager();
+		this.craftingManager = itemManager.getCraftingManager();
 	}
 
 	@Override
@@ -32,7 +40,7 @@ public abstract class CraftingGUI extends GUI{
 		NBTCraftingItem item = new NBTCraftingItem(e.getCurrentItem());
 
 		if(!item.hasJuno() && !item.isRecipeItem()) return;
-		Recipe recipe = Recipe.getRecipe(item.getRecipe());
+		Recipe recipe = craftingManager.getRecipe(item.getRecipe());
 		if(recipe == null) return;
 		if(InventoryHelper.hasItems((Player)e.getWhoClicked(), recipe)){
 
@@ -48,13 +56,13 @@ public abstract class CraftingGUI extends GUI{
 	public void setItems(Inventory inventory, Player player) {
 		int index = 0;
 
-		for(Recipe recipe : Recipe.values()){
-			if(recipe.getMenu() == getMenuType()){
-				inventory.setItem(index, buildItem(recipe));
-				index++;
+		for(GameItem gameItem : itemManager.getItems()){
+			if(gameItem instanceof Crafttable){
+				for(Recipe recipe : ((Crafttable)gameItem).getRecipes()){
+					inventory.setItem(index, buildItem(recipe));
+				}
 			}
 		}
-
 
 		insertFiller(inventory);
 		insertBack(inventory);

@@ -8,6 +8,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DescriptionBuilder {
 
@@ -28,6 +29,10 @@ public class DescriptionBuilder {
 	 */
 	public DescriptionBuilder(boolean skip){
 		if(skip) list.add(Component.empty());
+	}
+
+	public DescriptionBuilder(List<Component> lore){
+		list.addAll(lore);
 	}
 
 	public DescriptionBuilder append(String string, TextColor color){

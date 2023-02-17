@@ -32,7 +32,7 @@ public class GeneratorCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "Invalid Generator Type");
                     return true;
                 }
-                ResourceType resourceType = ResourceType.getType(args[2]);
+                ResourceType resourceType = resourceManager.getResourceType(args[2]);
                 if(resourceType == null){
                     sender.sendMessage(ChatColor.RED + "Invalid Resource Type");
                     return true;

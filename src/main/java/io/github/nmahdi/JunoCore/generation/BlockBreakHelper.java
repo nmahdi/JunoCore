@@ -3,8 +3,9 @@ package io.github.nmahdi.JunoCore.generation;
 import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.ResourceHarvestEvent;
 import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.item.ability.item.BlockBreakItemAbility;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
+import io.github.nmahdi.JunoCore.item.modifiers.abilities.BlockBreakAbility;
+import io.github.nmahdi.JunoCore.item.modifiers.stats.Runeable;
 import io.github.nmahdi.JunoCore.item.stats.Rune;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import org.bukkit.Bukkit;
@@ -18,13 +19,13 @@ import java.util.HashMap;
 
 public interface BlockBreakHelper {
 
-	default void breakBlock(JCore main, GamePlayer player, ResourceType resourceType, Block block, BlockBreakItemAbility ability){
+	default void breakBlock(JCore main, GamePlayer player, ResourceType resourceType, Block block, BlockBreakAbility ability){
 		ResourceHarvestEvent event = new ResourceHarvestEvent(player, block, resourceType);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 
 		if(!event.isCancelled()) {
 			if (ability != null) {
-				ability.activate(player, player.getNBTHeldItem(), block);
+				ability.onBlockBreak(main, block, player, player.getNBTHeldItem());
 			}
 
 			block.getWorld().playSound(block.getLocation(), Sound.BLOCK_STONE_BREAK, 0.5f, 0);
@@ -55,7 +56,7 @@ public interface BlockBreakHelper {
 			double amount = 1 + (player.getStats().getFortune()/100);
 
 			if (player.getNBTHeldItem() != null) {
-				if (player.getHeldItem().canApplyRunes() && player.getNBTHeldItem().hasRunes()) {
+				if (player.getHeldItem() instanceof Runeable && player.getNBTHeldItem().hasRunes()) {
 
 					if (player.getNBTHeldItem().getRunes().containsKey(Rune.Smelting)) {
 						if (resourceType.getSmelted() != null) drop = resourceType.getSmelted();

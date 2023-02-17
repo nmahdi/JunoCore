@@ -4,6 +4,8 @@ import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.generation.foraging.PlantGenerator;
 import io.github.nmahdi.JunoCore.generation.woodcutting.TreeGenerator;
 import io.github.nmahdi.JunoCore.item.ItemManager;
+import io.github.nmahdi.JunoCore.item.stats.ItemType;
+import io.github.nmahdi.JunoCore.player.stats.Skill;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.utils.JunoManager;
 import io.github.nmahdi.JunoCore.dependencies.WorldEditManager;
@@ -11,6 +13,7 @@ import io.github.nmahdi.JunoCore.generation.mining.OreGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -40,6 +43,7 @@ public class ResourceManager implements JunoManager {
         if(!folder.exists()){
             folder.mkdirs();
         }
+        loadResources();
         loadGenerators();
         startGenerators();
         tickGenerators();
@@ -54,7 +58,7 @@ public class ResourceManager implements JunoManager {
                 ArrayList<Location> locations = null;
                 if(generatorType.equals(GeneratorType.Ore)) {
                     locations = (WorldEditManager.getLocationsFromSelection(player, Material.SPONGE));
-                    generator = new OreGenerator(main, name, resourceType, ResourceType.Stone, player.getWorld(), locations, random);
+                    generator = new OreGenerator(main, name, resourceType, STONE, player.getWorld(), locations, random);
                 }
                 if(generatorType.equals(GeneratorType.Tree)){
                     generator = new TreeGenerator(main, name, resourceType, player.getWorld(), random);
@@ -90,7 +94,7 @@ public class ResourceManager implements JunoManager {
 
                         debug("Generator type '" + c.getString("generator-type") + "' detected.");
 
-                        ResourceType resourceType = ResourceType.getType(c.getString("resource-type"));
+                        ResourceType resourceType = getResourceType(c.getString("resource-type"));
 
                         ArrayList<Location> locations = new ArrayList<>();
 
@@ -104,7 +108,7 @@ public class ResourceManager implements JunoManager {
                         if (resourceType != null) {
 
                             if (c.getString("generator-type").equals(GeneratorType.Ore.getId())) {
-                                generator = new OreGenerator(main, c.getString("name"), resourceType, ResourceType.Stone, main.getPrimaryWorld(), locations, random);
+                                generator = new OreGenerator(main, c.getString("name"), resourceType, STONE, main.getPrimaryWorld(), locations, random);
                             }
 
                             if(c.getString("generator-type").equals(GeneratorType.Tree.getId())){
@@ -171,6 +175,27 @@ public class ResourceManager implements JunoManager {
         }
     }
 
+    public ResourceType getResourceType(String id){
+        for(ResourceType type : resourceTypes){
+            if(type.getId().equals(id)) return type;
+        }
+        return null;
+    }
+
+    public ResourceType getResourceType(Block block){
+        for(ResourceType type : resourceTypes){
+            if(type.getMaterial() == block.getType()) return type;
+        }
+        return null;
+    }
+
+    public void addResource(ResourceType resourceType){
+        this.resourceTypes.add(resourceType);
+    }
+
+    public ArrayList<ResourceType> getResourceTypes() {
+        return resourceTypes;
+    }
 
     public File getFolder() {
         return folder;
@@ -189,6 +214,42 @@ public class ResourceManager implements JunoManager {
     @Override
     public boolean isDebugging() {
         return debugMode;
+    }
+
+    public ResourceType COBBLESTONE;
+    public ResourceType STONE;
+    public ResourceType ANDESITE;
+    public ResourceType CLAY;
+    public ResourceType FLINT;
+    public ResourceType COAL;
+    public ResourceType IRON;
+    public ResourceType GOLD;
+    public ResourceType DIAMOND;
+    public ResourceType EMERALD;
+    public ResourceType OBSIDIAN;
+    public ResourceType ETERNITE;
+
+    public ResourceType OAK;
+    public ResourceType SPRUCE;
+    public ResourceType BIRCH;
+    public ResourceType JUNGLE;
+    public ResourceType ACACIA;
+    public ResourceType DARK_OAK;
+    public ResourceType MANGROVE;
+    public ResourceType POPPY;
+
+    private void loadResources(){
+        COBBLESTONE = new ResourceType(this, "cobblestone", Material.COBBLESTONE, Skill.Mining, 1,
+                itemManager.COBBLESTONE, itemManager.STONE, itemManager.COBBLESTONE, 1,
+                ItemType.Pickaxe, 450, Material.BEDROCK);
+
+        STONE = new ResourceType(this, "stone", Material.STONE, Skill.Mining, 1,
+                itemManager.COBBLESTONE, itemManager.STONE, itemManager.STONE, 1,
+                ItemType.Pickaxe, 500, Material.BEDROCK);
+
+        OAK = new ResourceType(this, "oak", Material.OAK_LOG, Skill.Woodcutting, 10,
+                itemManager.OAK_WOOD, itemManager.COAL, itemManager.OAK_WOOD, 1,
+                ItemType.Axe, 300, Material.AIR);
     }
 
 }

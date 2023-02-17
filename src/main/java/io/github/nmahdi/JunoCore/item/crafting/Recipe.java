@@ -1,54 +1,55 @@
 package io.github.nmahdi.JunoCore.item.crafting;
 
-import io.github.nmahdi.JunoCore.item.ItemContainer;
 import io.github.nmahdi.JunoCore.item.GameItem;
 
 import java.util.HashMap;
 
-public enum Recipe {
-    CompactedCobblestone(new RecipeContainer(GameItem.CompactedCobblestone, 1, Menu.Materials).addItems(GameItem.Cobblestone, 160)),
-    CompactedIronBar(new RecipeContainer(GameItem.IronBar, 1, Menu.Materials).addItems(GameItem.IronBar, 160))
-    ;
+public class Recipe {
 
-    private RecipeContainer recipeContainer;
+	public String id;
+	public GameItem result;
+	public int amount;
+	public Menu menu;
+	public HashMap<GameItem, Integer> recipe = new HashMap<>();
 
-    Recipe(RecipeContainer recipeContainer){
+	public Recipe(CraftingManager craftingManager, GameItem result, int amount, Recipe.Menu menu){
+		this.id = result.getId();
+		this.result = result;
+		this.amount = amount;
+		this.menu = menu;
+		craftingManager.addRecipe(this);
+	}
 
-        this.recipeContainer = recipeContainer;
-    }
+	public Recipe addItems(GameItem item, int amount){
+		recipe.put(item, amount);
+		return this;
+	}
 
-    public String getId() {
-        return recipeContainer.id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public GameItem getResult() {
-        return recipeContainer.result;
-    }
+	public GameItem getResult() {
+		return result;
+	}
 
-    public int getAmount() {
-        return recipeContainer.amount;
-    }
+	public int getAmount() {
+		return amount;
+	}
 
-    public Menu getMenu() {
-        return recipeContainer.menu;
-    }
+	public Menu getMenu() {
+		return menu;
+	}
 
-    public HashMap<GameItem, Integer> getRecipe() {
-        return recipeContainer.recipe;
-    }
+	public HashMap<GameItem, Integer> getRecipe() {
+		return recipe;
+	}
 
-    public static Recipe getRecipe(String id){
-        for(Recipe recipe : Recipe.values()){
-            if(recipe.getId().equals(id)) return recipe;
-        }
-        return null;
-    }
+	public static enum Menu{
+		Materials,
+		Tools,
+		Weapons,
 
-    public static enum Menu{
-        Materials,
-        Tools,
-        Weapons,
-        Armor;
-    }
+	}
 
 }

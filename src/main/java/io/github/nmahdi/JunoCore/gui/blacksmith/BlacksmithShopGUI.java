@@ -4,12 +4,11 @@ import io.github.nmahdi.JunoCore.JCore;
 import io.github.nmahdi.JunoCore.gui.NPCGUI;
 import io.github.nmahdi.JunoCore.gui.ShopGUI;
 import io.github.nmahdi.JunoCore.item.GameItem;
-import io.github.nmahdi.JunoCore.item.GameItem;
+import io.github.nmahdi.JunoCore.item.ItemManager;
 import io.github.nmahdi.JunoCore.item.builder.nbt.NBTGameItem;
 import io.github.nmahdi.JunoCore.item.builder.ItemBuilder;
 import io.github.nmahdi.JunoCore.player.GamePlayer;
 import io.github.nmahdi.JunoCore.player.PlayerManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -18,12 +17,14 @@ import java.util.ArrayList;
 
 public class BlacksmithShopGUI extends NPCGUI  implements ShopGUI {
 
+    private ItemManager itemManager;
     private PlayerManager playerManager;
     private ArrayList<GameItem> items = new ArrayList<>();
     private int index = 10;
 
     public BlacksmithShopGUI(JCore main, BlacksmithGUI blacksmithGUI) {
         super(main, "Blacksmith Shop", 54, blacksmithGUI, blacksmithGUI.getNPCName(), blacksmithGUI.getSkullLore());
+        this.itemManager = main.getItemManager();
         this.playerManager = main.getPlayerManager();
     }
 
@@ -33,7 +34,7 @@ public class BlacksmithShopGUI extends NPCGUI  implements ShopGUI {
         if(!e.getCurrentItem().hasItemMeta()) return;
         NBTGameItem nbtItem = new NBTGameItem(e.getCurrentItem());
         if(nbtItem.hasJuno() && nbtItem.getJuno().hasKey("price")){
-            GameItem item = GameItem.getItem(nbtItem.getID());
+            GameItem item = itemManager.getItem(nbtItem.getID());
             if (item == null) return;
 
             int price = nbtItem.getJuno().getInteger("price");

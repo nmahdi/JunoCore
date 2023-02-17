@@ -19,8 +19,8 @@ public interface ParticleHelper {
 	default void drawCircle(int radius, Location location, double yLevel){
 		double angle = 0f;
 		while(angle < Math.PI*2) {
-			double x = (radius * Math.sin(angle));
-			double z = (radius * Math.cos(angle));
+			double x = radius * Math.sin(angle);
+			double z = radius * Math.cos(angle);
 			angle+=0.1;
 			location.getWorld().spawnParticle(Particle.DRIP_LAVA,  new Location(location.getWorld(), location.getX() + x, yLevel, location.getZ() + z), 1);
 		}

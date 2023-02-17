@@ -52,9 +52,9 @@ public class PlayerResourceListener implements Listener, BlockBreakHelper {
         ResourceType resourceType;
 
         if(e.getBlock().hasMetadata("resource")) {
-            resourceType = ResourceType.getType(e.getBlock().getMetadata("resource").get(0).asString());
+            resourceType = resourceManager.getResourceType(e.getBlock().getMetadata("resource").get(0).asString());
         }else{
-            resourceType = ResourceType.getType(e.getBlock());
+            resourceType = resourceManager.getResourceType(e.getBlock());
         }
 
         if (resourceType == null) return;

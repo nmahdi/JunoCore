@@ -16,9 +16,8 @@ import io.github.nmahdi.JunoCore.generation.ResourceManager;
 import io.github.nmahdi.JunoCore.gui.player.PlayerMenuGUI;
 import io.github.nmahdi.JunoCore.gui.blacksmith.BlacksmithGUI;
 import io.github.nmahdi.JunoCore.gui.runetable.RuneTableGUI;
-import io.github.nmahdi.JunoCore.item.GameItemCommand;
+import io.github.nmahdi.JunoCore.item.commands.GameItemCommand;
 import io.github.nmahdi.JunoCore.item.ItemManager;
-import io.github.nmahdi.JunoCore.item.listeners.ConsumableListener;
 import io.github.nmahdi.JunoCore.player.listeners.GameItemPickupListener;
 import io.github.nmahdi.JunoCore.player.listeners.fishing.FishingListener;
 import io.github.nmahdi.JunoCore.player.stats.CoinCommand;
@@ -29,7 +28,6 @@ import io.github.nmahdi.JunoCore.player.listeners.combat.PlayerCombatListener;
 import io.github.nmahdi.JunoCore.player.listeners.resource.PlayerResourceListener;
 import io.github.nmahdi.JunoCore.utils.JLogger;
 import io.github.nmahdi.JunoCore.world.WorldManager;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -46,10 +44,10 @@ public class JCore extends JavaPlugin implements Listener {
 
     private Random random = new Random();
 
+    private ItemManager itemManager;
     private SQLManager sqlManager;
     private PacketManager packetManager;
     private HologramManager hologramsManager;
-    private ItemManager itemManager;
     private PlayerManager playerManager;
     private GameEntityManager entityManager;
     private ResourceManager resourceManager;
@@ -70,15 +68,15 @@ public class JCore extends JavaPlugin implements Listener {
         regionContainer = WorldGuard.getInstance().getPlatform().getRegionContainer();
         regionManager = regionContainer.get(BukkitAdapter.adapt(getPrimaryWorld()));
 
+        itemManager = new ItemManager(this);
         sqlManager = new SQLManager(this);
         packetManager = new PacketManager(this);
         hologramsManager = new HologramManager(this);
         entityManager = new GameEntityManager(this);
-        itemManager = new ItemManager(this);
         playerManager = new PlayerManager(this);
         resourceManager = new ResourceManager(this);
 
-        itemManager.postInit();
+
         entityManager.postInit();
 
         getServer().clearRecipes();
@@ -119,7 +117,6 @@ public class JCore extends JavaPlugin implements Listener {
 
         //Items
         new PlayerInventoryListener(this);
-        new ConsumableListener(this);
         new GameItemPickupListener(this);
     }
 
