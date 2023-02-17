@@ -1,5 +1,5 @@
 # JunoCore
-An MMORPG Inside Minecraft using the PaperMC API, Citizens API, and NBT API. (Also uses some other small APIs and plugins. More details below)
+An MMORPG Inside Minecraft using the PaperMC API, Citizens API, and NBT API. (Also uses some other APIs and plugins. More details below)
 
 # Current Features
 New player stats such as Mana, Elemental Defense, Strength, Crit Chance & Damage, Luck, and Fortune.
